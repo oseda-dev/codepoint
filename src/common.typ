@@ -1,8 +1,17 @@
-#let init(body) = [
-  #set page(margin: 40pt)
-  #set text(font: "Aptos Display", size: 12pt, fill: black, weight: "regular")
+#let init(body) = {
+  set page(margin: 40pt)
+  set text( 
+    font: ("Verdana"), 
+    size: 12pt, 
+    fill: black, 
+    weight: "regular"
+  )
+  set raw(theme: "../themes/InspiredGitHub.tmTheme")  
+  show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
 
-  #show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
-  // #set raw(theme: "Themes/InspiredGitHub.tmTheme")
-  #body
-]
+  //setting the space between paragraphs to better
+  // match the old Aptos Font 
+  set par(spacing: 1.8em)
+  
+  body
+}
