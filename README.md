@@ -29,3 +29,21 @@ A Typst library for creating programming documents and exams
     - Mostly used for development testing purposes
     - No longer copies `Fonts` directory
     - Tells you local import package name
+
+- New directory structure. Allows for separate imports of exam and project stuff
+```bash
+codepoint         
+├── LICENSE
+├── README.md
+├── create-local-package.sh
+├── examples
+│   ├── exam_example.typ
+│   └── proj_example.typ
+├── lib.typ
+├── src
+│   ├── exams.typ
+│   └── labs.typ
+├── themes
+│   └── InspiredGitHub.tmTheme
+└── typst.toml
+```
