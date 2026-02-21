@@ -211,20 +211,20 @@
   ]
 }
 
-#let free_response(q_body, num_lines, points: 1) = {
+#let free_response(q_body, lines: 1, points: 1) = {
   question(q_body, points: points)
-  for _ in range(num_lines) {
+  for _ in range(lines) {
     v(15pt)
   }
 }
 
-#let short_answer(q_body, num_lines, points: 1) = {
+#let short_answer(q_body, lines: 1, points: 1) = {
   question(q_body, points: points)
   grid(
     rows: auto,
-    "",
     columns: (1fr, 10fr, 1fr),
-    ..for _ in range(num_lines) {
+    "",
+    ..for _ in range(lines) {
       (
         v(15pt),
         "___________________________________________________________________________"
@@ -233,7 +233,6 @@
     ""
   )
 }
-
 // will simply extend the box to the edge of the code, can add white space if need it to be longer
 #let code_block(raw_code) = {
   box(stroke: (paint: rgb("#d9d9d9"), thickness: 2pt, cap: "round"), inset: (8pt))[
