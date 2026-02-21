@@ -3,7 +3,7 @@
 
 #let title-state = state("title", "")
 
-#let points = counter("points")
+#let total_points = counter("points")
 
 
 #let exam_init(body) = {
@@ -41,7 +41,7 @@
               //#context title-state.get()
             ],
             align(right)[
-              #"____ /" #context points.final().at(0) pts
+              #"____ /" #context total_points.final().at(0) pts
             ]
           )
         ]
@@ -70,20 +70,36 @@
   "num_qs", 1
 )
 
-#let question(body, num_points) = context {
+// #let question(body, num_points) = context {
+//   cur-question.update(n => n + 1)
+//   points.update(points => points + num_points)
+//   let qnum = cur-question.get()
+  
+//   block(width: 100%, breakable: true)[
+//     #grid(
+//       columns: (20pt, 1fr),
+//       column-gutter: 8pt,
+//       text(weight: "bold")[#qnum.],
+//       [#body #h(5pt) (#num_points pts)]
+//     )
+//   ]
+// }
+
+#let question(body, points: 1) = context {
   cur-question.update(n => n + 1)
-  points.update(points => points + num_points)
+  total_points.update(p => p + points)
   let qnum = cur-question.get()
   
-  block(width: 100%, breakable: true)[
+  block(width: 100%, breakable: true, inset: (bottom: 0.5em))[
     #grid(
       columns: (20pt, 1fr),
       column-gutter: 8pt,
       text(weight: "bold")[#qnum.],
-      [#body #h(5pt) (#num_points pts)]
+      [#body #h(5pt) (#points pts)]
     )
   ]
 }
+
 #let c = counter("letter")
 
 #let answer_indents = (1fr, 10fr, 1fr)
@@ -98,13 +114,13 @@
   range(num).map(i => 1fr)
 }
 
-#let multiple_choice(body, num_points, cols: 1, ..answers) = {
 
+#let multiple_choice(body, points: 1, cols: 1, ..answers) = {
   let cols_type = type(cols)
 
   block[
     #c.update(0)
-    #question(body, num_points)
+    #question(body, points: points)
     #v(5pt)
     #grid(
       columns: answer_indents,
@@ -118,32 +134,29 @@
             } else {
               cols
             }
-
           },
           rows: auto,
           column-gutter: 5pt,
           row-gutter: 15pt,
-          // spread to arr and map
           ..answers.pos().map(answer => {
             c.step()
             block[
               #context c.display("a"). #" " #answer
             ]
-          }
+          })
         )
-      )
       ],
       "",
     )
-
   ]
 }
 
-#let matching(q_body, points, left_opts, right_opts) = {
+
+#let matching(q_body, left_opts, right_opts, points: 1) = {
   // left and right are shadows
   block[
     #c.update(0)
-    #question(q_body, points)
+    #question(q_body, points: points)
     #spacer()
     #grid(
     // should sum to 12, to match answer_indents
@@ -172,16 +185,16 @@
 }
 
 // need better name
-#let multi_true_false(q_body, points, ..statements) = {
+#let multi_true_false(q_body, ..statements, points: 1) = {
   let num = counter("I")
-  num.step() // counter starts with N, I, II, etc -> skip N?
+  // Note: If you want to skip the first value (N), 
+  // ensure your counter logic matches your document setup.
+  num.step() 
   block[
-    #question(q_body, points)
+    #question(q_body, points: points)
     #for statement in statements.pos() {
       block[
-
         #grid(
-          // 1fr, 1fr, 9fr, 1fr
           columns: (42pt, 18pt, 9fr, 1fr),
           rows: (auto),
           "",
@@ -198,28 +211,29 @@
   ]
 }
 
-
-
-#let free_response(q_body, points, num_lines) = {
-  question(q_body, points)
+#let free_response(q_body, num_lines, points: 1) = {
+  question(q_body, points: points)
   for _ in range(num_lines) {
     v(15pt)
   }
 }
 
-#let short_answer(q_body, points, num_lines) = {
-  question(q_body, points)
+#let short_answer(q_body, num_lines, points: 1) = {
+  question(q_body, points: points)
   grid(
     rows: auto,
     "",
     columns: (1fr, 10fr, 1fr),
-    for _ in range(num_lines) {
-      v(15pt)
-      "___________________________________________________________________________"
+    ..for _ in range(num_lines) {
+      (
+        v(15pt),
+        "___________________________________________________________________________"
+      )
     },
     ""
   )
 }
+
 // will simply extend the box to the edge of the code, can add white space if need it to be longer
 #let code_block(raw_code) = {
   box(stroke: (paint: rgb("#d9d9d9"), thickness: 2pt, cap: "round"), inset: (8pt))[
