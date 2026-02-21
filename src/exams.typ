@@ -63,27 +63,10 @@
 }
 
 
-
-
-
 #let cur-question = state(
   "num_qs", 1
 )
 
-// #let question(body, num_points) = context {
-//   cur-question.update(n => n + 1)
-//   points.update(points => points + num_points)
-//   let qnum = cur-question.get()
-  
-//   block(width: 100%, breakable: true)[
-//     #grid(
-//       columns: (20pt, 1fr),
-//       column-gutter: 8pt,
-//       text(weight: "bold")[#qnum.],
-//       [#body #h(5pt) (#num_points pts)]
-//     )
-//   ]
-// }
 
 #let question(body, points: 1) = context {
   cur-question.update(n => n + 1)
@@ -211,28 +194,27 @@
   ]
 }
 
-#let free_response(q_body, lines: 1, points: 1) = {
-  question(q_body, points: points)
-  for _ in range(lines) {
-    v(15pt)
-  }
-}
-
 #let short_answer(q_body, lines: 1, points: 1) = {
   question(q_body, points: points)
-  grid(
-    rows: auto,
-    columns: (1fr, 10fr, 1fr),
-    "",
-    ..for _ in range(lines) {
-      (
-        v(15pt),
-        "___________________________________________________________________________"
-      )
-    },
-    ""
-  )
+  
+  // you don't need the full spacing from the question before the first line
+  v(-10pt)
+  block(width: 100%, inset: (left: 20pt))[
+    #for _ in range(lines) {
+      // line spacing
+      v(25pt) 
+      line(length: 90%, stroke: 0.5pt)
+    }
+  ]
 }
+
+#let free_response(q_body, lines: 1, points: 1) = {
+  question(q_body, points: points)
+
+  // i did not know you could just multiply units like that
+  v(15pt * lines)
+}
+
 // will simply extend the box to the edge of the code, can add white space if need it to be longer
 #let code_block(raw_code) = {
   box(stroke: (paint: rgb("#d9d9d9"), thickness: 2pt, cap: "round"), inset: (8pt))[
