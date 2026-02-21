@@ -197,7 +197,7 @@
   #cmd_color(io)
 ]
 
-#let labRubric(docOverride: "Documentation", partAOverride: "Part A correct", partBOverride: "Part B correct", notes) = [
+#let lab_rubric(docOverride: "Documentation", partAOverride: "Part A correct", partBOverride: "Part B correct", notes) = [
   #v(15pt)
   == RUBRIC:
   #v(5pt)
