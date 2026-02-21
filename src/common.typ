@@ -11,7 +11,7 @@
 
   //setting the space between paragraphs to better
   // match the old Aptos Font 
-  set par(spacing: 1.8em)
+  set par(spacing: 1.4em)
   
   body
 }

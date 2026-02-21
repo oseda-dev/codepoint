@@ -1,5 +1,24 @@
 
 
+
+#let lab_init(body) = {
+  set page(margin: 40pt)
+  set text( 
+    font: ("Verdana"), 
+    size: 12pt, 
+    fill: black, 
+    weight: "regular"
+  )
+  set raw(theme: "../themes/InspiredGitHub.tmTheme")  
+  show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
+
+  // defaults to 1.2, but on labs specifically, this is not enough spacing
+  set par(spacing: 1.6em)
+  
+  body
+}
+
+
 #let wt(body, dsp: -10pt) = {
   set text(fill: white, size: 0.01pt)
   show raw: set text(fill: white, size: 0.01pt)

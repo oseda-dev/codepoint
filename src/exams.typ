@@ -5,6 +5,23 @@
 
 #let points = counter("points")
 
+
+#let exam_init(body) = {
+  set page(margin: 40pt)
+  set text( 
+    font: ("Verdana"), 
+    size: 12pt, 
+    fill: black, 
+    weight: "regular"
+  )
+  set raw(theme: "../themes/InspiredGitHub.tmTheme")  
+  show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
+
+  set par(spacing: 1.2em)
+  
+  body
+}
+
 #let header() = [
   #grid(
     columns: (1fr, 1fr),
@@ -53,27 +70,20 @@
   "num_qs", 1
 )
 
-
 #let question(body, num_points) = context {
   cur-question.update(n => n + 1)
   points.update(points => points + num_points)
   let qnum = cur-question.get()
-  box(
-    align(left)[
-      #grid(
-        columns: (20pt, 1fr),
-        rows: (auto),
-        block[
-          #text(weight: "bold")[#qnum.])
-        ],
-        block[
-          #par()[#body (#num_points pts)]
-        ]
-      )
-    ]
-  )
+  
+  block(width: 100%, breakable: true)[
+    #grid(
+      columns: (20pt, 1fr),
+      column-gutter: 8pt,
+      text(weight: "bold")[#qnum.],
+      [#body #h(5pt) (#num_points pts)]
+    )
+  ]
 }
-
 #let c = counter("letter")
 
 #let answer_indents = (1fr, 10fr, 1fr)
