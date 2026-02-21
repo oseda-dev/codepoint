@@ -19,6 +19,8 @@ A Typst library for creating programming documents and exams
     - We cannot add proprietary fonts to the hosted package
 
 - `Themes/` renamed to `themes` for compatibility
+    - We are still hosting the `Inspired GitHub Color Scheme for Sublime Text 3` by Seth Lopez
+    - It is MIT licensed, so this is legal
 
 - `Fonts` directory removed
     - Unless we supply a small, open font, Typst Universe cannot host this
