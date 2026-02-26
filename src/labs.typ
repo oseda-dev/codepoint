@@ -27,7 +27,37 @@
 }
 
 
-#let cmd_color(input, dsp: 0pt) = {
+
+#let CMD_KEYWORDS = (
+  // java lab specifics
+  "java", 
+  "javac", 
+  // python lab specifics
+  "python", 
+  "pip",
+  // JS lab specifics
+  "npm",
+  "node",
+  // c/pp lab specifics
+  "gcc",
+  "g++",
+  "make",
+  // pulled from my most common commands
+  "ls",
+  "cd",
+  "git",
+  "code",
+  "sudo",
+  "touch",
+  "rm",
+  "mdkir",
+  // rust lab specifics
+  "rustc",
+  "cargo",
+  
+)
+
+#let cmd_color(input, dsp: 0pt, custom_keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
   let userIn = false
   let error = false
   v(2pt)
@@ -35,7 +65,6 @@
   highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
 
     #if type(input) == array {
-
       let max_len = 0
       for line in input {
         if line.len() > max_len {
@@ -49,11 +78,12 @@
         let num_spaces = max_len - line.len()
 
         if line != " " {
-
-          if line.split().at(0) == ">" {
+          // pulled this out for maintainability
+          let first_word = line.split().at(0, default: "")
+          if first_word == ">" {
             userIn = true
             error = false
-          } else  if line.split().at(0) == "Exception" {
+          } else if first_word == "Exception" {
             userIn = false
             error = true
           } else {
@@ -66,10 +96,13 @@
             if error {
               text(fill: rgb("#a83232"), word + " ")
             }
-            else if (userIn or word == "Example.java" or word == "Example" or word == "ZipCrackerSingleThread") and word != ">" {
+            // pulled this from the custom keywords instead of hard coded 118X specific terms
+            // I still left them as default params for compatibility
+            else if (userIn or custom_keywords.contains(word)) and word != ">" {
               text(fill: rgb("#58ad37"), word + " ")
             }
-            else if word == "java" or word == "javac"{
+            // also pulled these out into a special command bank
+            else if CMD_KEYWORDS.contains(word){
               text(fill: rgb("#ad7a37"), word + " ")
             } else {
               text(word + " ")
@@ -87,10 +120,11 @@
         v(-1pt)
       }
     } else {
-        if input.split().at(0) == ">" {
+        let first_word = input.split().at(0, default: "")
+        if first_word == ">" {
           userIn = true
           error = false
-        } else  if input.split().at(0) == "Exception" {
+        } else if first_word == "Exception" {
           userIn = false
           error = true
         } else {
@@ -103,10 +137,10 @@
           if error {
             text(fill: rgb("#a83232"), word + " ")
           }
-          else if (userIn or word == "Example.java" or word == "Example" or word == "ZipCrackerSingleThread") and word != ">" {
+          else if (userIn or custom_keywords.contains(word)) and word != ">" {
             text(fill: rgb("#58ad37"), word + " ")
           }
-          else if word == "java" or word == "javac"{
+          else if CMD_KEYWORDS.contains(word){
             text(fill: rgb("#ad7a37"), word + " ")
           } else {
             text(word + " ")
@@ -117,7 +151,6 @@
  ]
  v(10pt)
 }
-
 
 #let uml(title, fields, methods) = {
   table(
@@ -168,7 +201,7 @@
   #body
 ]
 
-#let partA(body) = [
+#let part_a(body) = [
   #v(15pt)
   *DIRECTIONS: *
   #v(-5pt)
@@ -177,7 +210,7 @@
   #body
 ]
 
-#let partB(body) = [
+#let part_b(body) = [
   #v(15pt)
   === Part B
   #v(0pt)
