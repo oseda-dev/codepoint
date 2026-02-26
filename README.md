@@ -30,6 +30,9 @@ A Typst library for creating programming documents and exams
     - No longer copies `Fonts` directory
     - Tells you local import package name
 
+- #labs.lp MUST be called with the full class name now 
+    - e.g. `lp(CS-1181, ...)` instead of just `lp(1, ...)` 
+
 - New directory structure. Allows for separate imports of exam and project stuff
 ```bash
 codepoint         

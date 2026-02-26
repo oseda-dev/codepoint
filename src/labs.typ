@@ -54,7 +54,7 @@
   // rust lab specifics
   "rustc",
   "cargo",
-  
+
 )
 
 #let cmd_color(input, dsp: 0pt, custom_keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
@@ -186,7 +186,7 @@
 
 
 #let lp(class, lpNum, title) = {
-  text[= CS-118#class Lab Problem #lpNum: #title]
+  text[= #class Lab Problem #lpNum: #title]
   line(length: 100%, stroke: 0.5pt)
 }
 
