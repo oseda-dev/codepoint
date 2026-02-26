@@ -1,15 +1,19 @@
 
 // exam stuff
 
+
+
 #let title-state = state("title", "")
 
 #let total_points = counter("points")
 
 
+/// exam_init: Initialize an exam with a show rule 
+/// eg: #show: exam.exam_init
 #let exam_init(body) = {
   set page(margin: 40pt)
   set text( 
-    font: ("Verdana"), 
+    font: ("Aptos"), 
     size: 12pt, 
     fill: black, 
     weight: "regular"
@@ -22,6 +26,22 @@
   body
 }
 
+
+#set page(header: [
+  #context title-state.get()
+])
+
+#let setup(title) = {
+  title-state.update(title)
+}
+
+/// header: Render a header for the exam, will check total number of points 
+/// Usually done via something like:
+/// #exam.setup("CS-1181 Quiz #1")
+/// #set page(header: [
+///   #context e.title-state.get()
+/// ])
+/// #e.header()
 #let header() = [
   #grid(
     columns: (1fr, 1fr),
@@ -50,13 +70,6 @@
   )
 ]
 
-#set page(header: [
-  #context title-state.get()
-])
-
-#let setup(title) = {
-  title-state.update(title)
-}
 
 #let spacer() = {
   v(10pt)
@@ -68,6 +81,9 @@
 )
 
 
+/// question: Create a generic question
+/// @param body content Question Body
+/// @param points int Number of points the question is worth
 #let question(body, points: 1) = context {
   cur-question.update(n => n + 1)
   total_points.update(p => p + points)
@@ -88,16 +104,22 @@
 #let answer_indents = (1fr, 10fr, 1fr)
 
 
-// maps a number into a tuple of 1fr units
-// primarily used to make optional column passing to #multiple_choice easier
-// input = 3 -> output = (1fr, 1fr, 1fr)
-// input = 5 -> output = (1fr, 1fr, 1fr, 1fr, 1fr)
-// etc.
+/// _num_to_fr_units: Map a number into a tuple of 1fr units
+/// primarily used to make optional column passing to #multiple_choice easier
+/// input = 3 -> output = (1fr, 1fr, 1fr)
+/// input = 5 -> output = (1fr, 1fr, 1fr, 1fr, 1fr)
+/// @param num int number to map
+/// @return array Array of num fr units
 #let _num_to_fr_units(num) = {
   range(num).map(i => 1fr)
 }
 
 
+
+/// multiple_choice: Create a multiple choice question
+/// @param body content Body of question
+/// @param points int = 1 Points the question is worth
+/// @param cols [int | array ] = 1 Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
 #let multiple_choice(body, points: 1, cols: 1, ..answers) = {
   let cols_type = type(cols)
 
@@ -135,6 +157,15 @@
 }
 
 
+/// matching: Create a matching question
+/// e.g
+/// Cat      A. Canine
+/// Dog      B. Feline
+/// Fish     C. Aquatic Create
+/// @param q_body content body of question to ask
+/// @param left_opts array options for the left side of question
+/// @param right_opts array options for the right side of question
+/// @param points int = 1 points the question is worth
 #let matching(q_body, left_opts, right_opts, points: 1) = {
   // left and right are shadows
   block[
@@ -194,6 +225,10 @@
   ]
 }
 
+/// short_answer: Create a short answer question
+/// @param q_body content Question Body
+/// @param lines int = 1 lines of space to give the user, renders as actual lines
+/// @param points int = 1 points the question is worth
 #let short_answer(q_body, lines: 1, points: 1) = {
   question(q_body, points: points)
   
@@ -208,6 +243,11 @@
   ]
 }
 
+
+/// free_response: Create a free response question
+/// @param q_body content Question Body
+/// @param lines int = 1 lines of space to give the user, renders as empty space
+/// @param points int = 1 points the question is worth
 #let free_response(q_body, lines: 1, points: 1) = {
   question(q_body, points: points)
 
@@ -215,7 +255,9 @@
   v(15pt * lines)
 }
 
-// will simply extend the box to the edge of the code, can add white space if need it to be longer
+/// code_block: Create a code block formatted for exams
+/// Wraps in box to the edge of the code, can add white space if need it to be longer
+/// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
 #let code_block(raw_code) = {
   box(stroke: (paint: rgb("#d9d9d9"), thickness: 2pt, cap: "round"), inset: (8pt))[
       #raw_code
