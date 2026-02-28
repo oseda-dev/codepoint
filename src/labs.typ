@@ -28,6 +28,7 @@
 
 
 
+/// CMD_KEYWORDS: Set of common command keywords, used for syntax highlighting in cmd_color
 #let CMD_KEYWORDS = (
   // java lab specifics
   "java", 
