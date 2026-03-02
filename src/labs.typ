@@ -58,6 +58,13 @@
 
 )
 
+
+
+/// cmd_color: Render content as terminal I/O to the page.
+/// Common commands will be highlighted a unique color.
+/// @param input content Body of terminal text
+/// @param dsp length = 0pt Horizontal indendation/displacement
+/// @param custom_keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
 #let cmd_color(input, dsp: 0pt, custom_keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
   let userIn = false
   let error = false

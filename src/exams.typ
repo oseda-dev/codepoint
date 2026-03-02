@@ -244,7 +244,7 @@
 }
 
 
-/// free_response: Create a free response question
+/// free_response: Create a free response question2
 /// @param q_body content Question Body
 /// @param lines int = 1 lines of space to give the user, renders as empty space
 /// @param points int = 1 points the question is worth
