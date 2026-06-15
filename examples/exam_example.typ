@@ -107,10 +107,11 @@
 // )
 
 
-#e.matching([Match the following to their definitions], points: 7,
+#e.matching([Match the following to their definitions], points: 7, seed: 3,
   (
-    ("implements", "Denotes that a class is using an interface"),
-    ("extends", "Denotes that a class inherits from another"),
+    (`implements`, "Denotes that a class is using an interface"),
+    (`extends`, "Denotes that a class inherits from another"),
+    ("JPanel", "Common Swing Component")
   )
 )
 

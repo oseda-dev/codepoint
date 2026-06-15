@@ -175,8 +175,19 @@
 
 
 
+#let _matching(q_body, points, seed: 4, pairs) = {
+  // condense each pair down into just each side => then shuffle
+  let left_opts = _shuffle(
+    pairs.map(pair => pair.at(0)),
+    seed: seed
+  )
 
-#let _matching(q_body, points, pairs) = {
+  let right_opts = _shuffle(
+    pairs.map(pair => pair.at(1)),
+    seed: seed + 1,
+  )
+  
+
   block[
     #c.update(0)
     #question(q_body, points: points)
@@ -185,18 +196,18 @@
       columns: (1fr, 4fr, 7fr),
       "",
       align(left)[
-        #for pair in pairs {
+        #for left_item in left_opts {
           block[
-            #"____" #pair.at(0)
+            #"____" #left_item
             #spacer()
           ]
         }
       ],
       align(left)[
-        #for pair in pairs {
+        #for right_item in right_opts {
           block[
             #c.step()
-            #context c.display("a"). #pair.at(1)
+            #context c.display("a"). #right_item
             #spacer()
           ]
         }
@@ -204,7 +215,6 @@
     )
   ]
 }
-
 
 /// matching: Create a matching question
 /// e.g
@@ -215,7 +225,7 @@
 /// @param left_opts array options for the left side of question
 /// @param right_opts array options for the right side of question
 /// @param points int = 1 points the question is worth
-#let matching(q_body, points: none, pairs) = {
+#let matching(q_body, points: none, seed: 4, pairs) = {
   // points will end up defaulting to len of pairs if not passed
 
   // todo verify shape of pairs
@@ -228,7 +238,7 @@
     real_points = points
   }
 
-  _matching(q_body, real_points, pairs)
+  _matching(q_body, real_points, seed: seed, pairs)
 }
 
 
