@@ -243,7 +243,7 @@
   let real_points = -1
 
   if(points == none){
-    real_points = pairs.length()
+    real_points = pairs.len()
   } else {
     real_points = points
   }
