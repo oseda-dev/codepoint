@@ -124,11 +124,11 @@ Use the diagram to answer the following question:
 // ]
 
 #e.multiple_choice([*Circle all* of the following that are valid statements according to the diagram:], points: 2,
-  [`Animal a = new Animal();`],
-  [`Dog d = new Dog();`],  // X
-  [`Cat c = new Animal();`],
-  [`Cat c = new Dog();`],
-  [`Animal a = new Cat();`], // X
+  [```java Animal a = new Animal();```],
+  [```java Dog d = new Dog();```],  // X
+  [```java Cat c = new Animal();```],
+  [```java Cat c = new Dog();```],
+  [```java Animal a = new Cat();```], // X
 )
 #e.spacer()
 
@@ -145,6 +145,14 @@ Use the diagram to answer the following question:
   [Casting a parent class to a child class],
   [Casting between unrelated classes], // X
   [Casting between primitive types]
+)
+
+
+#e.multiple_choice([Select all that are true about using ```java Runnable``` interface:], points: 4,
+  [It can be implemented via a lambda expression], // X
+  [It allows for a class to extend another class and be multi-threaded], // X
+  [It requires the ```java start()``` method to be overridden],
+  [It must be used with a class that extends ```java Thread```],
 )
 
 
@@ -359,3 +367,21 @@ Use the code block to answer the following questions:
   [Adding multiple components *directly* to a Jframe],
 ))
 
+
+#pagebreak()
+
+
+#e.free_response([In the space below, write a generic bubble sort method. At a minimum, the method should:
+  #linebreak() #h(20pt)- Take in an ```java ArrayList``` (or similar) of generic elements that are comparable to themselves
+  #linebreak() #h(20pt)- Sort the elements using the bubble sort algorithm
+  #linebreak() #h(20pt)- You are welcome to either modify the list passed in or return a sorted version of the list
+  #linebreak() #h(20pt)- Please ensure that the method can sort an ```java ArrayList``` of any length], points: 8, lines: 12)
+
+
+#e.multi_true_false([Mark the following statements as either True (T) of False (F):], points: 5,
+  [```java LinkedList``` utilizes nodes and next pointers to store information], // T
+  [```java ArrayList``` is always faster than ```java LinkedList```], // F
+  [```java ArrayList``` has more flexible memory usage than ```java LinkedList```], // F
+  [```java ArrayList``` and ```java LinkedList``` implement the same ADT], // T
+  [```java ArrayList```s are faster than ```java LinkedList```s at retrieval operations], // T
+)

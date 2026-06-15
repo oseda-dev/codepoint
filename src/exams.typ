@@ -18,7 +18,7 @@
     fill: black, 
     weight: "regular"
   )
-  set raw(theme: "../themes/InspiredGitHub.tmTheme")  
+  set raw(theme: "../themes/codepoint.tmTheme")  
   show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
 
   set par(spacing: 1.2em)
@@ -126,7 +126,7 @@
   block[
     #c.update(0)
     #question(body, points: points)
-    #v(5pt)
+    #v(-0.4em)
     #grid(
       columns: answer_indents,
       rows: (auto),
@@ -201,11 +201,10 @@
 // need better name
 #let multi_true_false(q_body, ..statements, points: 1) = {
   let num = counter("I")
-  // Note: If you want to skip the first value (N), 
-  // ensure your counter logic matches your document setup.
   num.step() 
   block[
     #question(q_body, points: points)
+    #v(-0.4em)
     #for statement in statements.pos() {
       block[
         #grid(
