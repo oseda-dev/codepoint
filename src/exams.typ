@@ -169,37 +169,64 @@
 /// @param left_opts array options for the left side of question
 /// @param right_opts array options for the right side of question
 /// @param points int = 1 points the question is worth
-#let matching(q_body, left_opts, right_opts, points: 1) = {
-  // left and right are shadows
+// #let matching(q_body, left_opts, right_opts, points: 1) = {
+//   // left and right are shadows
+//   block[
+//     #c.update(0)
+//     #question(q_body, points: points)
+//     #spacer()
+//     #grid(
+//     // should sum to 12, to match answer_indents
+//     // 1st is just a spacer
+//       columns: (1fr, 4fr, 7fr),
+//       "",
+//       align(left)[
+//         #for word in left_opts {
+//           block[
+//             #"____" #word
+//             #spacer()
+//           ]
+//         }
+//       ],
+//       align(left)[
+//         #for x in right_opts {
+//           block[
+//             #c.step()
+//             #context c.display("a"). #" " #x
+//             #spacer()
+//           ]
+//         }
+//       ]
+//     )
+//   ]
+// }
+
+
+#let _matching(q_body, points, pairs) = {
+
   block[
-    #c.update(0)
-    #question(q_body, points: points)
-    #spacer()
-    #grid(
-    // should sum to 12, to match answer_indents
-    // 1st is just a spacer
-      columns: (1fr, 4fr, 7fr),
-      "",
-      align(left)[
-        #for word in left_opts {
-          block[
-            #"____" #word
-            #spacer()
-          ]
-        }
-      ],
-      align(left)[
-        #for x in right_opts {
-          block[
-            #c.step()
-            #context c.display("a"). #" " #x
-            #spacer()
-          ]
-        }
-      ]
-    )
+    #question(q_body, points: points),
+    #pairs.map(pair => {
+      pair.at(0)
+      "     thing in between      "
+      pair.at(1)
+    })
   ]
 }
+
+
+#let matching(q_body, points: none, ..pairs) = {
+  // points will end up defaulting to len of pairs if not passed
+
+  // todo verify shape of pairs
+  if(points == none){
+    _matching(q_body, pairs.len(), ..pairs)
+  }
+  else {
+    _matching(q_body, points, ..pairs)
+  }
+}
+
 
 // need better name
 #let multi_true_false(q_body, ..statements, points: 1) = {
