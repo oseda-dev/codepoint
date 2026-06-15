@@ -22,7 +22,7 @@
 
 
 
-#e.multiple_choice([Which layout manager allows the user to add a component to a cardinal direction?], points: 2,
+#e.multiple_choice([Which layout manager allows the user to add a component to a cardinal direction?], points: 2, cols: 2,
   [`FlowLayout`],
   [`GridLayout`],
   [`BorderLayout`], // X
