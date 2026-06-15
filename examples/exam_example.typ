@@ -84,27 +84,39 @@
 #e.spacer()
 #e.spacer()
 
-#e.matching(
-  [Match the following to their definitions], points: 7,
+// #e.matching(
+//   [Match the following to their definitions], points: 7,
+//   (
+//     `implements`,
+//     "Abstract class",
+//     "Casting",
+//     `extends`,
+//     "Interface",
+//     `throw`,
+//     `JPanel`,
+//   ),
+//   (
+//     "Passes an exception to the methods caller",
+//     "Denotes a class inherits from another",
+//     "A way of converting between types",
+//     "Common Swing component",
+//     "A class that cannot be directly instantiated",
+//     "Denotes that a class is using an interface",
+//     "Contract requiring a class to implement select methods",
+//   )
+// )
+
+
+#e.matching([Match the following to their definitions], points: 7, seed: 3,
   (
-    `implements`,
-    "Abstract class",
-    "Casting",
-    `extends`,
-    "Interface",
-    `throw`,
-    `JPanel`,
-  ),
-  (
-    "Passes an exception to the methods caller",
-    "Denotes a class inherits from another",
-    "A way of converting between types",
-    "Common Swing component",
-    "A class that cannot be directly instantiated",
-    "Denotes that a class is using an interface",
-    "Contract requiring a class to implement select methods",
+    (`implements`, "Denotes that a class is using an interface"),
+    (`extends`, "Denotes that a class inherits from another"),
+    ("JPanel", "Common Swing Component"),
+    ("Abstract Class", "A class sthat cannot be directly instantiated"),
+    ("hello", "world")
   )
 )
+
 #pagebreak()
 
 Use the diagram to answer the following question:

@@ -160,39 +160,54 @@
 }
 
 
-/// matching: Create a matching question
-/// e.g
-/// Cat      A. Canine
-/// Dog      B. Feline
-/// Fish     C. Aquatic Create
-/// @param q_body content body of question to ask
-/// @param left_opts array options for the left side of question
-/// @param right_opts array options for the right side of question
-/// @param points int = 1 points the question is worth
-#let matching(q_body, left_opts, right_opts, points: 1) = {
-  // left and right are shadows
+/// https://xkcd.com/221/
+/// Not cryptographically secure
+#let _shuffle(arr, seed: 4) = {
+  for i in range(arr.len()) {
+    let rnd_index = calc.rem(i * seed, arr.len())
+    
+    // swap via destructuing
+    (arr.at(i), arr.at(rnd_index)) = ((arr.at(rnd_index), arr.at(i)))
+  }
+
+  arr
+}
+
+
+
+#let _matching(q_body, points, seed: 4, pairs) = {
+  // condense each pair down into just each side => then shuffle
+  let left_opts = _shuffle(
+    pairs.map(pair => pair.at(0)),
+    seed: seed
+  )
+
+  let right_opts = _shuffle(
+    pairs.map(pair => pair.at(1)),
+    seed: seed + 1,
+  )
+  
+
   block[
     #c.update(0)
     #question(q_body, points: points)
     #spacer()
     #grid(
-    // should sum to 12, to match answer_indents
-    // 1st is just a spacer
       columns: (1fr, 4fr, 7fr),
       "",
       align(left)[
-        #for word in left_opts {
+        #for left_item in left_opts {
           block[
-            #"____" #word
+            #"____" #left_item
             #spacer()
           ]
         }
       ],
       align(left)[
-        #for x in right_opts {
+        #for right_item in right_opts {
           block[
             #c.step()
-            #context c.display("a"). #" " #x
+            #context c.display("a"). #right_item
             #spacer()
           ]
         }
@@ -200,6 +215,43 @@
     )
   ]
 }
+
+#let _validate_pairs(pairs) = {
+  assert(type(pairs) == array, message: "Expected pairs to be an array, got " + str(type(pairs)))
+  
+  for pair in pairs {
+    assert(type(pair) == array and pair.len() == 2, message: "Every elem. in pairs must be an array of exactly 2 elements: (left, right)")
+  }
+}
+
+/// matching: Create a matching question
+/// e.g
+/// Cat      A. Canine
+/// Dog      B. Feline
+/// Fish     C. Aquatic Creature
+/// @param q_body content body of question to ask
+/// @param points int = none points the question is worth. Once wrapped, this will default to the length of pairs
+/// @param seed int = 4 Random seed used for shuffling each side
+/// @param pairs array An array containing pairs of answers/definitions 
+#let matching(q_body, points: none, seed: 4, pairs) = {
+  // points will end up defaulting to len of pairs if not passed
+  assert(points == none or type(points) == int, message: "Expected points to be integer or none, received: " + str(type(points)))
+  assert(type(seed) == int, message: "Expected seed to be integer, received: " + str(type(seed)))
+  
+  _validate_pairs(pairs)
+
+  let real_points = -1
+
+  if(points == none){
+    real_points = pairs.len()
+  } else {
+    real_points = points
+  }
+
+  _matching(q_body, real_points, seed: seed, pairs)
+}
+}
+
 
 // need better name
 #let multi_true_false(q_body, ..statements, points: 1) = {
