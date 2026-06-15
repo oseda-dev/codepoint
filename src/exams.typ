@@ -160,6 +160,22 @@
 }
 
 
+/// https://xkcd.com/221/
+/// Not cryptographically secure
+#let _shuffle(arr, seed: 4) = {
+  for i in range(arr.len()) {
+    let rnd_index = calc.rem(i * seed, arr.len())
+    
+    // swap via destructuing
+    (arr.at(i), arr.at(rnd_index)) = ((arr.at(rnd_index), arr.at(i)))
+  }
+
+  arr
+}
+
+
+
+
 #let _matching(q_body, points, pairs) = {
   block[
     #c.update(0)
@@ -211,7 +227,7 @@
   else {
     real_points = points
   }
-  
+
   _matching(q_body, real_points, pairs)
 }
 
