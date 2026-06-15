@@ -203,12 +203,16 @@
   // points will end up defaulting to len of pairs if not passed
 
   // todo verify shape of pairs
+  let real_points = -1
+
   if(points == none){
-    _matching(q_body, pairs.len(), pairs)
+    real_points = pairs.length()
   }
   else {
-    _matching(q_body, points, pairs)
+    real_points = points
   }
+  
+  _matching(q_body, real_points, pairs)
 }
 
 
