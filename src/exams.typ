@@ -49,7 +49,13 @@
     align(center)[
       #text(size: 17pt)[
         #align(left)[
-          #"Name:_____________________________"
+          // #"Name_____________________________"
+          Name: #box(width: 1fr, 
+            // the line ends up being just a *little* too high up, 
+            move(dy: 2pt,line(length: 100%, stroke: 1pt))
+          )
+      //       line(length: 90%, stroke: 0.5pt)
+
         ]
       ]
     ],
