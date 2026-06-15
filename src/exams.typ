@@ -216,29 +216,40 @@
   ]
 }
 
+#let _validate_pairs(pairs) = {
+  assert(type(pairs) == array, message: "Expected pairs to be an array, got " + str(type(pairs)))
+  
+  for pair in pairs {
+    assert(type(pair) == array and pair.len() == 2, message: "Every elem. in pairs must be an array of exactly 2 elements: (left, right)")
+  }
+}
+
 /// matching: Create a matching question
 /// e.g
 /// Cat      A. Canine
 /// Dog      B. Feline
-/// Fish     C. Aquatic Create
+/// Fish     C. Aquatic Creature
 /// @param q_body content body of question to ask
-/// @param left_opts array options for the left side of question
-/// @param right_opts array options for the right side of question
-/// @param points int = 1 points the question is worth
+/// @param points int = none points the question is worth. Once wrapped, this will default to the length of pairs
+/// @param seed int = 4 Random seed used for shuffling each side
+/// @param pairs array An array containing pairs of answers/definitions 
 #let matching(q_body, points: none, seed: 4, pairs) = {
   // points will end up defaulting to len of pairs if not passed
+  assert(points == none or type(points) == int, message: "Expected points to be integer or none, received: " + str(type(points)))
+  assert(type(seed) == int, message: "Expected seed to be integer, received: " + str(type(seed)))
+  
+  _validate_pairs(pairs)
 
-  // todo verify shape of pairs
   let real_points = -1
 
   if(points == none){
     real_points = pairs.length()
-  }
-  else {
+  } else {
     real_points = points
   }
 
   _matching(q_body, real_points, seed: seed, pairs)
+}
 }
 
 

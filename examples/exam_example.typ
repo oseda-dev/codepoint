@@ -111,7 +111,9 @@
   (
     (`implements`, "Denotes that a class is using an interface"),
     (`extends`, "Denotes that a class inherits from another"),
-    ("JPanel", "Common Swing Component")
+    ("JPanel", "Common Swing Component"),
+    ("Abstract Class", "A class sthat cannot be directly instantiated"),
+    ("hello", "world")
   )
 )
 
