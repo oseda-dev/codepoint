@@ -42,7 +42,8 @@
 ///   #context e.title-state.get()
 /// ])
 /// #e.header()
-#let header() = [
+/// @param out_of int Maximum points the exam is taken out of
+#let header(out_of: none) = [
   #grid(
     columns: (1fr, 1fr),
     align(center)[
@@ -57,12 +58,14 @@
         #align(right)[
           #grid(
             rows: (0pt, 20pt),
-            align(center)[
-              //#context title-state.get()
-            ],
             align(right)[
               #"____ /" #context total_points.final().at(0) pts
-            ]
+            ],
+
+            if(out_of != none){
+              v(1.2em)
+              "Max: " + str(out_of) + " pts"
+            }
           )
         ]
       ]

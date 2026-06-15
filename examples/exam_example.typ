@@ -4,10 +4,11 @@
 #show: e.exam_init
 
 #e.setup("CS-1181 Quiz #1")
+
 #set page(header: [
   #context e.title-state.get()
 ])
-#e.header()
+#e.header(out_of: 20)
 
 
 
