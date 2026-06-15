@@ -52,7 +52,7 @@
           // #"Name_____________________________"
           Name: #box(width: 1fr, 
             // the line ends up being just a *little* too high up, 
-            move(dy: 2pt,line(length: 100%, stroke: 1pt))
+            move(dy: 2pt, line(length: 100%, stroke: 1pt))
           )
       //       line(length: 90%, stroke: 0.5pt)
 
@@ -278,7 +278,7 @@
             #context num.step()
           ],
           statement,
-          "______"
+          box(width: 1fr, move(dy: 2pt, line(length: 70%, stroke: 0.5pt)))
         )
       ]
     }
