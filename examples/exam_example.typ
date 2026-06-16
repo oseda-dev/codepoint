@@ -193,7 +193,6 @@ class Student {
 ```
 )
 
-
 #e.code_block(```java
 public static void main(String[] args) {
     Student s1 = new Student("Alice");
@@ -202,7 +201,9 @@ public static void main(String[] args) {
     System.out.println(s1);
     System.out.println(s2);
 }
-```)
+```, include-line-numbers: true)
+
+
 #e.multiple_choice([What is the output of the code?], points: 2,
   [`Alice
            Bob`],
