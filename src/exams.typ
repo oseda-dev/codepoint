@@ -319,51 +319,34 @@
 /// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
 #let code_block(raw_code) = {
 
-  // let num_lines = raw_code
-
-  // let total-lines = raw_code.text.split("\n").len()  
-
-  // table(
-  //   columns: (1em, 1fr),
-  //   rows: auto,
-  //   range(total-lines).map(n => raw(str(n) + "\n")).join(),
-  //   raw_code,
-  //   // text(str(total-lines)),
-  // )
-  // 
-  let lines = raw_code.text.split("\n")
-  
+  let lines = raw_code.text.split("\n")  
   
   // fold to flat array of cells, 
   // (1, firstLine, 2, secondLine, etc
   // then spread to table values later 
   let table_values = ()
+  // pythonic enumerate :)
   for (i, line) in lines.enumerate() {
-
     // push line number
-    table_values.push(text(fill: gray)[#(i + 1)]) // start at 1 instead of 0
+    // table_values.push(text(fill: gray)[#(i + 1)]) // start at 1 instead of 0
+    table_values.push(raw([#(i + 1)].text))
+
     // converting to raw like this loses the language context, so copy it to each line
     table_values.push(raw(line, lang: raw_code.lang)) 
   }
 
-  table(
-    columns: (auto, 1fr),
-    stroke: none,
-    inset: (x: 5pt, y: 3pt),
-    ..table_values
+  // wrap in a box to avoid having conditional stroke
+  block(
+    stroke: rgb("#d9d9d9"),
+    inset: 2pt, // need some extra internal padding
+    table(
+      columns: (auto, auto),
+      stroke: none,
+      inset: (x: 5pt, y: 3pt),
+      ..table_values
+    )
   )
 }
 
-  // show raw.line: line => {
-  //   text()[#line.number]
-  //   h(1em)
-  //   line.body
-  // }
-
-  // box(stroke: (paint: rgb("#d9d9d9"), thickness: 2pt, cap: "round"), inset: (8pt))[
-  //     #raw_code
-  // ]
-
-}
 
 
