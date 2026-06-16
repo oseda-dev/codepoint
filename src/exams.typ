@@ -207,7 +207,7 @@
       align(left)[
         #for left_item in left_opts {
           block[
-            #"____" #left_item
+            #box(width: 40pt, move(dy: 2pt, line(length: 85%, stroke: 0.5pt))) #left_item
             #spacer()
           ]
         }
