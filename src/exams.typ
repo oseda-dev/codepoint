@@ -317,6 +317,7 @@
 /// code_block: Create a code block formatted for exams
 /// Wraps in box to the edge of the code, can add white space if need it to be longer
 /// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
+/// @param include-line-numbers boolean Boolean param for whether line numbers should be included in the output
 #let code_block(include-line-numbers: false, raw_code) = {
 
   let lines = raw_code.text.split("\n")  
