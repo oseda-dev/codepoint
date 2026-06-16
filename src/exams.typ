@@ -49,7 +49,10 @@
     align(center)[
       #text(size: 17pt)[
         #align(left)[
-          #"Name:_____________________________"
+          Name: #box(width: 1fr, 
+            // the line ends up being just a *little* too high up, 
+            move(dy: 2pt, line(length: 100%, stroke: 1pt))
+          )
         ]
       ]
     ],
@@ -59,7 +62,10 @@
           #grid(
             rows: (0pt, 20pt),
             align(right)[
-              #"____ /" #context total_points.final().at(0) pts
+              #box(width: 40pt, 
+                move(dy: 2pt, line(length: 100%, stroke: 0.7pt))
+              ) 
+              #"/" #context total_points.final().at(0) pts
             ],
 
             if(out_of != none){
@@ -198,7 +204,7 @@
       align(left)[
         #for left_item in left_opts {
           block[
-            #"____" #left_item
+            #box(width: 40pt, move(dy: 2pt, line(length: 85%, stroke: 0.5pt))) #left_item
             #spacer()
           ]
         }
@@ -272,7 +278,7 @@
             #context num.step()
           ],
           statement,
-          "______"
+          box(width: 1fr, move(dy: 2pt, line(length: 70%, stroke: 0.5pt)))
         )
       ]
     }
