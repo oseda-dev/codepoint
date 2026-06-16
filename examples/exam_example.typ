@@ -270,8 +270,7 @@ public class CustomFrame extends JFrame {
         this.setVisible(true);
     }
 }
-```
-)
+```, include-line-numbers: true)
 
 #e.multiple_choice([What will render when an instance of `CustomFrame` is created?], points: 2,
   [A frame containing only the "Submit" button],
