@@ -65,7 +65,10 @@
           #grid(
             rows: (0pt, 20pt),
             align(right)[
-              #"____ /" #context total_points.final().at(0) pts
+              #box(width: 40pt, 
+                move(dy: 2pt, line(length: 100%, stroke: 0.7pt))
+              ) 
+              #"/" #context total_points.final().at(0) pts
             ],
 
             if(out_of != none){
