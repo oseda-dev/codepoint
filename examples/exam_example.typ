@@ -287,6 +287,8 @@ public class CustomFrame extends JFrame {
 
 
 Use the code block to answer the following questions:
+#e.code_block(
+
   ```java
   public abstract class Worker {
       public abstract void goToWork();
@@ -320,6 +322,7 @@ Use the code block to answer the following questions:
 
   }
   ```
+)
 #e.spacer()
 
 #e.multiple_choice([*Circle all* of the following that are true about the class Intern?], points: 2,
