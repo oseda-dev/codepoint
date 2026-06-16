@@ -253,7 +253,7 @@
 }
 
 
-#let block_true_false(q_body, ..statements, points: 1) = {
+#let tf_block(q_body, ..statements, points: 1) = {
   let num = counter("I")
   num.step() 
   block[

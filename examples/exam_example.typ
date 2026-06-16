@@ -391,7 +391,7 @@ Use the code block to answer the following questions:
   #linebreak() #h(20pt)- Please ensure that the method can sort an ```java ArrayList``` of any length], points: 8, lines: 12)
 
 
-#e.block_true_false([Mark the following statements as either True (T) of False (F):], points: 5,
+#e.tf_block([Mark the following statements as either True (T) of False (F):], points: 5,
   [```java LinkedList``` utilizes nodes and next pointers to store information], // T
   [```java ArrayList``` is always faster than ```java LinkedList```], // F
   [```java ArrayList``` has more flexible memory usage than ```java LinkedList```], // F
