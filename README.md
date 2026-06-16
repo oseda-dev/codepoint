@@ -33,7 +33,7 @@ A Typst library for creating programming documents and exams
 - #labs.lp MUST be called with the full class name now 
     - e.g. `lp(CS-1181, ...)` instead of just `lp(1, ...)` 
 
-- `multi_true_false` is now `block_true_false`
+- `multi_true_false` is now `tf_block`
 
 - New directory structure. Allows for separate imports of exam and project stuff
 ```bash
