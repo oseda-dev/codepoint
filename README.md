@@ -43,6 +43,7 @@ codepoint
 ├── create-local-package.sh
 ├── examples
 │   ├── exam_example.typ
+│   ├── lab_example.typ
 │   └── proj_example.typ
 ├── lib.typ
 ├── src
