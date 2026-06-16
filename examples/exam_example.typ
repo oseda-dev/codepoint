@@ -59,25 +59,27 @@
 #e.spacer()
 
  Use the code block to answer the following question:
- ```java
- public static void doThing() {
-     boolean b = true;
-     try {
-         System.out.print("Apple");
-         if (b) {
-             throw new Exception();
-         }
-         throw new IllegalArgumentException();
-     } catch (IllegalArgumentException iae) {
-         System.out.print("Banana");
-     } catch (Exception e) {
-         System.out.print("Pear");
-         return;
-     } finally {
-         System.out.print("Orange");
-     }
- }
+ #e.code_block(
+```java
+public static void doThing() {
+    boolean b = true;
+    try {
+        System.out.print("Apple");
+        if (b) {
+            throw new Exception();
+        }
+        throw new IllegalArgumentException();
+    } catch (IllegalArgumentException iae) {
+        System.out.print("Banana");
+    } catch (Exception e) {
+        System.out.print("Pear");
+        return;
+    } finally {
+        System.out.print("Orange");
+    }
+}
 ```
+)
 #e.spacer()
 
 #e.short_answer([Write the output of the `doThing()` method when it is called], lines: 3, points: 1)
@@ -171,6 +173,8 @@ Use the diagram to answer the following question:
 
 #pagebreak()
 Use the `Student` class to answer the following questions:
+
+#e.code_block(
 ```java
 class Student {
     private String name;
@@ -187,6 +191,7 @@ class Student {
     }
 }
 ```
+)
 
 
 #e.code_block(```java
@@ -245,6 +250,7 @@ public static void main(String[] args) {
 
 
 Use the code block to answer the following question:
+#e.code_block(
 ```java
 public class CustomFrame extends JFrame {
 
@@ -265,6 +271,8 @@ public class CustomFrame extends JFrame {
     }
 }
 ```
+)
+
 #e.multiple_choice([What will render when an instance of `CustomFrame` is created?], points: 2,
   [A frame containing only the "Submit" button],
   [A frame containg the "Submit" button, "Next" button, and a JLabel],
