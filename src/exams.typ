@@ -253,8 +253,7 @@
 }
 
 
-// need better name
-#let multi_true_false(q_body, ..statements, points: 1) = {
+#let block_true_false(q_body, ..statements, points: 1) = {
   let num = counter("I")
   num.step() 
   block[
