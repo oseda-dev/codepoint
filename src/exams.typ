@@ -447,11 +447,11 @@
   v(15pt * lines)
 }
 
-/// code_block: Create a code block formatted for exams
+/// code-block: Create a code block formatted for exams
 /// Wraps in box to the edge of the code, can add white space if need it to be longer
-/// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
+/// @param raw-code content(raw) raw code block, eg. ``````java public class...``````
 /// @param include-line-numbers boolean Boolean param for whether line numbers should be included in the output
-#let code_block(include-line-numbers: true, raw-code) = {
+#let code-block(include-line-numbers: true, raw-code) = {
   assert(
     type(raw-code) == content,
     message: "Expected raw-code to be content, but received " + str(type(raw-code))
