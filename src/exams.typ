@@ -308,8 +308,8 @@
   )
 
   assert(
-    type(points) == int,
-    message: "Expected points to be int, but received" + str(type(points))
+    type(points) == int or type(points) == none,
+    message: "Expected points to be int or none, but received" + str(type(points))
   )
 
   assert(
@@ -337,6 +337,25 @@
 
 
 #let tf_block(q_body, points: 1, ..statements) = {
+
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+    assert(
+      statements.pos().all(cur => {
+        type(cur) == content or type(cur) == str
+      }),
+      message: "Expected all statements to be content or str"
+    )
+
+
 
 
   let num = counter("I")
