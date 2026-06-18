@@ -26,3 +26,9 @@ keywords = [
     "labs"
 ]
 disciplines = ["computer-science"]
+exclude = [
+    "examples",
+    "create-local-package.sh",
+    ".git",
+    ".gitignore"
+]
