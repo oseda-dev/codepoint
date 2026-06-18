@@ -1,8 +1,3 @@
-
-// exam stuff
-
-
-
 #let title-state = state("title", "")
 
 #let total_points = counter("points")
@@ -44,41 +39,44 @@
 /// #e.header()
 /// @param out_of int Maximum points the exam is taken out of
 #let header(out_of: none) = [
-  #grid(
-    columns: (1fr, 1fr),
-    align(center)[
-      #text(size: 17pt)[
-        #align(left)[
-          Name: #box(width: 1fr, 
-            // the line ends up being just a *little* too high up, 
-            move(dy: 2pt, line(length: 100%, stroke: 1pt))
-          )
+  #context {
+    let max_earnable = total_points.final().at(0)
+    
+    // typst supports conditional assignments :)
+    let max_scorable = if (out_of != none) { 
+      out_of 
+    } else { 
+      max_earnable
+    }
+
+    grid(
+      columns: (1fr, 1fr),
+      align(left)[
+        #text(size: 17pt)[
+          Name: #box(width: 1fr, move(dy: 2pt, line(length: 100%, stroke: 1pt)))
         ]
-      ]
-    ],
-    align(center)[
-      #text(size: 17pt)[
-        #align(right)[
+      ],
+      align(right)[
+        #text(size: 17pt)[
           #grid(
             rows: (0pt, 20pt),
             align(right)[
-              #box(width: 40pt, 
-                move(dy: 2pt, line(length: 100%, stroke: 0.7pt))
-              ) 
-              #"/" #context total_points.final().at(0) pts
+              // need a box wrap 
+              #box(width: 40pt, move(dy: 2pt, line( 
+                length: 130%, stroke: 0.7pt
+              )))
+              #("/ " + str(max_scorable))
             ],
-
-            if(out_of != none){
+            if out_of != none {
               v(1.2em)
-              "Max: " + str(out_of) + " pts"
+              "Max: " + str(max_earnable) + " pts"
             }
           )
         ]
       ]
-    ]
-  )
+    )
+  }
 ]
-
 
 #let spacer() = {
   v(10pt)
