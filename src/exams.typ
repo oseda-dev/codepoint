@@ -13,7 +13,7 @@
 #let exam_init(body) = {
   set page(margin: 40pt)
   set text( 
-    font: ("Aptos"), 
+    font: ("Aptos"),
     size: 12pt, 
     fill: black, 
     weight: "regular"
@@ -317,8 +317,46 @@
 /// code_block: Create a code block formatted for exams
 /// Wraps in box to the edge of the code, can add white space if need it to be longer
 /// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
-#let code_block(raw_code) = {
-  box(stroke: (paint: rgb("#d9d9d9"), thickness: 2pt, cap: "round"), inset: (8pt))[
-      #raw_code
-  ]
+/// @param include-line-numbers boolean Boolean param for whether line numbers should be included in the output
+#let code_block(include-line-numbers: true, raw_code) = {
+
+  let lines = raw_code.text.split("\n")  
+  
+  // fold to flat array of cells, 
+  // (1, firstLine, 2, secondLine, etc
+  // then spread to table values later 
+  let table_values = ()
+  // pythonic enumerate :)
+  for (i, line) in lines.enumerate() {
+    // push line number
+    // table_values.push(text(fill: gray)[#(i + 1)]) // start at 1 instead of 0
+    if include-line-numbers {
+      table_values.push(raw([#(i + 1)].text))
+      
+    }
+
+    // converting to raw like this loses the language context, so copy it to each line
+    table_values.push(raw(line, lang: raw_code.lang)) 
+  }
+
+  // wrap in a box to avoid having conditional stroke
+
+  let desired_columns = (auto)
+  if include-line-numbers {
+    desired_columns = (auto, auto)
+  } 
+
+  block(
+    stroke: rgb("#d9d9d9"),
+    inset: 2pt, // need some extra internal padding
+    table(
+      columns: desired_columns,
+      stroke: none,
+      inset: (x: 5pt, y: 3pt),
+      ..table_values
+    )
+  )
 }
+
+
+
