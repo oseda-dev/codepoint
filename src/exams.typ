@@ -27,6 +27,12 @@
 ])
 
 #let setup(title) = {
+  assert(
+    type(title) == str or type(title) == content, 
+    message: "expected title to be string or content, but received " + str(type(title))
+  )
+
+
   title-state.update(title)
 }
 
@@ -39,6 +45,10 @@
 /// #e.header()
 /// @param out_of int Maximum points the exam is taken out of
 #let header(out_of: none) = [
+  #assert(
+    type(out_of) == none or type(out_of) == int,
+    message: "Expected out_of to be none or int, but received " + str(type(out_of))
+  )
   #context {
     let max_earnable = total_points.final().at(0)
     
@@ -92,6 +102,16 @@
 /// @param body content Question Body
 /// @param points int Number of points the question is worth
 #let question(body, points: 1) = context {
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+  
   cur-question.update(n => n + 1)
   total_points.update(p => p + points)
   let qnum = cur-question.get()
@@ -128,6 +148,38 @@
 /// @param points int = 1 Points the question is worth
 /// @param cols [int | array ] = 1 Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
 #let multiple_choice(body, points: 1, cols: 1, ..answers) = {
+
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+  assert(
+    type(cols) == int,
+    message: "Expected cols to be int, but received" + str(type(cols))
+  )
+
+  
+  assert(
+    answers.pos().len() > 0,
+    message: "Expected at least one value in answers, but received 0"
+  )
+
+  assert(
+    answers.pos().all(cur => {
+      type(cur) == content or type(cur) == str
+    }),
+    // would like to say which value caused failure here, but its a little hard with the arr.all func used
+    message: "Expected all answers to be content or str"
+  )
+
+
+
   let cols_type = type(cols)
 
   block[
@@ -167,6 +219,18 @@
 /// https://xkcd.com/221/
 /// Not cryptographically secure
 #let _shuffle(arr, seed: 4) = {
+
+  // doing assertions for private functions assuming no public version exists
+  assert(
+    type(arr) == array,
+    message: "Expected arr to be of type array, but received " + str(type(arr))
+  )
+
+  assert(
+    type(seed) == int,
+    message: "Expected seed to be of type int, but received " + str(type(seed))
+  )
+
   for i in range(arr.len()) {
     let rnd_index = calc.rem(i * seed, arr.len())
     
@@ -238,6 +302,21 @@
 /// @param seed int = 4 Random seed used for shuffling each side
 /// @param pairs array An array containing pairs of answers/definitions 
 #let matching(q_body, points: none, seed: 4, pairs) = {
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(points) == int or type(points) == none,
+    message: "Expected points to be int or none, but received" + str(type(points))
+  )
+
+  assert(
+    type(seed) == int,
+    message: "Expected seed to be of type int, but received " + str(type(seed))
+  )
+
   // points will end up defaulting to len of pairs if not passed
   assert(points == none or type(points) == int, message: "Expected points to be integer or none, received: " + str(type(points)))
   assert(type(seed) == int, message: "Expected seed to be integer, received: " + str(type(seed)))
@@ -257,7 +336,28 @@
 }
 
 
-#let tf_block(q_body, ..statements, points: 1) = {
+#let tf_block(q_body, points: 1, ..statements) = {
+
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+    assert(
+      statements.pos().all(cur => {
+        type(cur) == content or type(cur) == str
+      }),
+      message: "Expected all statements to be content or str"
+    )
+
+
+
+
   let num = counter("I")
   num.step() 
   block[
@@ -287,6 +387,26 @@
 /// @param lines int = 1 lines of space to give the user, renders as actual lines
 /// @param points int = 1 points the question is worth
 #let short_answer(q_body, lines: 1, points: 1) = {
+
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(lines) == int,
+    message: "Expected lines to be int, but received" + str(type(points))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+
+
+
+
   question(q_body, points: points)
   
   // you don't need the full spacing from the question before the first line
@@ -306,6 +426,25 @@
 /// @param lines int = 1 lines of space to give the user, renders as empty space
 /// @param points int = 1 points the question is worth
 #let free_response(q_body, lines: 1, points: 1) = {
+
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(lines) == int,
+    message: "Expected lines to be int, but received" + str(type(points))
+  )
+  
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+
+
+
   question(q_body, points: points)
 
   // i did not know you could just multiply units like that
@@ -317,6 +456,10 @@
 /// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
 /// @param include-line-numbers boolean Boolean param for whether line numbers should be included in the output
 #let code_block(include-line-numbers: true, raw_code) = {
+  assert(
+    type(raw_code) == content,
+    message: "Expected raw_code to be content, but received " + str(type(raw_code))
+  )
 
   let lines = raw_code.text.split("\n")  
   

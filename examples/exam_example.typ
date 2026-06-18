@@ -357,7 +357,7 @@ Use the code block to answer the following questions:
 
 #e.spacer()
 
-#e.multiple_choice([What does the `throws` keyword do?], 2,
+#e.multiple_choice([What does the `throws` keyword do?], points: 2,
   [Indicates that a method could cause an error], // X
   [Creates and instantiates an exception],
   [Creates a custom exception type],
