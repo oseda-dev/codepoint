@@ -102,6 +102,16 @@
 /// @param body content Question Body
 /// @param points int Number of points the question is worth
 #let question(body, points: 1) = context {
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+  
   cur-question.update(n => n + 1)
   total_points.update(p => p + points)
   let qnum = cur-question.get()
@@ -138,6 +148,38 @@
 /// @param points int = 1 Points the question is worth
 /// @param cols [int | array ] = 1 Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
 #let multiple_choice(body, points: 1, cols: 1, ..answers) = {
+
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+  assert(
+    type(cols) == int,
+    message: "Expected cols to be int, but received" + str(type(cols))
+  )
+
+  
+  assert(
+    answers.pos().len() > 0,
+    message: "Expected at least one value in answers, but received 0"
+  )
+
+  assert(
+    answers.pos().all(cur => {
+      type(cur) == content or type(cur) == str
+    }),
+    // would like to say which value caused failure here, but its a little hard with the arr.all func used
+    message: "Expected all answers to be content or str"
+  )
+
+
+
   let cols_type = type(cols)
 
   block[
