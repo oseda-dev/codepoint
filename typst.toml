@@ -16,5 +16,13 @@ categories = [
     "layout"
 ] 
 
-keywords = ["exam", "programming", "computer science", "worksheet"]
+keywords = [
+    "exam", 
+    "programming", 
+    "computer science", 
+    "worksheet", 
+    "quiz",
+    "education",
+    "labs"
+]
 disciplines = ["computer-science"]
