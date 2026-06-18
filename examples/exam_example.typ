@@ -10,8 +10,6 @@
 ])
 #e.header(out_of: 60)
 
-#e.free_response([dummy q], points: 40, lines: 0)
-
 
 #e.multiple_choice([Which of the following is *NOT* true about `ActionListener`?], points: 2,
   [`ActionListener` is an interface in Java],

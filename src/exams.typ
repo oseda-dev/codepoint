@@ -61,9 +61,9 @@
           #grid(
             rows: (0pt, 20pt),
             align(right)[
-              // need a box wrap
+              // need a box wrap 
               #box(width: 40pt, move(dy: 2pt, line( 
-                length: 100%, stroke: 0.7pt
+                length: 130%, stroke: 0.7pt
               )))
               #("/ " + str(max_scorable))
             ],
