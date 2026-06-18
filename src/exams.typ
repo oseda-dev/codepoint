@@ -336,7 +336,9 @@
 }
 
 
-#let tf_block(q_body, ..statements, points: 1) = {
+#let tf_block(q_body, points: 1, ..statements) = {
+
+
   let num = counter("I")
   num.step() 
   block[
