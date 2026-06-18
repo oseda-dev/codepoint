@@ -1,7 +1,7 @@
 
 
 
-#let lab_init(body) = {
+#let init(body) = {
   set page(margin: 40pt)
   set text( 
     font: ("Verdana"), 
@@ -19,7 +19,7 @@
 }
 
 
-#let wt(body, dsp: -10pt) = {
+#let white-text(body, dsp: -10pt) = {
   set text(fill: white, size: 0.01pt)
   show raw: set text(fill: white, size: 0.01pt)
   v(dsp)
@@ -28,8 +28,8 @@
 
 
 
-/// CMD_KEYWORDS: Set of common command keywords, used for syntax highlighting in cmd_color
-#let CMD_KEYWORDS = (
+/// CMD-KEYWORDS: Set of common command keywords, used for syntax highlighting in cmd_color
+#let _CMD-KEYWORDS = (
   // java lab specifics
   "java", 
   "javac", 
@@ -60,12 +60,12 @@
 
 
 
-/// cmd_color: Render content as terminal I/O to the page.
+/// cmd-color: Render content as terminal I/O to the page.
 /// Common commands will be highlighted a unique color.
 /// @param input content Body of terminal text
 /// @param dsp length = 0pt Horizontal indendation/displacement
-/// @param custom_keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
-#let cmd_color(input, dsp: 0pt, custom_keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+/// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
+#let cmd-color(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
   let userIn = false
   let error = false
   v(2pt)
@@ -73,25 +73,25 @@
   highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
 
     #if type(input) == array {
-      let max_len = 0
+      let max-len = 0
       for line in input {
-        if line.len() > max_len {
-          max_len = line.len()
+        if line.len() > max-len {
+          max-len = line.len()
         }
       }
 
       v(5pt)
       for line in input {
 
-        let num_spaces = max_len - line.len()
+        let num-spaces = max-len - line.len()
 
         if line != " " {
           // pulled this out for maintainability
-          let first_word = line.split().at(0, default: "")
-          if first_word == ">" {
+          let first-word = line.split().at(0, default: "")
+          if first-word == ">" {
             userIn = true
             error = false
-          } else if first_word == "Exception" {
+          } else if first-word == "Exception" {
             userIn = false
             error = true
           } else {
@@ -106,11 +106,11 @@
             }
             // pulled this from the custom keywords instead of hard coded 118X specific terms
             // I still left them as default params for compatibility
-            else if (userIn or custom_keywords.contains(word)) and word != ">" {
+            else if (userIn or custom-keywords.contains(word)) and word != ">" {
               text(fill: rgb("#58ad37"), word + " ")
             }
             // also pulled these out into a special command bank
-            else if CMD_KEYWORDS.contains(word){
+            else if _CMD-KEYWORDS.contains(word){
               text(fill: rgb("#ad7a37"), word + " ")
             } else {
               text(word + " ")
@@ -122,17 +122,17 @@
           text(" ")
         }
 
-        for i in range(num_spaces) {
+        for i in range(num-spaces) {
           text(" ")
         }
         v(-1pt)
       }
     } else {
-        let first_word = input.split().at(0, default: "")
-        if first_word == ">" {
+        let first-word = input.split().at(0, default: "")
+        if first-word == ">" {
           userIn = true
           error = false
-        } else if first_word == "Exception" {
+        } else if first-word == "Exception" {
           userIn = false
           error = true
         } else {
@@ -145,10 +145,10 @@
           if error {
             text(fill: rgb("#a83232"), word + " ")
           }
-          else if (userIn or custom_keywords.contains(word)) and word != ">" {
+          else if (userIn or custom-keywords.contains(word)) and word != ">" {
             text(fill: rgb("#58ad37"), word + " ")
           }
-          else if CMD_KEYWORDS.contains(word){
+          else if _CMD-KEYWORDS.contains(word){
             text(fill: rgb("#ad7a37"), word + " ")
           } else {
             text(word + " ")
@@ -209,7 +209,7 @@
   #body
 ]
 
-#let part_a(body) = [
+#let part-a(body) = [
   #v(15pt)
   *DIRECTIONS: *
   #v(-5pt)
@@ -218,7 +218,7 @@
   #body
 ]
 
-#let part_b(body) = [
+#let part-b(body) = [
   #v(15pt)
   === Part B
   #v(0pt)
@@ -235,10 +235,10 @@
   #v(15pt)
   *EXAMPLE: *
   #text
-  #cmd_color(io)
+  #cmd-color(io)
 ]
 
-#let lab_rubric(docOverride: "Documentation", partAOverride: "Part A correct", partBOverride: "Part B correct", notes) = [
+#let lab-rubric(docOverride: "Documentation", partAOverride: "Part A correct", partBOverride: "Part B correct", notes) = [
   #v(15pt)
   == RUBRIC:
   #v(5pt)
@@ -316,7 +316,7 @@
     let wtTotal = wtRubric.at(0).sum()
 
     let wtPercent = wtTotal / 10
-    wt[
+    white-text[
       #text[(#wtTotal pts) *Extra Credit* (#wtTotal points == #wtPercent% additional credit in the course)]
       #v(0pt)
       #for i in range(wtRubric.at(0).len()) {
