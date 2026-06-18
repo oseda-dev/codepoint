@@ -387,6 +387,26 @@
 /// @param lines int = 1 lines of space to give the user, renders as actual lines
 /// @param points int = 1 points the question is worth
 #let short_answer(q_body, lines: 1, points: 1) = {
+
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(lines) == int,
+    message: "Expected lines to be int, but received" + str(type(points))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+
+
+
+
   question(q_body, points: points)
   
   // you don't need the full spacing from the question before the first line
@@ -406,6 +426,25 @@
 /// @param lines int = 1 lines of space to give the user, renders as empty space
 /// @param points int = 1 points the question is worth
 #let free_response(q_body, lines: 1, points: 1) = {
+
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(lines) == int,
+    message: "Expected lines to be int, but received" + str(type(points))
+  )
+  
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+
+
+
   question(q_body, points: points)
 
   // i did not know you could just multiply units like that
@@ -417,6 +456,10 @@
 /// @param raw_code content(raw) raw code block, eg. ``````java public class...``````
 /// @param include-line-numbers boolean Boolean param for whether line numbers should be included in the output
 #let code_block(include-line-numbers: true, raw_code) = {
+  assert(
+    type(raw_code) == content,
+    message: "Expected raw_code to be content, but received " + str(type(raw_code))
+  )
 
   let lines = raw_code.text.split("\n")  
   
