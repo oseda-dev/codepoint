@@ -27,6 +27,12 @@
 ])
 
 #let setup(title) = {
+  assert(
+    type(title) == str or type(title) == content, 
+    message: "expected title to be string or content, but received " + str(type(title))
+  )
+
+
   title-state.update(title)
 }
 
@@ -39,6 +45,10 @@
 /// #e.header()
 /// @param out_of int Maximum points the exam is taken out of
 #let header(out_of: none) = [
+  #assert(
+    type(out_of) == none or type(out_of) == int,
+    message: "Expected out_of to be none or int, but received " + str(type(out_of))
+  )
   #context {
     let max_earnable = total_points.final().at(0)
     
