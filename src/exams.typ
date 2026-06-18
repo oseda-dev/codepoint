@@ -220,7 +220,7 @@
 /// Not cryptographically secure
 #let _shuffle(arr, seed: 4) = {
 
-  // doing assertions for private functions as well -> better practice
+  // doing assertions for private functions assuming no public version exists
   assert(
     type(arr) == array,
     message: "Expected arr to be of type array, but received " + str(type(arr))
@@ -302,6 +302,21 @@
 /// @param seed int = 4 Random seed used for shuffling each side
 /// @param pairs array An array containing pairs of answers/definitions 
 #let matching(q_body, points: none, seed: 4, pairs) = {
+  assert(
+    type(q_body) == content or type(q_body) == str,
+    message: "Expected q_body to be content or str, but received" + str(type(q_body))
+  )
+
+  assert(
+    type(points) == int,
+    message: "Expected points to be int, but received" + str(type(points))
+  )
+
+  assert(
+    type(seed) == int,
+    message: "Expected seed to be of type int, but received " + str(type(seed))
+  )
+
   // points will end up defaulting to len of pairs if not passed
   assert(points == none or type(points) == int, message: "Expected points to be integer or none, received: " + str(type(points)))
   assert(type(seed) == int, message: "Expected seed to be integer, received: " + str(type(seed)))
