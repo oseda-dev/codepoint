@@ -219,6 +219,18 @@
 /// https://xkcd.com/221/
 /// Not cryptographically secure
 #let _shuffle(arr, seed: 4) = {
+
+  // doing assertions for private functions as well -> better practice
+  assert(
+    type(arr) == array,
+    message: "Expected arr to be of type array, but received " + str(type(arr))
+  )
+
+  assert(
+    type(seed) == int,
+    message: "Expected seed to be of type int, but received " + str(type(seed))
+  )
+
   for i in range(arr.len()) {
     let rnd_index = calc.rem(i * seed, arr.len())
     
