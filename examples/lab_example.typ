@@ -88,8 +88,32 @@ In main:
   "Adams, Abby: -8 with 16 holes completed,",
   "Collins, Peter: -8 with 16 holes completed]",
 ))[]
-
-
-
 #labs.lab-rubric[]
+
+
+#pagebreak()
+
+#labs.uml(
+  "Vehicle",
+  (
+    "-model: String",
+    "-wheels: int",
+    "-color: String",
+    "-offroad: boolean",
+    "-speed: double",
+    "-seats: int"
+  ),
+
+  (
+    "+Vehicle()",
+  "+setModel(model: String)",
+  "+getModel(): String",
+  "+setWheels(num: int)",
+  "+getWheels(): int",
+  "...",
+  "+drive(distance: int)",
+  "+toString(): String"
+  )
+)
+
 
