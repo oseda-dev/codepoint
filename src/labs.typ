@@ -419,6 +419,8 @@
 
 #let rubric(baseRubric, styleRubric, bonusRubric: none, wtRubric: none, ..notes) = {
 
+  // todo, leaving assertions empty here because the shape of the data will change significantly soon
+
   let baseTotal = baseRubric.at(0).sum()
 
   text[== RUBRIC:]
