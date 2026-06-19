@@ -294,17 +294,36 @@
 }
 
 #let purpose(body) = [
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+
   *PURPOSE: *
   #body
 ]
 
 #let directions(body) = [
+
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+
   #v(15pt)
   *DIRECTIONS: *
   #body
 ]
 
 #let part-a(body) = [
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  
   #v(15pt)
   *DIRECTIONS: *
   #v(-5pt)
@@ -313,7 +332,12 @@
   #body
 ]
 
-#let part-b(body) = [
+#let part-b(body) = [  
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
   #v(15pt)
   === Part B
   #v(0pt)
@@ -321,19 +345,56 @@
 ]
 
 #let extra(title: "Extra", body) = [
+  #assert(
+    type(title) == content or type(title) == str,
+    message: "Expected title to be content or str, but received" + str(type(body))
+  )
+
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  
   #v(15pt)
   *#title: *
   #body
 ]
 
 #let example(io, text) = [
+  // todo @Clarissa I know you wanted to update the input param to cmd-color, so i left it un-asserted for now
+
+  #assert(
+    type(text) == content or type(text) == str,
+    message: "Expected body to be content or str, but received" + str(type(text))
+  )
+
+
   #v(15pt)
   *EXAMPLE: *
   #text
   #cmd-color(io)
 ]
 
-#let lab-rubric(docOverride: "Documentation", partAOverride: "Part A correct", partBOverride: "Part B correct", notes) = [
+#let lab-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
+
+  #assert(
+    type(documentation) == content or type(documentation) == str,
+    message: "Expected documentation to be content or str, but received" + str(type(documentation))
+  )
+
+  #assert(
+    type(part-a) == content or type(part-a) == str,
+    message: "Expected part-a to be content or str, but received" + str(type(part-a))
+  )
+
+  #assert(
+    type(part-b) == content or type(part-b) == str,
+    message: "Expected part-b to be content or str, but received" + str(type(part-b))
+  )
+
+
+
   #v(15pt)
   == RUBRIC:
   #v(5pt)
@@ -341,17 +402,17 @@
   #notes
   #v(0pt)
 
-  *[1pt\]*
+  *[1pt]*
   #h(10pt)
-  *#docOverride*
+  *#documentation*
   #v(-5pt)
-  *\[1pt\]*
+  *[1pt]*
   #h(10pt)
-  *#partAOverride*
+  *#part-a*
   #v(-5pt)
-  *\[1pt\]*
+  *[1pt]*
   #h(10pt)
-  *#partBOverride*
+  *#part-b*
 
 ]
 
