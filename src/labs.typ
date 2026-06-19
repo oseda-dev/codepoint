@@ -200,11 +200,44 @@
         }
         v(3pt)
     }
- ]
- v(10pt)
+  ]
+  v(10pt)
 }
 
 #let uml(title, fields, methods) = {
+
+  assert(
+    type(title) == content or type(title) == str,
+    message: "Expected title to be content or str, but received" + str(type(title))
+  )
+
+
+  assert(
+    type(fields) == array, 
+    message: "Expected fields to be an array, got " + str(type(fields))
+  )
+
+  assert(
+    fields.all(f => {
+      type(f) == content or type(f) == str
+    }),
+    message: "Expected all fields to be content or str"
+  )
+
+  assert(
+    type(methods) == array, 
+    message: "Expected methods to be an array, got " + str(type(methods))
+  )
+
+  assert(
+    methods.all(m => {
+      type(m) == content or type(m) == str
+    }),
+    message: "Expected all methods to be content or str"
+  )
+
+
+
   table(
     table.hline(),
     table.vline(),
