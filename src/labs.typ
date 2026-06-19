@@ -2,6 +2,13 @@
 
 
 #let init(body) = {
+
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+
   set page(margin: 40pt)
   set text( 
     font: ("Verdana"), 
@@ -20,6 +27,17 @@
 
 
 #let white-text(body, dsp: -10pt) = {
+
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  assert(
+    type(dsp) == length or type(dsp) == relative,
+    message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
+  )
+
   set text(fill: white, size: 0.01pt)
   show raw: set text(fill: white, size: 0.01pt)
   v(dsp)
@@ -66,6 +84,29 @@
 /// @param dsp length = 0pt Horizontal indendation/displacement
 /// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
 #let cmd-color(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+
+  assert(
+    type(dsp) == length or type(dsp) == relative,
+    message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
+  )
+
+  // todo @Clarissa I know you wanted to update the input param, so i left it un-asserted for now
+
+  assert(
+    type(custom-keywords) == array, 
+    message: "Expected custom-keywords to be an array, got " + str(type(custom-keywords))
+  )
+
+  assert(
+    custom-keywords.all(kw => {
+      type(kw) == content or type(kw) == str
+    }),
+    message: "Expected all custom-keywords to be content or str"
+  )
+  
+
+
+
   let userIn = false
   let error = false
   v(2pt)
