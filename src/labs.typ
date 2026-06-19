@@ -73,6 +73,9 @@
   // rust lab specifics
   "rustc",
   "cargo",
+  // lisp
+  "lisp",
+  "sbcl"
 
 )
 
