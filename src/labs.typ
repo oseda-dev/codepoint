@@ -162,39 +162,57 @@
 
 #let uml(title, fields, methods) = {
   table(
-  table.hline(),
-  table.vline(),
-  stroke: none,
-  inset: 5pt,
-  align: center,
-  fill: rgb("#ffe1c4"),
-  table.header(
-    title,
-  ),
-  table.vline(),
-  table.hline(start: 0),
+    table.hline(),
+    table.vline(),
+    stroke: none,
+    inset: 5pt,
+    align: center,
+    fill: rgb("#ffe1c4"),
+    table.header(
+      title,
+    ),
+    table.vline(),
+    table.hline(start: 0),
 
-  v(-5pt),
-  for field in fields {
-      v(-5pt)
-      table.cell(align: left, field)
-  },
+    v(-5pt),
+    for field in fields {
+        v(-5pt)
+        table.cell(align: left, field)
+    },
 
-  table.hline(start: 0),
+    table.hline(start: 0),
 
-  v(-5pt),
-  for method in methods {
-      v(-5pt)
-      table.cell(align: left, method)
-  },
+    v(-5pt),
+    for method in methods {
+        v(-5pt)
+        table.cell(align: left, method)
+    },
 
-  table.hline()
-)
+    table.hline()
+  )
 }
 
 
-#let lp(class, lpNum, title) = {
-  text[= #class Lab Problem #lpNum: #title]
+#let header(class, title, number: none) = {
+  assert(
+    type(class) == content or type(class) == str,
+    message: "Expected class to be content or str, but received" + str(type(class))
+  )
+
+  assert(
+    type(title) == content or type(title) == str,
+    message: "Expected title to be content or str, but received" + str(type(title))
+  )
+
+  assert(
+    type(number) == int or type(number) == string or type(number) == none,
+    message: "Expected number to be int, string, or none, but received" + str(type(number))
+  )
+
+
+
+
+  text[= #class Lab Problem #number: #title]
   line(length: 100%, stroke: 0.5pt)
 }
 

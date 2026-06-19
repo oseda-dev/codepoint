@@ -4,9 +4,10 @@
 
 #show: labs.init
 
+// #let header(class, number: none, title) = {
+// #labs.header("CS-1181", "2", "Comparable Golfers")
 
-#labs.lp("1", "2", "Comparable Golfers")
-
+#labs.header("CS-1181", "Comparable Golfers", number: 3)
 #labs.purpose[
   To review interfaces and ArrayList usage.
 ]
