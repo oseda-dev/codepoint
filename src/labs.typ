@@ -1,7 +1,14 @@
 
 
 
-#let lab_init(body) = {
+#let init(body) = {
+
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+
   set page(margin: 40pt)
   set text( 
     font: ("Verdana"), 
@@ -19,7 +26,18 @@
 }
 
 
-#let wt(body, dsp: -10pt) = {
+#let white-text(body, dsp: -10pt) = {
+
+  assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  assert(
+    type(dsp) == length or type(dsp) == relative,
+    message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
+  )
+
   set text(fill: white, size: 0.01pt)
   show raw: set text(fill: white, size: 0.01pt)
   v(dsp)
@@ -28,8 +46,8 @@
 
 
 
-/// CMD_KEYWORDS: Set of common command keywords, used for syntax highlighting in cmd_color
-#let CMD_KEYWORDS = (
+/// CMD-KEYWORDS: Set of common command keywords, used for syntax highlighting in cmd_color
+#let _CMD-KEYWORDS = (
   // java lab specifics
   "java", 
   "javac", 
@@ -55,17 +73,43 @@
   // rust lab specifics
   "rustc",
   "cargo",
+  // lisp
+  "lisp",
+  "sbcl"
 
 )
 
 
 
-/// cmd_color: Render content as terminal I/O to the page.
+/// cmd-color: Render content as terminal I/O to the page.
 /// Common commands will be highlighted a unique color.
 /// @param input content Body of terminal text
 /// @param dsp length = 0pt Horizontal indendation/displacement
-/// @param custom_keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
-#let cmd_color(input, dsp: 0pt, custom_keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+/// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
+#let cmd-color(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+
+  assert(
+    type(dsp) == length or type(dsp) == relative,
+    message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
+  )
+
+  // todo @Clarissa I know you wanted to update the input param, so i left it un-asserted for now
+
+  assert(
+    type(custom-keywords) == array, 
+    message: "Expected custom-keywords to be an array, got " + str(type(custom-keywords))
+  )
+
+  assert(
+    custom-keywords.all(kw => {
+      type(kw) == content or type(kw) == str
+    }),
+    message: "Expected all custom-keywords to be content or str"
+  )
+  
+
+
+
   let userIn = false
   let error = false
   v(2pt)
@@ -73,25 +117,25 @@
   highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
 
     #if type(input) == array {
-      let max_len = 0
+      let max-len = 0
       for line in input {
-        if line.len() > max_len {
-          max_len = line.len()
+        if line.len() > max-len {
+          max-len = line.len()
         }
       }
 
       v(5pt)
       for line in input {
 
-        let num_spaces = max_len - line.len()
+        let num-spaces = max-len - line.len()
 
         if line != " " {
           // pulled this out for maintainability
-          let first_word = line.split().at(0, default: "")
-          if first_word == ">" {
+          let first-word = line.split().at(0, default: "")
+          if first-word == ">" {
             userIn = true
             error = false
-          } else if first_word == "Exception" {
+          } else if first-word == "Exception" {
             userIn = false
             error = true
           } else {
@@ -106,11 +150,11 @@
             }
             // pulled this from the custom keywords instead of hard coded 118X specific terms
             // I still left them as default params for compatibility
-            else if (userIn or custom_keywords.contains(word)) and word != ">" {
+            else if (userIn or custom-keywords.contains(word)) and word != ">" {
               text(fill: rgb("#58ad37"), word + " ")
             }
             // also pulled these out into a special command bank
-            else if CMD_KEYWORDS.contains(word){
+            else if _CMD-KEYWORDS.contains(word){
               text(fill: rgb("#ad7a37"), word + " ")
             } else {
               text(word + " ")
@@ -122,17 +166,17 @@
           text(" ")
         }
 
-        for i in range(num_spaces) {
+        for i in range(num-spaces) {
           text(" ")
         }
         v(-1pt)
       }
     } else {
-        let first_word = input.split().at(0, default: "")
-        if first_word == ">" {
+        let first-word = input.split().at(0, default: "")
+        if first-word == ">" {
           userIn = true
           error = false
-        } else if first_word == "Exception" {
+        } else if first-word == "Exception" {
           userIn = false
           error = true
         } else {
@@ -145,10 +189,10 @@
           if error {
             text(fill: rgb("#a83232"), word + " ")
           }
-          else if (userIn or custom_keywords.contains(word)) and word != ">" {
+          else if (userIn or custom-keywords.contains(word)) and word != ">" {
             text(fill: rgb("#58ad37"), word + " ")
           }
-          else if CMD_KEYWORDS.contains(word){
+          else if _CMD-KEYWORDS.contains(word){
             text(fill: rgb("#ad7a37"), word + " ")
           } else {
             text(word + " ")
@@ -156,60 +200,130 @@
         }
         v(3pt)
     }
- ]
- v(10pt)
+  ]
+  v(10pt)
 }
 
 #let uml(title, fields, methods) = {
+
+  assert(
+    type(title) == content or type(title) == str,
+    message: "Expected title to be content or str, but received" + str(type(title))
+  )
+
+
+  assert(
+    type(fields) == array, 
+    message: "Expected fields to be an array, got " + str(type(fields))
+  )
+
+  assert(
+    fields.all(f => {
+      type(f) == content or type(f) == str
+    }),
+    message: "Expected all fields to be content or str"
+  )
+
+  assert(
+    type(methods) == array, 
+    message: "Expected methods to be an array, got " + str(type(methods))
+  )
+
+  assert(
+    methods.all(m => {
+      type(m) == content or type(m) == str
+    }),
+    message: "Expected all methods to be content or str"
+  )
+
+
+
   table(
-  table.hline(),
-  table.vline(),
-  stroke: none,
-  inset: 5pt,
-  align: center,
-  fill: rgb("#ffe1c4"),
-  table.header(
-    title,
-  ),
-  table.vline(),
-  table.hline(start: 0),
+    table.hline(),
+    table.vline(),
+    stroke: none,
+    inset: 5pt,
+    align: center,
+    fill: rgb("#ffe1c4"),
+    table.header(
+      title,
+    ),
+    table.vline(),
+    table.hline(start: 0),
 
-  v(-5pt),
-  for field in fields {
-      v(-5pt)
-      table.cell(align: left, field)
-  },
+    v(-5pt),
+    for field in fields {
+        v(-5pt)
+        table.cell(align: left, field)
+    },
 
-  table.hline(start: 0),
+    table.hline(start: 0),
 
-  v(-5pt),
-  for method in methods {
-      v(-5pt)
-      table.cell(align: left, method)
-  },
+    v(-5pt),
+    for method in methods {
+        v(-5pt)
+        table.cell(align: left, method)
+    },
 
-  table.hline()
-)
+    table.hline()
+  )
 }
 
 
-#let lp(class, lpNum, title) = {
-  text[= #class Lab Problem #lpNum: #title]
+#let header(class, title, number: none) = {
+  assert(
+    type(class) == content or type(class) == str,
+    message: "Expected class to be content or str, but received" + str(type(class))
+  )
+
+  assert(
+    type(title) == content or type(title) == str,
+    message: "Expected title to be content or str, but received" + str(type(title))
+  )
+
+  assert(
+    type(number) == int or type(number) == string or type(number) == none,
+    message: "Expected number to be int, string, or none, but received" + str(type(number))
+  )
+
+
+
+
+  text[= #class Lab Problem #number: #title]
   line(length: 100%, stroke: 0.5pt)
 }
 
 #let purpose(body) = [
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+
   *PURPOSE: *
   #body
 ]
 
 #let directions(body) = [
+
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+
   #v(15pt)
   *DIRECTIONS: *
   #body
 ]
 
-#let part_a(body) = [
+#let part-a(body) = [
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  
   #v(15pt)
   *DIRECTIONS: *
   #v(-5pt)
@@ -218,7 +332,12 @@
   #body
 ]
 
-#let part_b(body) = [
+#let part-b(body) = [  
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
   #v(15pt)
   === Part B
   #v(0pt)
@@ -226,19 +345,56 @@
 ]
 
 #let extra(title: "Extra", body) = [
+  #assert(
+    type(title) == content or type(title) == str,
+    message: "Expected title to be content or str, but received" + str(type(body))
+  )
+
+  #assert(
+    type(body) == content or type(body) == str,
+    message: "Expected body to be content or str, but received" + str(type(body))
+  )
+
+  
   #v(15pt)
   *#title: *
   #body
 ]
 
 #let example(io, text) = [
+  // todo @Clarissa I know you wanted to update the input param to cmd-color, so i left it un-asserted for now
+
+  #assert(
+    type(text) == content or type(text) == str,
+    message: "Expected body to be content or str, but received" + str(type(text))
+  )
+
+
   #v(15pt)
   *EXAMPLE: *
   #text
-  #cmd_color(io)
+  #cmd-color(io)
 ]
 
-#let lab_rubric(docOverride: "Documentation", partAOverride: "Part A correct", partBOverride: "Part B correct", notes) = [
+#let lab-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
+
+  #assert(
+    type(documentation) == content or type(documentation) == str,
+    message: "Expected documentation to be content or str, but received" + str(type(documentation))
+  )
+
+  #assert(
+    type(part-a) == content or type(part-a) == str,
+    message: "Expected part-a to be content or str, but received" + str(type(part-a))
+  )
+
+  #assert(
+    type(part-b) == content or type(part-b) == str,
+    message: "Expected part-b to be content or str, but received" + str(type(part-b))
+  )
+
+
+
   #v(15pt)
   == RUBRIC:
   #v(5pt)
@@ -246,22 +402,24 @@
   #notes
   #v(0pt)
 
-  *[1pt\]*
+  *[1pt]*
   #h(10pt)
-  *#docOverride*
+  *#documentation*
   #v(-5pt)
-  *\[1pt\]*
+  *[1pt]*
   #h(10pt)
-  *#partAOverride*
+  *#part-a*
   #v(-5pt)
-  *\[1pt\]*
+  *[1pt]*
   #h(10pt)
-  *#partBOverride*
+  *#part-b*
 
 ]
 
 
 #let rubric(baseRubric, styleRubric, bonusRubric: none, wtRubric: none, ..notes) = {
+
+  // todo, leaving assertions empty here because the shape of the data will change significantly soon
 
   let baseTotal = baseRubric.at(0).sum()
 
@@ -316,7 +474,7 @@
     let wtTotal = wtRubric.at(0).sum()
 
     let wtPercent = wtTotal / 10
-    wt[
+    white-text[
       #text[(#wtTotal pts) *Extra Credit* (#wtTotal points == #wtPercent% additional credit in the course)]
       #v(0pt)
       #for i in range(wtRubric.at(0).len()) {

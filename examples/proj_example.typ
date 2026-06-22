@@ -1,6 +1,6 @@
 #import "../lib.typ": labs
 
-#show: labs.lab_init
+#show: labs.init
 
 = CS-1181 Project 1: Genetic Algorithm
 
@@ -148,7 +148,7 @@ Then after mutation, the second and last items' included values are flipped and 
 ```Java T   F   F   T   T   T   T```
 
 // WHITE TEXT
-#labs.wt[*Bonus* For an additional 20 points, implement a method in the GeneticAlgorithm class called chromosomeHealthExperimentationAlgorithmTest(). For full credit, you must add a health field to the chromosome class and a getHealth() method. Also, make sure that the health of that Chromosome is initialized to 100 and decremented by 10 every time the crossover() or mutate() methods are called. Then, in the GeneticAlgorithm class implement the chromosomeHealthExperimentationAlgorithmTest() method to take in an ArrayList of Chromosomes and calculate the average health of all the chromosomes. Lastly, ensure that the health is printed once per iteration of the genetic algorithm.]
+#labs.white-text[*Bonus* For an additional 20 points, implement a method in the GeneticAlgorithm class called chromosomeHealthExperimentationAlgorithmTest(). For full credit, you must add a health field to the chromosome class and a getHealth() method. Also, make sure that the health of that Chromosome is initialized to 100 and decremented by 10 every time the crossover() or mutate() methods are called. Then, in the GeneticAlgorithm class implement the chromosomeHealthExperimentationAlgorithmTest() method to take in an ArrayList of Chromosomes and calculate the average health of all the chromosomes. Lastly, ensure that the health is printed once per iteration of the genetic algorithm.]
 
 === Running the Genetic Algorithm
 
@@ -169,7 +169,7 @@ Now with the above pieces, the algorithm itself can be implemented as follows (k
 ))
 
 // WHITE TEXT
-#labs.wt(dsp: -15pt)[11. Display the least fit chromosome to the console]
+#labs.white-text(dsp: -15pt)[11. Display the least fit chromosome to the console]
 
 #linebreak()
 *REQUIREMENTS:*
@@ -297,7 +297,7 @@ public class GeneticAlgorithm {
 
 
 
-#labs.cmd_color(("Let's play Simon Says!",
+#labs.cmd-color(("Let's play Simon Says!",
   "Select difficulty (easy / hard):",
   "> nice",
   "Invalid difficulty",
@@ -340,7 +340,7 @@ public class GeneticAlgorithm {
 ))
 
 
-#labs.cmd_color(("java -cp .:zip4j-1.3.2.jar ZipCrackerSingleThread",
+#labs.cmd-color(("java -cp .:zip4j-1.3.2.jar ZipCrackerSingleThread",
 "Password is <redacted>",
 "Finished in 1913ms"
 ))

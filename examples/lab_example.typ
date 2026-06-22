@@ -2,16 +2,17 @@
 
 
 
-#show: labs.lab_init
+#show: labs.init
 
+// #let header(class, number: none, title) = {
+// #labs.header("CS-1181", "2", "Comparable Golfers")
 
-#labs.lp("1", "2", "Comparable Golfers")
-
+#labs.header("CS-1181", "Comparable Golfers", number: 3)
 #labs.purpose[
   To review interfaces and ArrayList usage.
 ]
 
-#labs.part_a[
+#labs.part-a[
 Your task is to write a class called `Golfer`. Your class should have the following fields and methods:
 
 ```java
@@ -42,7 +43,7 @@ In main:
 ))[]
 
 
-#labs.part_b[
+#labs.part-b[
   Revise your `Golfer` class so that it also implements the `Comparable` interface.  
   Golfers should be sorted first by score (more negative comes first), then by the number of holes completed (higher comes first), then lexicographically by last name (ignoring case) and finally lexicographically by first name (ignoring case).
 
@@ -87,8 +88,32 @@ In main:
   "Adams, Abby: -8 with 16 holes completed,",
   "Collins, Peter: -8 with 16 holes completed]",
 ))[]
+#labs.lab-rubric[]
 
 
+#pagebreak()
 
-#labs.lab_rubric[]
+#labs.uml(
+  "Vehicle",
+  (
+    "-model: String",
+    "-wheels: int",
+    "-color: String",
+    "-offroad: boolean",
+    "-speed: double",
+    "-seats: int"
+  ),
+
+  (
+    "+Vehicle()",
+  "+setModel(model: String)",
+  "+getModel(): String",
+  "+setWheels(num: int)",
+  "+getWheels(): int",
+  "...",
+  "+drive(distance: int)",
+  "+toString(): String"
+  )
+)
+
 

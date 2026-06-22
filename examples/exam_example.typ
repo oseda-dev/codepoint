@@ -1,17 +1,17 @@
 #import "../lib.typ": exams as e
 
 
-#show: e.exam_init
+#show: e.exam-init
 
 #e.setup("CS-1181 Quiz #1")
 
 #set page(header: [
   #context e.title-state.get()
 ])
-#e.header(out_of: 60)
+#e.header(out-of: 60)
 
 
-#e.multiple_choice([Which of the following is *NOT* true about `ActionListener`?], points: 2,
+#e.multiple-choice([Which of the following is *NOT* true about `ActionListener`?], points: 2,
   [`ActionListener` is an interface in Java],
   [`ActionListener` must be defined in an anonymous inner class], // X
   [`ActionListener` can be implemented in a lambda expression],
@@ -21,7 +21,7 @@
 
 
 
-#e.multiple_choice([Which layout manager allows the user to add a component to a cardinal direction?], points: 2, cols: 2,
+#e.multiple-choice([Which layout manager allows the user to add a component to a cardinal direction?], points: 2, cols: 2,
   [`FlowLayout`],
   [`GridLayout`],
   [`BorderLayout`], // X
@@ -29,7 +29,7 @@
 )
 #e.spacer()
 
-#e.multiple_choice([Which of the following is *NOT* true about exceptions?], points: 2,
+#e.multiple-choice([Which of the following is *NOT* true about exceptions?], points: 2,
   [`Exception` is the base class for all exceptions in Java],
   [Custom exceptions should inherit from an existing exception class],
   [Exceptions often include a message string associated with them],
@@ -37,7 +37,7 @@
 )
 #e.spacer()
 
-#e.multiple_choice([Which of the following is used for defining natural object sorting?], points: 2,
+#e.multiple-choice([Which of the following is used for defining natural object sorting?], points: 2,
   [`Comparable`],
   [`Comparator`],
   [`ActionListener`],
@@ -46,7 +46,7 @@
 #e.spacer()
 
 
-#e.multiple_choice([Which of the following is not a function of the `super` keyword?], points: 2,
+#e.multiple-choice([Which of the following is not a function of the `super` keyword?], points: 2,
   [To call the parent class constructor],
   [To reference the child of the parent class],
   [To reference a method of the parent class],
@@ -58,7 +58,7 @@
 #e.spacer()
 
  Use the code block to answer the following question:
- #e.code_block(
+ #e.code-block(
 ```java
 public static void doThing() {
     boolean b = true;
@@ -81,7 +81,7 @@ public static void doThing() {
 )
 #e.spacer()
 
-#e.short_answer([Write the output of the `doThing()` method when it is called], lines: 3, points: 1)
+#e.short-answer([Write the output of the `doThing()` method when it is called], lines: 3, points: 1)
 #e.spacer()
 #e.spacer()
 
@@ -137,7 +137,7 @@ Use the diagram to answer the following question:
 //   ```
 // ]
 
-#e.multiple_choice([*Circle all* of the following that are valid statements according to the diagram:], points: 2,
+#e.multiple-choice([*Circle all* of the following that are valid statements according to the diagram:], points: 2,
   [```java Animal a = new Animal();```],
   [```java Dog d = new Dog();```],  // X
   [```java Cat c = new Animal();```],
@@ -146,7 +146,7 @@ Use the diagram to answer the following question:
 )
 #e.spacer()
 
-#e.multiple_choice([#"Abstract classes, interfaces, and multi-layered applications are all examples of" ], points: 2,
+#e.multiple-choice([#"Abstract classes, interfaces, and multi-layered applications are all examples of" ], points: 2,
   [Separation of Concern],
   [Dynamic Dispatch],
   [Inheritance],
@@ -154,7 +154,7 @@ Use the diagram to answer the following question:
 )
 #e.spacer()
 
-#e.multiple_choice([Which of the following will *always* cause a ClassCastException to occur?], points: 2,
+#e.multiple-choice([Which of the following will *always* cause a ClassCastException to occur?], points: 2,
   [Casting a child class to a parent class],
   [Casting a parent class to a child class],
   [Casting between unrelated classes], // X
@@ -162,7 +162,7 @@ Use the diagram to answer the following question:
 )
 
 
-#e.multiple_choice([Select all that are true about using ```java Runnable``` interface:], points: 4,
+#e.multiple-choice([Select all that are true about using ```java Runnable``` interface:], points: 4,
   [It can be implemented via a lambda expression], // X
   [It allows for a class to extend another class and be multi-threaded], // X
   [It requires the ```java start()``` method to be overridden],
@@ -173,7 +173,7 @@ Use the diagram to answer the following question:
 #pagebreak()
 Use the `Student` class to answer the following questions:
 
-#e.code_block(
+#e.code-block(
 ```java
 class Student {
     private String name;
@@ -192,7 +192,7 @@ class Student {
 ```
 )
 
-#e.code_block(```java
+#e.code-block(```java
 public static void main(String[] args) {
     Student s1 = new Student("Alice");
     Student s2 = s1;
@@ -203,7 +203,7 @@ public static void main(String[] args) {
 ```, include-line-numbers: true)
 
 
-#e.multiple_choice([What is the output of the code?], points: 2,
+#e.multiple-choice([What is the output of the code?], points: 2,
   [`Alice
            Bob`],
   [`Alice
@@ -214,7 +214,7 @@ public static void main(String[] args) {
            Bob`], // X
 )
 
-#e.multiple_choice([Why does this issue occur?], points: 2,
+#e.multiple-choice([Why does this issue occur?], points: 2,
   [Because a deep copy is performed],
   [Because inheritance is used],
   [Because a shallow copy is performed],
@@ -222,12 +222,12 @@ public static void main(String[] args) {
 )
 #e.spacer()
 
-#e.short_answer([Write one line of code to create a deep copy of `s1`:
+#e.short-answer([Write one line of code to create a deep copy of `s1`:
 ], lines: 4, points: 1)
 #pagebreak()
 
 
-// #short_answer([
+// #short-answer([
 //   Describe the layout managers and components you would use to make the following GUI:
 //   #spacer()
 //   #align(center)[
@@ -237,20 +237,20 @@ public static void main(String[] args) {
 // #spacer()
 
 
-#e.multiple_choice([`BoxLayout` is the default component layout manager], points: 2,
+#e.multiple-choice([`BoxLayout` is the default component layout manager], points: 2,
   [True],
   [False], // X
 )
 #e.spacer()
 
-#e.short_answer([Briefly describe the purpose of the `JPanel` class in Swing?], lines: 4, points: 1)
+#e.short-answer([Briefly describe the purpose of the `JPanel` class in Swing?], lines: 4, points: 1)
 #e.spacer()
 
 #pagebreak()
 
 
 Use the code block to answer the following question:
-#e.code_block(
+#e.code-block(
 ```java
 public class CustomFrame extends JFrame {
 
@@ -260,7 +260,7 @@ public class CustomFrame extends JFrame {
         JButton btn1 = new JButton("Submit");
         this.add(btn1);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT-ON-CLOSE);
 
         JLabel label = new JLabel("This is some text");
 
@@ -272,7 +272,7 @@ public class CustomFrame extends JFrame {
 }
 ```, include-line-numbers: false)
 
-#e.multiple_choice([What will render when an instance of `CustomFrame` is created?], points: 2,
+#e.multiple-choice([What will render when an instance of `CustomFrame` is created?], points: 2,
   [A frame containing only the "Submit" button],
   [A frame containg the "Submit" button, "Next" button, and a JLabel],
   [A frame containing only the "Next" button], // X
@@ -280,11 +280,11 @@ public class CustomFrame extends JFrame {
 )
 #e.spacer()
 
-#e.short_answer([Briefly explain why you chose that answer:], lines: 4, points: 2)
+#e.short-answer([Briefly explain why you chose that answer:], lines: 4, points: 2)
 
 #e.spacer()
 
-#e.multiple_choice([Which of the following is *NOT* true about interfaces?], points: 2,
+#e.multiple-choice([Which of the following is *NOT* true about interfaces?], points: 2,
   [A class in Java can only inherit a single interface], // X
   [An interface ensures a class must implement select methods],
   [You can pass interfaces into methods as data types],
@@ -294,7 +294,7 @@ public class CustomFrame extends JFrame {
 
 
 Use the code block to answer the following questions:
-#e.code_block(
+#e.code-block(
 
   ```java
   public abstract class Worker {
@@ -332,7 +332,7 @@ Use the code block to answer the following questions:
 )
 #e.spacer()
 
-#e.multiple_choice([*Circle all* of the following that are true about the class Intern?], points: 2,
+#e.multiple-choice([*Circle all* of the following that are true about the class Intern?], points: 2,
   [Intern *must* write the body for the clockOut method], // X
   [Intern *must* write the body for the performTask method],
   [Intern *must* override the body for the goToWork method], // X
@@ -341,14 +341,14 @@ Use the code block to answer the following questions:
 #e.spacer()
 #e.spacer()
 
-#e.multiple_choice([The call to the method `performHourlyLabor` is an example of: ], points: 2,
+#e.multiple-choice([The call to the method `performHourlyLabor` is an example of: ], points: 2,
   [Dynamic Dispatch],
   [Inheritance],
   [Multi-Layered Application],
   [Type Casting]
 )
 
-#e.multiple_choice([Which method is used for defining custom graphics in Swing?], points: 2,
+#e.multiple-choice([Which method is used for defining custom graphics in Swing?], points: 2,
   [`setGraphics(Graphics g)`],
   [`draw()`],
   [`addActionListener()`],
@@ -357,7 +357,7 @@ Use the code block to answer the following questions:
 
 #e.spacer()
 
-#e.multiple_choice([What does the `throws` keyword do?], points: 2,
+#e.multiple-choice([What does the `throws` keyword do?], points: 2,
   [Indicates that a method could cause an error], // X
   [Creates and instantiates an exception],
   [Creates a custom exception type],
@@ -365,7 +365,7 @@ Use the code block to answer the following questions:
 )
 #e.spacer()
 
-#e.multiple_choice([Which of the following is *NOT* true about abstract classes?], points: 2,
+#e.multiple-choice([Which of the following is *NOT* true about abstract classes?], points: 2,
   [If a class has one abstract method, the class must be marked as abstract],
   [Abstract classes can be directly instantiated], // X
   [Abstract methods must be implemented in a child class],
@@ -374,16 +374,16 @@ Use the code block to answer the following questions:
 #e.spacer()
 #e.spacer()
 
-#e.short_answer([Write the header for a class that inherits from `Number` and can be sorted in a list:], lines: 4, points: 1)
+#e.short-answer([Write the header for a class that inherits from `Number` and can be sorted in a list:], lines: 4, points: 1)
 #e.spacer()
 
-#e.multiple_choice([All Java Swing events are handled on the Main Thread], points: 1,
+#e.multiple-choice([All Java Swing events are handled on the Main Thread], points: 1,
   [True],
   [False],
 )
 #e.spacer()
 
-#e.multiple_choice([*Circle all* of the following that are concerns when programming GUIs in Swing?], points: 2,
+#e.multiple-choice([*Circle all* of the following that are concerns when programming GUIs in Swing?], points: 2,
   [Doing lots of work on one component may block the EDT],
   [Avoiding `OutOfFrameException` when animating components],
   [Adding more than ten components to a JPanel will cause a crash],
@@ -394,14 +394,14 @@ Use the code block to answer the following questions:
 #pagebreak()
 
 
-#e.free_response([In the space below, write a generic bubble sort method. At a minimum, the method should:
+#e.free-response([In the space below, write a generic bubble sort method. At a minimum, the method should:
   #linebreak() #h(20pt)- Take in an ```java ArrayList``` (or similar) of generic elements that are comparable to themselves
   #linebreak() #h(20pt)- Sort the elements using the bubble sort algorithm
   #linebreak() #h(20pt)- You are welcome to either modify the list passed in or return a sorted version of the list
   #linebreak() #h(20pt)- Please ensure that the method can sort an ```java ArrayList``` of any length], points: 8, lines: 12)
 
 
-#e.tf_block([Mark the following statements as either True (T) of False (F):], points: 5,
+#e.tf-block([Mark the following statements as either True (T) of False (F):], points: 5,
   [```java LinkedList``` utilizes nodes and next pointers to store information], // T
   [```java ArrayList``` is always faster than ```java LinkedList```], // F
   [```java ArrayList``` has more flexible memory usage than ```java LinkedList```], // F
