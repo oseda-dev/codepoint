@@ -422,55 +422,58 @@
 
 #let rubric(base-rubric, style-rubric, bonus-rubric: none, white-text-rubric: none, ..notes) = {
 
-  // todo, leaving assertions empty here because the shape of the data will change significantly soon
-
-  let base-total = base-rubric.at(0).sum()
+  let render-point-breakdown(rubric-data) = {
+    for item in rubric-data {
+      let desc = item.at(0)
+      let pts = item.at(1)
+      
+      // scoot sub-point over
+      h(36pt)
+      // original had this, not sure if we ever ended up using it, but i like it
+      if pts != 0 {
+        text[\[#pts\] #desc]
+      } else {
+        text[#desc]
+      }
+      v(-5pt)
+    }
+  }
 
   text[== RUBRIC:]
   v(5pt)
+  
+  let base-total = _sum-rubric-points(base-rubric)
   text[(#base-total pts) *Base Functionality*]
   v(-5pt)
-  for i in range(base-rubric.at(0).len()) {
-    h(36pt)
-    if base-rubric.at(0).at(i) != 0 {
-      text[\[#base-rubric.at(0).at(i)\] #base-rubric.at(1).at(i)]
-    } else {
-      text[#base-rubric.at(1).at(i)]
-    }
-    v(-5pt)
-  }
+  render-point-breakdown(base-rubric)
 
-  let styleTotal = style-rubric.at(0).sum()
-
+  let styleTotal = _sum-rubric-points(style-rubric)
   v(10pt)
   text[(#styleTotal pts) *Style*]
   v(-5pt)
-  render-items(style-rubric)
+  render-point-breakdown(style-rubric)
 
-  // 3. Extra Credit / Bonus
   if bonus-rubric != none {
-    let extra-total = calc-total(bonus-rubric)
+    let extra-total = _sum-rubric-points(bonus-rubric)
     let extra-percent = extra-total / 10
 
     v(10pt)
     text[(#extra-total pts) *Extra Credit* (#extra-total points == #extra-percent% additional credit in the course)]
     v(-5pt)
-    render-items(bonus-rubric)
+    render-point-breakdown(bonus-rubric)
   }
 
-  // 4. White Text Rubric
   if white-text-rubric != none {
-    let wtTotal = calc-total(white-text-rubric)
+    let wtTotal = _sum-rubric-points(white-text-rubric)(white-text-rubric)
     let wtPercent = wtTotal / 10
     
     white-text[
       #text[(#wtTotal pts) *Extra Credit* (#wtTotal points == #wtPercent% additional credit in the course)]
       #v(0pt)
-      #render-items(white-text-rubric)
+      #render-point-breakdown(white-text-rubric)
     ]
   }
 
-  // 5. Notes Section
   v(15pt)
   text(weight: "semibold")[
     IMPORTANT NOTES:

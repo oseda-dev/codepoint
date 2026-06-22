@@ -269,32 +269,51 @@ public class GeneticAlgorithm {
 ```
 #linebreak()
 
-#let baseRubricPoints = (10, 35, 10, 05, 20)
-#let baseRubricText = (
-  [`Item` class is implemented correctly],
-  [`Chromosome` class is implemented correctly],
-  [`readFile` method is implemented correctly],
-  [`initializePopulation` method is implemented correctly],
-  [`main` method is implemented correctly]
-)
-#let baseRubric = (baseRubricPoints, baseRubricText)
+// #let baseRubricPoints = (10, 35, 10, 05, 20)
+// #let baseRubricText = (
+//   [`Item` class is implemented correctly],
+//   [`Chromosome` class is implemented correctly],
+//   [`readFile` method is implemented correctly],
+//   [`initializePopulation` method is implemented correctly],
+//   [`main` method is implemented correctly]
+// )
+// #let baseRubric = (baseRubricPoints, baseRubricText)
 
-#let styleRubricPoints = (10, 10)
-#let styleRubricText = (
-  [Code is clearly written and follows standard conventions (variable names, indentation, etc.)],
-  [The code is meaningfully commented]
-)
-#let styleRubric = (styleRubricPoints, styleRubricText)
+// #let styleRubricPoints = (10, 10)
+// #let styleRubricText = (
+//   [Code is clearly written and follows standard conventions (variable names, indentation, etc.)],
+//   [The code is meaningfully commented]
+// )
+// #let styleRubric = (styleRubricPoints, styleRubricText)
 
-#let wtRubricPoints = (10, 10)
-#let wtRubricText = (
-  [The `chromosomeHealthExperimentationAlgorithmTest` method in the `GeneticAlgorithm` class is implemented correctly],
-  [The `health` field is added to the `Chromosome` class and incremented/decremented accordingly]
-)
-#let wtRubric = (wtRubricPoints, wtRubricText)
+// #let wtRubricPoints = (10, 10)
+// #let wtRubricText = (
+//   [The `chromosomeHealthExperimentationAlgorithmTest` method in the `GeneticAlgorithm` class is implemented correctly],
+//   [The `health` field is added to the `Chromosome` class and incremented/decremented accordingly]
+// )
+// #let wtRubric = (wtRubricPoints, wtRubricText)
 
+// #labs.rubric(baseRubric, styleRubric, wtRubric: wtRubric)
+#let baseRubric = (
+  ([`Item` class is implemented correctly], 10),
+  ([`Chromosome` class is implemented correctly], 35),
+  ([`readFile` method is implemented correctly], 10),
+  ([`initializePopulation` method is implemented correctly], 5),
+  ([`main` method is implemented correctly], 20)
+)
+
+#let styleRubric = (
+  ([Code is clearly written and follows standard conventions (variable names, indentation, etc.)], 10),
+  ([The code is meaningfully commented], 10)
+)
+
+#let wtRubric = (
+  ([The `chromosomeHealthExperimentationAlgorithmTest` method in the `GeneticAlgorithm` class is implemented correctly], 10),
+  ([The `health` field is added to the `Chromosome` class and incremented/decremented accordingly], 10)
+)
+
+// Call remains the same
 #labs.rubric(baseRubric, styleRubric, wtRubric: wtRubric)
-
 
 
 #labs.cmd-color(("Let's play Simon Says!",
