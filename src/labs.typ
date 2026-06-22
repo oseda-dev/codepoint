@@ -457,9 +457,9 @@
   v(-5pt)
   render-point-breakdown(base-rubric)
 
-  let styleTotal = _sum-rubric-points(style-rubric)
+  let style-total = _sum-rubric-points(style-rubric)
   v(10pt)
-  text[(#styleTotal pts) *Style*]
+  text[(#style-total pts) *Style*]
   v(-5pt)
   render-point-breakdown(style-rubric)
 
