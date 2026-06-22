@@ -417,69 +417,69 @@
 ]
 
 
-#let rubric(baseRubric, styleRubric, bonusRubric: none, wtRubric: none, ..notes) = {
+#let rubric(base-rubric, style-rubric, bonus-rubric: none, white-text-rubric: none, ..notes) = {
 
   // todo, leaving assertions empty here because the shape of the data will change significantly soon
 
-  let baseTotal = baseRubric.at(0).sum()
+  let base-total = base-rubric.at(0).sum()
 
   text[== RUBRIC:]
   v(5pt)
-  text[(#baseTotal pts) *Base Functionality*]
+  text[(#base-total pts) *Base Functionality*]
   v(-5pt)
-  for i in range(baseRubric.at(0).len()) {
+  for i in range(base-rubric.at(0).len()) {
     h(36pt)
-    if baseRubric.at(0).at(i) != 0 {
-      text[\[#baseRubric.at(0).at(i)\] #baseRubric.at(1).at(i)]
+    if base-rubric.at(0).at(i) != 0 {
+      text[\[#base-rubric.at(0).at(i)\] #base-rubric.at(1).at(i)]
     } else {
-      text[#baseRubric.at(1).at(i)]
+      text[#base-rubric.at(1).at(i)]
     }
     v(-5pt)
   }
 
-  let styleTotal = styleRubric.at(0).sum()
+  let styleTotal = style-rubric.at(0).sum()
 
   v(10pt)
   text[(#styleTotal pts) *Style*]
   v(-5pt)
-  for i in range(styleRubric.at(0).len()) {
+  for i in range(style-rubric.at(0).len()) {
     h(36pt)
-    if styleRubric.at(0).at(i) != 0 {
-      text[\[#styleRubric.at(0).at(i)\] #styleRubric.at(1).at(i)]
+    if style-rubric.at(0).at(i) != 0 {
+      text[\[#style-rubric.at(0).at(i)\] #style-rubric.at(1).at(i)]
     } else {
-      text[#styleRubric.at(1).at(i)]
+      text[#style-rubric.at(1).at(i)]
     }
     v(-5pt)
   }
 
-  if bonusRubric != none{
-    let extraTotal = bonusRubric.at(0).sum()
-    let extraPercent = extraTotal / 10
+  if bonus-rubric != none{
+    let extra-total = bonus-rubric.at(0).sum()
+    let extra-percent = extra-total / 10
 
     v(10pt)
-    text[(#extraTotal pts) *Extra Credit* (#extraTotal points == #extraPercent% additional credit in the course)]
+    text[(#extra-total pts) *Extra Credit* (#extra-total points == #extra-percent% additional credit in the course)]
     v(-5pt)
-    for i in range(bonusRubric.at(0).len()) {
+    for i in range(bonus-rubric.at(0).len()) {
       h(36pt)
-      if bonusRubric.at(0).at(i) != 0 {
-        text[\[#bonusRubric.at(0).at(i)\] #bonusRubric.at(1).at(i)]
+      if bonus-rubric.at(0).at(i) != 0 {
+        text[\[#bonus-rubric.at(0).at(i)\] #bonus-rubric.at(1).at(i)]
       } else {
-        text[#bonusRubric.at(1).at(i)]
+        text[#bonus-rubric.at(1).at(i)]
       }
       v(-5pt)
     }
   }
 
-  if wtRubric != none{
-    let wtTotal = wtRubric.at(0).sum()
+  if white-text-rubric != none{
+    let wtTotal = white-text-rubric.at(0).sum()
 
     let wtPercent = wtTotal / 10
     white-text[
       #text[(#wtTotal pts) *Extra Credit* (#wtTotal points == #wtPercent% additional credit in the course)]
       #v(0pt)
-      #for i in range(wtRubric.at(0).len()) {
+      #for i in range(white-text-rubric.at(0).len()) {
         h(36pt)
-        text[\[#wtRubric.at(0).at(i)\] #wtRubric.at(1).at(i)]
+        text[\[#white-text-rubric.at(0).at(i)\] #white-text-rubric.at(1).at(i)]
         v(-5pt)
       }
     ]
