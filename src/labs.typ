@@ -420,7 +420,17 @@
   rubric-data.map(item => item.at(1)).sum()
 }
 
-#let rubric(base-rubric, style-rubric, bonus-rubric: none, white-text-rubric: none, ..notes) = {
+#let rubric(
+  base-rubric, 
+  style-rubric, 
+  bonus-rubric: none, 
+  white-text-rubric: none, 
+  notes: (
+    "Submissions that do not compile will receive a zero", 
+    "Submissions with improperly cited AI will receive a zero and an academic integrity violation", 
+    "Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation"),
+  extra-notes: none) = {
+    
 
   let render-point-breakdown(rubric-data) = {
     for item in rubric-data {
@@ -464,7 +474,7 @@
   }
 
   if white-text-rubric != none {
-    let wtTotal = _sum-rubric-points(white-text-rubric)(white-text-rubric)
+    let wtTotal = _sum-rubric-points(white-text-rubric)
     let wtPercent = wtTotal / 10
     
     white-text[
@@ -479,17 +489,21 @@
     IMPORTANT NOTES:
     #v(-5pt)
     #line(length: 20%, stroke: 0.5pt)
-    #if notes != none {
+    #if extra-notes != none {
       v(0pt)
       set text(fill: rgb("#b52424"))
-      for x in notes.pos() {
+      for x in extra-notes {
         [- #x]
       }
       set text(fill: black)
     }
     #v(0pt)
-    - Submissions that do not compile will receive a zero
-    - Submissions with improperly cited AI will receive a zero and an academic integrity violation
-    - Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation
   ]
+
+
+  for note in notes {
+    text(weight: "semibold")[
+      - #note
+    ]
+  }  
 }

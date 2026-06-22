@@ -312,8 +312,11 @@ public class GeneticAlgorithm {
   ([The `health` field is added to the `Chromosome` class and incremented/decremented accordingly], 10)
 )
 
-// Call remains the same
-#labs.rubric(baseRubric, styleRubric, wtRubric: wtRubric)
+#labs.rubric(baseRubric, styleRubric, white-text-rubric: wtRubric, extra-notes: 
+(
+  "This is a first extra note",
+  "This is another extra note"
+))
 
 
 #labs.cmd-color(("Let's play Simon Says!",
