@@ -269,31 +269,6 @@ public class GeneticAlgorithm {
 ```
 #linebreak()
 
-// #let baseRubricPoints = (10, 35, 10, 05, 20)
-// #let baseRubricText = (
-//   [`Item` class is implemented correctly],
-//   [`Chromosome` class is implemented correctly],
-//   [`readFile` method is implemented correctly],
-//   [`initializePopulation` method is implemented correctly],
-//   [`main` method is implemented correctly]
-// )
-// #let baseRubric = (baseRubricPoints, baseRubricText)
-
-// #let styleRubricPoints = (10, 10)
-// #let styleRubricText = (
-//   [Code is clearly written and follows standard conventions (variable names, indentation, etc.)],
-//   [The code is meaningfully commented]
-// )
-// #let styleRubric = (styleRubricPoints, styleRubricText)
-
-// #let wtRubricPoints = (10, 10)
-// #let wtRubricText = (
-//   [The `chromosomeHealthExperimentationAlgorithmTest` method in the `GeneticAlgorithm` class is implemented correctly],
-//   [The `health` field is added to the `Chromosome` class and incremented/decremented accordingly]
-// )
-// #let wtRubric = (wtRubricPoints, wtRubricText)
-
-// #labs.rubric(baseRubric, styleRubric, wtRubric: wtRubric)
 #let base-rubric = (
   ([`Item` class is implemented correctly], 10),
   ([`Chromosome` class is implemented correctly], 35),
