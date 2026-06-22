@@ -416,6 +416,9 @@
 
 ]
 
+#let _sum-rubric-points(rubric-data) = {
+  rubric-data.map(item => item.at(1)).sum()
+}
 
 #let rubric(base-rubric, style-rubric, bonus-rubric: none, white-text-rubric: none, ..notes) = {
 
@@ -442,64 +445,48 @@
   v(10pt)
   text[(#styleTotal pts) *Style*]
   v(-5pt)
-  for i in range(style-rubric.at(0).len()) {
-    h(36pt)
-    if style-rubric.at(0).at(i) != 0 {
-      text[\[#style-rubric.at(0).at(i)\] #style-rubric.at(1).at(i)]
-    } else {
-      text[#style-rubric.at(1).at(i)]
-    }
-    v(-5pt)
-  }
+  render-items(style-rubric)
 
-  if bonus-rubric != none{
-    let extra-total = bonus-rubric.at(0).sum()
+  // 3. Extra Credit / Bonus
+  if bonus-rubric != none {
+    let extra-total = calc-total(bonus-rubric)
     let extra-percent = extra-total / 10
 
     v(10pt)
     text[(#extra-total pts) *Extra Credit* (#extra-total points == #extra-percent% additional credit in the course)]
     v(-5pt)
-    for i in range(bonus-rubric.at(0).len()) {
-      h(36pt)
-      if bonus-rubric.at(0).at(i) != 0 {
-        text[\[#bonus-rubric.at(0).at(i)\] #bonus-rubric.at(1).at(i)]
-      } else {
-        text[#bonus-rubric.at(1).at(i)]
-      }
-      v(-5pt)
-    }
+    render-items(bonus-rubric)
   }
 
-  if white-text-rubric != none{
-    let wtTotal = white-text-rubric.at(0).sum()
-
+  // 4. White Text Rubric
+  if white-text-rubric != none {
+    let wtTotal = calc-total(white-text-rubric)
     let wtPercent = wtTotal / 10
+    
     white-text[
       #text[(#wtTotal pts) *Extra Credit* (#wtTotal points == #wtPercent% additional credit in the course)]
       #v(0pt)
-      #for i in range(white-text-rubric.at(0).len()) {
-        h(36pt)
-        text[\[#white-text-rubric.at(0).at(i)\] #white-text-rubric.at(1).at(i)]
-        v(-5pt)
-      }
+      #render-items(white-text-rubric)
     ]
   }
 
+  // 5. Notes Section
   v(15pt)
   text(weight: "semibold")[
-  IMPORTANT NOTES:
-  #v(-5pt)
-  #line(length: 20%, stroke: 0.5pt)
-  #if notes != none {
-    v(0pt)
-    set text(fill:  rgb("#b52424"))
-    for x in notes.pos() {
-      [- #x]
+    IMPORTANT NOTES:
+    #v(-5pt)
+    #line(length: 20%, stroke: 0.5pt)
+    #if notes != none {
+      v(0pt)
+      set text(fill: rgb("#b52424"))
+      for x in notes.pos() {
+        [- #x]
+      }
+      set text(fill: black)
     }
-    set text(fill: black)
-  }
-  #v(0pt)
-  - Submissions that do not compile will receive a zero
-  - Submissions with improperly cited AI  will receive a zero and an academic integrity violation
-  - Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation]
+    #v(0pt)
+    - Submissions that do not compile will receive a zero
+    - Submissions with improperly cited AI will receive a zero and an academic integrity violation
+    - Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation
+  ]
 }
