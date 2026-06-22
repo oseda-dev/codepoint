@@ -294,7 +294,7 @@ public class GeneticAlgorithm {
 // #let wtRubric = (wtRubricPoints, wtRubricText)
 
 // #labs.rubric(baseRubric, styleRubric, wtRubric: wtRubric)
-#let baseRubric = (
+#let base-rubric = (
   ([`Item` class is implemented correctly], 10),
   ([`Chromosome` class is implemented correctly], 35),
   ([`readFile` method is implemented correctly], 10),
@@ -302,18 +302,17 @@ public class GeneticAlgorithm {
   ([`main` method is implemented correctly], 20)
 )
 
-#let styleRubric = (
+#let style-rubric = (
   ([Code is clearly written and follows standard conventions (variable names, indentation, etc.)], 10),
   ([The code is meaningfully commented], 10)
 )
 
-#let wtRubric = (
+#let white-text-rubric = (
   ([The `chromosomeHealthExperimentationAlgorithmTest` method in the `GeneticAlgorithm` class is implemented correctly], 10),
   ([The `health` field is added to the `Chromosome` class and incremented/decremented accordingly], 10)
 )
 
-#labs.rubric(baseRubric, styleRubric, white-text-rubric: wtRubric, extra-notes: 
-(
+#labs.rubric(base-rubric, style-rubric, white-text-rubric: white-text-rubric, extra-notes: (
   "This is a first extra note",
   "This is another extra note"
 ))
