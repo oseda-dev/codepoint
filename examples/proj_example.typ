@@ -293,7 +293,7 @@ public class GeneticAlgorithm {
 ))
 
 
-#labs.cmd-color(("Let's play Simon Says!",
+#labs.command-block(("Let's play Simon Says!",
   "Select difficulty (easy / hard):",
   "> nice",
   "Invalid difficulty",
@@ -336,7 +336,7 @@ public class GeneticAlgorithm {
 ))
 
 
-#labs.cmd-color(("java -cp .:zip4j-1.3.2.jar ZipCrackerSingleThread",
+#labs.command-block(("java -cp .:zip4j-1.3.2.jar ZipCrackerSingleThread",
 "Password is <redacted>",
 "Finished in 1913ms"
 ))

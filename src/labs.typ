@@ -81,12 +81,12 @@
 
 
 
-/// cmd-color: Render content as terminal I/O to the page.
+/// command-block: Render content as terminal I/O to the page.
 /// Common commands will be highlighted a unique color.
 /// @param input content Body of terminal text
 /// @param dsp length = 0pt Horizontal indendation/displacement
 /// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
-#let cmd-color(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+#let command-block(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
 
   assert(
     type(dsp) == length or type(dsp) == relative,
@@ -362,7 +362,7 @@
 ]
 
 #let example(io, text) = [
-  // todo @Clarissa I know you wanted to update the input param to cmd-color, so i left it un-asserted for now
+  // todo @Clarissa I know you wanted to update the input param to command-block, so i left it un-asserted for now
 
   #assert(
     type(text) == content or type(text) == str,
@@ -373,7 +373,7 @@
   #v(15pt)
   *EXAMPLE: *
   #text
-  #cmd-color(io)
+  #command-block(io)
 ]
 
 #let lab-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
