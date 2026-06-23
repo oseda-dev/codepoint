@@ -3,9 +3,9 @@
 #let total-points = counter("points")
 
 
-/// exam-init: Initialize an exam with a show rule 
-/// eg: #show: exam.exam-init
-#let exam-init(body) = {
+/// init: Initialize an exam with a show rule
+/// eg: #show: exam.init
+#let init(body) = {
   set page(margin: 40pt)
   set text( 
     font: ("Roboto"),
