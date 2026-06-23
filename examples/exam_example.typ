@@ -260,7 +260,7 @@ public class CustomFrame extends JFrame {
         JButton btn1 = new JButton("Submit");
         this.add(btn1);
 
-        this.setDefaultCloseOperation(JFrame.EXIT-ON-CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JLabel label = new JLabel("This is some text");
 
