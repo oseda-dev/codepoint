@@ -113,7 +113,7 @@
   let user-in = false
   let error = false
   v(2pt)
-  set text(font: "Courier New", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
+  set text(font: "Courier", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
   highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
 
     #if type(input) == array {
@@ -535,20 +535,20 @@
     ]
   }
 
-  v(15pt)
+  v(20pt)
   text(weight: "semibold")[
     IMPORTANT NOTES:
-    #v(-5pt)
+    #v(-8pt)
     #line(length: 20%, stroke: 0.5pt)
     #if extra-notes != none {
-      v(0pt)
+      v(-8pt)
       set text(fill: rgb("#b52424"))
       for x in extra-notes {
         [- #x]
       }
       set text(fill: black)
     }
-    #v(0pt)
+    #v(-5pt)
   ]
 
 
