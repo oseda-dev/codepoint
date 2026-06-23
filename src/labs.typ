@@ -114,61 +114,49 @@
   let error = false
   v(2pt)
   set text(font: "Courier", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
-  highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
+  //highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
+    block(fill: rgb("#383838"), radius: 3pt, outset: (top: 5pt, bottom: 13pt, left: 3pt, right: 25pt))[
 
     #if type(input) == array {
-      let max-len = 0
-      for line in input {
-        if line.len() > max-len {
-          max-len = line.len()
-        }
-      }
 
       v(5pt)
       for line in input {
 
-        let num-spaces = max-len - line.len()
-
-        if line != " " {
-          // pulled this out for maintainability
-          let first-word = line.split().at(0, default: "")
-          if first-word == ">" {
-            user-in = true
-            error = false
-          } else if first-word == "Exception" {
-            user-in = false
-            error = true
-          } else {
-            user-in = false
-            error = false
-          }
-
-          h(7pt + dsp)
-          for word in line.split() {
-            if error {
-              text(fill: rgb("#a83232"), word + " ")
-            }
-            // pulled this from the custom keywords instead of hard coded 118X specific terms
-            // I still left them as default params for compatibility
-            else if (user-in or custom-keywords.contains(word)) and word != ">" {
-              text(fill: rgb("#58ad37"), word + " ")
-            }
-            // also pulled these out into a special command bank
-            else if _CMD-KEYWORDS.contains(word){
-              text(fill: rgb("#ad7a37"), word + " ")
-            } else {
-              text(word + " ")
-            }
-          }
+        // pulled this out for maintainability
+        let first-word = line.split().at(0, default: "")
+        if first-word == ">" {
+          user-in = true
+          error = false
+        } else if first-word == "Exception" {
+          user-in = false
+          error = true
         } else {
-          h(7pt + dsp)
-          text(" ")
-          text(" ")
+          user-in = false
+          error = false
         }
 
-        for i in range(num-spaces) {
-          text(" ")
+        h(7pt + dsp)
+        for word in line.split() {
+          if error {
+            text(fill: rgb("#a83232"), word + " ")
+          }
+          // pulled this from the custom keywords instead of hard coded 118X specific terms
+          // I still left them as default params for compatibility
+          else if (user-in or custom-keywords.contains(word)) and word != ">" {
+            text(fill: rgb("#58ad37"), word + " ")
+          }
+          // also pulled these out into a special command bank
+          else if _CMD-KEYWORDS.contains(word){
+            text(fill: rgb("#ad7a37"), word + " ")
+          } else if (word == "\s") {
+            text("  ")
+          } else if (word == "\t") {
+            text("blah")
+          } else {
+            text(word + " ")
+          }
         }
+
         v(-1pt)
       }
     } else {
