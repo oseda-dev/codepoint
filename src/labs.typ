@@ -392,7 +392,7 @@
   #command-block(io)
 ]
 
-#let lab-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
+#let labAB-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
 
   #assert(
     type(documentation) == content or type(documentation) == str,
@@ -573,4 +573,74 @@
       - #note
     ]
   }  
+}
+
+#let lab-rubric(
+  base-rubric: (
+    ([Reads input correctly], 1),
+    ([Output is correct], 1),
+    ([Handles error cases correctly], 1)
+  ),
+  style-rubric: (
+    ([The code is meaningfully commented], 1),
+  ),
+  bonus-rubric: none,
+  white-text-rubric: none,
+  notes: (
+    "Submissions that do not compile will receive a zero",
+    "Submissions with improperly cited AI will receive a zero and an academic integrity violation",
+    "Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation"),
+    extra-notes: none) = {
+
+  assert(
+    type(base-rubric) == array,
+    message: "Expected base-rubric to be an array, got " + str(type(base-rubric))
+  )
+
+  assert(
+    type(style-rubric) == array,
+    message: "Expected style-rubric to be an array, got " + str(type(style-rubric))
+  )
+
+  assert(
+    type(notes) == array,
+    message: "Expected notes to be an array, got " + str(type(notes))
+  )
+
+  assert(
+    notes.all(n => {
+      type(n) == content or type(n) == str
+    }),
+    message: "Expected all notes to be content or str"
+  )
+
+  if bonus-rubric != none {
+    assert(
+      type(bonus-rubric) == array,
+      message: "Expected bonus-rubric to be an array, got " + str(type(bonus-rubric))
+    )
+  }
+
+  if white-text-rubric != none {
+    assert(
+      type(white-text-rubric) == array,
+      message: "Expected white-text-rubric to be an array, got " + str(type(white-text-rubric))
+    )
+  }
+
+  if extra-notes != none {
+    assert(
+      type(extra-notes) == array,
+      message: "Expected extra-notes to be an array, got " + str(type(extra-notes))
+    )
+
+    assert(
+      extra-notes.all(n => {
+        type(n) == content or type(n) == str
+      }),
+      message: "Expected all extra-notes to be content or str"
+    )
+  }
+
+  rubric(base-rubric, style-rubric, white-text-rubric: white-text-rubric, bonus-rubric: bonus-rubric, extra-notes: extra-notes)
 }
