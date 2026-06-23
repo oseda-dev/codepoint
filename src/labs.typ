@@ -81,6 +81,81 @@
 
 
 
+#let color-coding(input, dsp, custom-keywords) = {
+
+  assert(
+    type(input) == array or type(input) == str,
+    message: "Expected input to be an array, got " + str(type(input))
+  )
+
+  if type(input) == array {
+    assert(
+      input.all(i => {
+        type(i) == str
+      }),
+      message: "Expected all input to be str"
+    )
+  }
+
+  assert(
+    type(dsp) == length or type(dsp) == relative,
+    message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
+  )
+
+  assert(
+    type(custom-keywords) == array,
+    message: "Expected custom-keywords to be an array, got " + str(type(custom-keywords))
+  )
+
+  assert(
+    custom-keywords.all(kw => {
+      type(kw) == content or type(kw) == str
+    }),
+    message: "Expected all custom-keywords to be content or str"
+  )
+
+  let user-in = false
+  let error = false
+  // pulled this out for maintainability
+  let first-word = input.split().at(0, default: "")
+
+  if first-word == ">" {
+    user-in = true
+    error = false
+  } else if first-word == "Exception" {
+    user-in = false
+    error = true
+  } else {
+    user-in = false
+    error = false
+  }
+
+  h(dsp)
+  for word in input.split() {
+    if error {
+      text(fill: rgb("#a83232"), word + " ")
+    }
+    // pulled this from the custom keywords instead of hard coded 118X specific terms
+    // I still left them as default params for compatibility
+    else if (user-in or custom-keywords.contains(word)) and word != ">" {
+      text(fill: rgb("#58ad37"), word + " ")
+    }
+    // also pulled these out into a special command bank
+    else if _CMD-KEYWORDS.contains(word){
+      text(fill: rgb("#ad7a37"), word + " ")
+    } else if (word == "\s") {
+      text("  ")
+    } else if (word == "\4s") {
+      text("    ")
+    } else {
+      text(word + " ")
+    }
+  }
+  v(-5pt)
+}
+
+
+
 /// command-block: Render content as terminal I/O to the page.
 /// Common commands will be highlighted a unique color.
 /// @param input content Body of terminal text
@@ -89,11 +164,23 @@
 #let command-block(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
 
   assert(
+    type(input) == array or type(input) == str,
+    message: "Expected input to be an array, got " + str(type(input))
+  )
+
+  if type(input) == array {
+    assert(
+      input.all(i => {
+        type(i) == str
+      }),
+      message: "Expected all input to be str"
+    )
+  }
+
+  assert(
     type(dsp) == length or type(dsp) == relative,
     message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
   )
-
-  // todo @Clarissa I know you wanted to update the input param, so i left it un-asserted for now
 
   assert(
     type(custom-keywords) == array, 
@@ -109,88 +196,29 @@
   
 
 
-
-  let user-in = false
-  let error = false
   v(2pt)
   set text(font: "Courier", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
-  //highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
-    block(fill: rgb("#383838"), radius: 3pt, outset: (top: 5pt, bottom: 13pt, left: 3pt, right: 25pt))[
+
+  // tabs a single command line to the right
+  let left-tab = 0pt
+  if type(input) != array {
+    left-tab = -5pt
+  }
+
+  block(fill: rgb("#383838"), radius: 3pt, outset: (top: 10pt, bottom: 15pt, left: left-tab, right: 25pt), inset: (left: 10pt - left-tab))[
 
     #if type(input) == array {
-
-      v(5pt)
       for line in input {
-
-        // pulled this out for maintainability
-        let first-word = line.split().at(0, default: "")
-        if first-word == ">" {
-          user-in = true
-          error = false
-        } else if first-word == "Exception" {
-          user-in = false
-          error = true
-        } else {
-          user-in = false
-          error = false
-        }
-
-        h(7pt + dsp)
-        for word in line.split() {
-          if error {
-            text(fill: rgb("#a83232"), word + " ")
-          }
-          // pulled this from the custom keywords instead of hard coded 118X specific terms
-          // I still left them as default params for compatibility
-          else if (user-in or custom-keywords.contains(word)) and word != ">" {
-            text(fill: rgb("#58ad37"), word + " ")
-          }
-          // also pulled these out into a special command bank
-          else if _CMD-KEYWORDS.contains(word){
-            text(fill: rgb("#ad7a37"), word + " ")
-          } else if (word == "\s") {
-            text("  ")
-          } else if (word == "\t") {
-            text("blah")
-          } else {
-            text(word + " ")
-          }
-        }
-
-        v(-1pt)
+        color-coding(line, dsp, custom-keywords)
       }
     } else {
-        let first-word = input.split().at(0, default: "")
-        if first-word == ">" {
-          user-in = true
-          error = false
-        } else if first-word == "Exception" {
-          user-in = false
-          error = true
-        } else {
-          user-in = false
-          error = false
-        }
-
-        h(12pt + dsp)
-        for word in input.split() {
-          if error {
-            text(fill: rgb("#a83232"), word + " ")
-          }
-          else if (user-in or custom-keywords.contains(word)) and word != ">" {
-            text(fill: rgb("#58ad37"), word + " ")
-          }
-          else if _CMD-KEYWORDS.contains(word){
-            text(fill: rgb("#ad7a37"), word + " ")
-          } else {
-            text(word + " ")
-          }
-        }
-        v(3pt)
+      color-coding(input, dsp, custom-keywords)
     }
+
   ]
   v(10pt)
 }
+
 
 #let uml(title, fields, methods) = {
 
