@@ -156,7 +156,7 @@ Now with the above pieces, the algorithm itself can be implemented as follows (k
 
 
 
-#colorCode(("1. Create a set of ten random individuals to serve as the currentPopulation",
+#color-code(("1. Create a set of ten random individuals to serve as the currentPopulation",
 "2. Add each of the individuals in the currentPopulation to the nextGeneration",
 "3. Randomly pair off individuals, perform crossover to create a child, and add it to the nextGeneration",
 "4. Randomly choose ten percent of the individuals in the nextGeneration and mutate them",
@@ -340,3 +340,25 @@ public class GeneticAlgorithm {
 "Password is <redacted>",
 "Finished in 1913ms"
 ))
+
+This is a demonstration of what a single line of command block would look like under a paragraph of text in a document.
+This is a demonstration of what a single line of command block would look like under a paragraph of text in a document.
+
+#labs.command-block(("java -cp .:zip4j-1.3.2.jar ZipCrackerSingleThread"
+))
+
+#labs.example((
+  "What is the value of n?",
+  "> 5",
+  "",
+  "* * * * *",
+  "\s \s \s * \s",
+  "\s \s * \s \s",
+  "\s * \s \s \s",
+  "* * * * *",
+  " ",
+  "\4s tabbed \4s text",
+  " "
+    ),
+    "Spacing, capitalization and wording must match the examples given. Note there is a space between each `*` on the same line."
+)
