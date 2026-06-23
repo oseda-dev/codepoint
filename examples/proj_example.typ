@@ -8,7 +8,7 @@
 
 
 
-#let colorCode(input) = {
+#let color-code(input) = {
 
 
   for line in input {
