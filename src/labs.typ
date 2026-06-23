@@ -202,7 +202,7 @@
   // tabs a single command line to the right
   let left-tab = 0pt
   if type(input) != array {
-    left-tab = -5pt
+    left-tab = -10pt
   }
 
   block(fill: rgb("#383838"), radius: 3pt, outset: (top: 10pt, bottom: 15pt, left: left-tab, right: 25pt), inset: (left: 10pt - left-tab))[
