@@ -416,90 +416,145 @@
 
 ]
 
+#let _sum-rubric-points(rubric-data) = {
+  rubric-data.map(item => item.at(1)).sum()
+}
 
-#let rubric(base-rubric, style-rubric, bonus-rubric: none, white-text-rubric: none, ..notes) = {
+#let rubric(
+  base-rubric, 
+  style-rubric, 
+  bonus-rubric: none, 
+  white-text-rubric: none, 
+  notes: (
+    "Submissions that do not compile will receive a zero", 
+    "Submissions with improperly cited AI will receive a zero and an academic integrity violation", 
+    "Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation"),
+  extra-notes: none) = {
 
-  // todo, leaving assertions empty here because the shape of the data will change significantly soon
+    
+  assert(
+    type(base-rubric) == array, 
+    message: "Expected base-rubric to be an array, got " + str(type(base-rubric))
+  )
 
-  let base-total = base-rubric.at(0).sum()
+  assert(
+    type(style-rubric) == array, 
+    message: "Expected style-rubric to be an array, got " + str(type(style-rubric))
+  )
 
-  text[== RUBRIC:]
-  v(5pt)
-  text[(#base-total pts) *Base Functionality*]
-  v(-5pt)
-  for i in range(base-rubric.at(0).len()) {
-    h(36pt)
-    if base-rubric.at(0).at(i) != 0 {
-      text[\[#base-rubric.at(0).at(i)\] #base-rubric.at(1).at(i)]
-    } else {
-      text[#base-rubric.at(1).at(i)]
-    }
-    v(-5pt)
+  assert(
+    type(notes) == array, 
+    message: "Expected notes to be an array, got " + str(type(notes))
+  )
+
+  assert(
+    notes.all(n => {
+      type(n) == content or type(n) == str
+    }),
+    message: "Expected all notes to be content or str"
+  )
+
+  if bonus-rubric != none {
+    assert(
+      type(bonus-rubric) == array, 
+      message: "Expected bonus-rubric to be an array, got " + str(type(bonus-rubric))
+    )
   }
 
-  let styleTotal = style-rubric.at(0).sum()
-
-  v(10pt)
-  text[(#styleTotal pts) *Style*]
-  v(-5pt)
-  for i in range(style-rubric.at(0).len()) {
-    h(36pt)
-    if style-rubric.at(0).at(i) != 0 {
-      text[\[#style-rubric.at(0).at(i)\] #style-rubric.at(1).at(i)]
-    } else {
-      text[#style-rubric.at(1).at(i)]
-    }
-    v(-5pt)
+  if white-text-rubric != none {
+    assert(
+      type(white-text-rubric) == array, 
+      message: "Expected white-text-rubric to be an array, got " + str(type(white-text-rubric))
+    )
   }
 
-  if bonus-rubric != none{
-    let extra-total = bonus-rubric.at(0).sum()
-    let extra-percent = extra-total / 10
+  if extra-notes != none {
+    assert(
+      type(extra-notes) == array, 
+      message: "Expected extra-notes to be an array, got " + str(type(extra-notes))
+    )
 
-    v(10pt)
-    text[(#extra-total pts) *Extra Credit* (#extra-total points == #extra-percent% additional credit in the course)]
-    v(-5pt)
-    for i in range(bonus-rubric.at(0).len()) {
+    assert(
+      extra-notes.all(n => {
+        type(n) == content or type(n) == str
+      }),
+      message: "Expected all extra-notes to be content or str"
+    )
+  }
+    
+
+  let render-point-breakdown(rubric-data) = {
+    for item in rubric-data {
+      let desc = item.at(0)
+      let pts = item.at(1)
+      
+      // scoot sub-point over
       h(36pt)
-      if bonus-rubric.at(0).at(i) != 0 {
-        text[\[#bonus-rubric.at(0).at(i)\] #bonus-rubric.at(1).at(i)]
+      // original had this, not sure if we ever ended up using it, but i like it
+      if pts != 0 {
+        text[\[#pts\] #desc]
       } else {
-        text[#bonus-rubric.at(1).at(i)]
+        text[#desc]
       }
       v(-5pt)
     }
   }
 
-  if white-text-rubric != none{
-    let wtTotal = white-text-rubric.at(0).sum()
+  text[== RUBRIC:]
+  v(5pt)
+  
+  let base-total = _sum-rubric-points(base-rubric)
+  text[(#base-total pts) *Base Functionality*]
+  v(-5pt)
+  render-point-breakdown(base-rubric)
 
+  let style-total = _sum-rubric-points(style-rubric)
+  v(10pt)
+  text[(#style-total pts) *Style*]
+  v(-5pt)
+  render-point-breakdown(style-rubric)
+
+  if bonus-rubric != none {
+    let extra-total = _sum-rubric-points(bonus-rubric)
+    let extra-percent = extra-total / 10
+
+    v(10pt)
+    text[(#extra-total pts) *Extra Credit* (#extra-total points == #extra-percent% additional credit in the course)]
+    v(-5pt)
+    render-point-breakdown(bonus-rubric)
+  }
+
+  if white-text-rubric != none {
+    let wtTotal = _sum-rubric-points(white-text-rubric)
     let wtPercent = wtTotal / 10
+    
     white-text[
       #text[(#wtTotal pts) *Extra Credit* (#wtTotal points == #wtPercent% additional credit in the course)]
       #v(0pt)
-      #for i in range(white-text-rubric.at(0).len()) {
-        h(36pt)
-        text[\[#white-text-rubric.at(0).at(i)\] #white-text-rubric.at(1).at(i)]
-        v(-5pt)
-      }
+      #render-point-breakdown(white-text-rubric)
     ]
   }
 
   v(15pt)
   text(weight: "semibold")[
-  IMPORTANT NOTES:
-  #v(-5pt)
-  #line(length: 20%, stroke: 0.5pt)
-  #if notes != none {
-    v(0pt)
-    set text(fill:  rgb("#b52424"))
-    for x in notes.pos() {
-      [- #x]
+    IMPORTANT NOTES:
+    #v(-5pt)
+    #line(length: 20%, stroke: 0.5pt)
+    #if extra-notes != none {
+      v(0pt)
+      set text(fill: rgb("#b52424"))
+      for x in extra-notes {
+        [- #x]
+      }
+      set text(fill: black)
     }
-    set text(fill: black)
-  }
-  #v(0pt)
-  - Submissions that do not compile will receive a zero
-  - Submissions with improperly cited AI  will receive a zero and an academic integrity violation
-  - Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation]
+    #v(0pt)
+  ]
+
+
+  for note in notes {
+    text(weight: "semibold")[
+      - #note
+    ]
+  }  
 }
