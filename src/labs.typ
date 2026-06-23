@@ -535,13 +535,13 @@
     ]
   }
 
-  v(20pt)
+  v(25pt)
   text(weight: "semibold")[
     IMPORTANT NOTES:
-    #v(-8pt)
+    #v(-10pt)
     #line(length: 20%, stroke: 0.5pt)
     #if extra-notes != none {
-      v(-8pt)
+      v(-10pt)
       set text(fill: rgb("#b52424"))
       for x in extra-notes {
         [- #x]
