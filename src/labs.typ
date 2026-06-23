@@ -110,7 +110,7 @@
 
 
 
-  let userIn = false
+  let user-in = false
   let error = false
   v(2pt)
   set text(font: "Courier New", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
@@ -133,13 +133,13 @@
           // pulled this out for maintainability
           let first-word = line.split().at(0, default: "")
           if first-word == ">" {
-            userIn = true
+            user-in = true
             error = false
           } else if first-word == "Exception" {
-            userIn = false
+            user-in = false
             error = true
           } else {
-            userIn = false
+            user-in = false
             error = false
           }
 
@@ -150,7 +150,7 @@
             }
             // pulled this from the custom keywords instead of hard coded 118X specific terms
             // I still left them as default params for compatibility
-            else if (userIn or custom-keywords.contains(word)) and word != ">" {
+            else if (user-in or custom-keywords.contains(word)) and word != ">" {
               text(fill: rgb("#58ad37"), word + " ")
             }
             // also pulled these out into a special command bank
@@ -174,13 +174,13 @@
     } else {
         let first-word = input.split().at(0, default: "")
         if first-word == ">" {
-          userIn = true
+          user-in = true
           error = false
         } else if first-word == "Exception" {
-          userIn = false
+          user-in = false
           error = true
         } else {
-          userIn = false
+          user-in = false
           error = false
         }
 
@@ -189,7 +189,7 @@
           if error {
             text(fill: rgb("#a83232"), word + " ")
           }
-          else if (userIn or custom-keywords.contains(word)) and word != ">" {
+          else if (user-in or custom-keywords.contains(word)) and word != ">" {
             text(fill: rgb("#58ad37"), word + " ")
           }
           else if _CMD-KEYWORDS.contains(word){
