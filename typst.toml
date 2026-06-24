@@ -30,5 +30,7 @@ exclude = [
     "examples",
     "create-local-package.sh",
     ".git",
-    ".gitignore"
+    ".gitignore",
+    "BreakingChanges.md",
+    "manual"
 ]

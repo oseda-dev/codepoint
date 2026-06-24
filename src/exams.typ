@@ -44,11 +44,13 @@
 
 /// header: Render a header for the exam, will check total number of points 
 /// Usually done via something like:
+/// ```typst
 /// #exam.setup("CS-1181 Quiz #1")
 /// #set page(header: [
 ///   #context e.title-state.get()
 /// ])
 /// #e.header()
+/// ```
 /// - out-of (none, int): Maximum points the exam is taken out of
 #let header(out-of: none) = [
   #assert(
@@ -137,12 +139,14 @@
 #let _answer-indents = (1fr, 10fr, 1fr)
 
 
-/// _num-to-fr-units: Map a number into a tuple of 1fr units
-/// primarily used to make optional column passing to #multiple-choice easier
+/// num-to-fr-units: Map a number into a tuple of 1fr units primarily used to make optional column passing to #multiple-choice easier
+/// ```
 /// input = 3 -> output = (1fr, 1fr, 1fr)
 /// input = 5 -> output = (1fr, 1fr, 1fr, 1fr, 1fr)
+/// ```
 /// - num (int): number to map
 /// -> array Array of num fr units
+
 #let _num-to-fr-units(num) = {
   range(num).map(i => 1fr)
 }
@@ -151,8 +155,8 @@
 
 /// multiple-choice: Create a multiple choice question
 /// - body (content, str): Body of question
-/// - points (int): = 1 Points the question is worth
-/// - cols (int, array): = 1 Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
+/// - points (int): `1` Points the question is worth
+/// - cols (int, array): `1` Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
 /// - ..answers (arguments): The options
 #let multiple-choice(body, points: 1, cols: 1, ..answers) = {
 
@@ -302,11 +306,12 @@
   }
 }
 
-/// matching: Create a matching question
-/// e.g
+/// matching: Create a matching question e.g.
+/// ```
 /// Cat      A. Canine
 /// Dog      B. Feline
 /// Fish     C. Aquatic Creature
+/// ```
 /// - q-body (content, str): body of question to ask
 /// - points (none, int): = none points the question is worth. Once wrapped, this will default to the length of pairs
 /// - seed (int): = 4 Random seed used for shuffling each side
@@ -459,7 +464,7 @@
 /// code-block: Create a code block formatted for exams
 /// Wraps in box to the edge of the code, can add white space if need it to be longer
 /// - include-line-numbers (boolean): Boolean param for whether line numbers should be included in the output
-/// - raw-code (content): raw code block, eg. \`\`\`\`\`\`java public class...\`\`\`\`\`\`
+/// - raw-code (content): raw code block
 #let code-block(include-line-numbers: true, raw-code) = {
   assert(
     type(raw-code) == content,
