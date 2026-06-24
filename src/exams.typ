@@ -3,18 +3,18 @@
 #let total-points = counter("points")
 
 
-/// exam-init: Initialize an exam with a show rule 
-/// eg: #show: exam.exam-init
-#let exam-init(body) = {
+/// init: Initialize an exam with a show rule
+/// eg: #show: exam.init
+#let init(body) = {
   set page(margin: 40pt)
   set text( 
-    font: ("Aptos"),
-    size: 12pt, 
+    font: ("Roboto"),
+    size: 11pt,
     fill: black, 
     weight: "regular"
   )
   set raw(theme: "../themes/codepoint.tmTheme")  
-  show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
+  show raw: set text(font: "Courier", weight: "bold", size: 10pt)
 
   set par(spacing: 1.2em)
   

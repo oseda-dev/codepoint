@@ -1,7 +1,7 @@
 #import "../lib.typ": exams as e
 
 
-#show: e.exam-init
+#show: e.init
 
 #e.setup("CS-1181 Quiz #1")
 

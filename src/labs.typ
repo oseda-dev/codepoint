@@ -11,13 +11,13 @@
 
   set page(margin: 40pt)
   set text( 
-    font: ("Verdana"), 
-    size: 12pt, 
+    font: ("Roboto"), 
+    size: 11pt,
     fill: black, 
     weight: "regular"
   )
   set raw(theme: "../themes/codepoint.tmTheme")  
-  show raw: set text(font: "Courier New", weight: "bold", size: 10pt)
+  show raw: set text(font: "Courier", weight: "bold", size: 10pt)
 
   // defaults to 1.2, but on labs specifically, this is not enough spacing
   set par(spacing: 1.6em)
@@ -81,19 +81,106 @@
 
 
 
-/// cmd-color: Render content as terminal I/O to the page.
-/// Common commands will be highlighted a unique color.
-/// @param input content Body of terminal text
-/// @param dsp length = 0pt Horizontal indendation/displacement
-/// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
-#let cmd-color(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+#let color-coding(input, dsp, custom-keywords) = {
+
+  assert(
+    type(input) == array or type(input) == str,
+    message: "Expected input to be an array, got " + str(type(input))
+  )
+
+  if type(input) == array {
+    assert(
+      input.all(i => {
+        type(i) == str
+      }),
+      message: "Expected all input to be str"
+    )
+  }
 
   assert(
     type(dsp) == length or type(dsp) == relative,
     message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
   )
 
-  // todo @Clarissa I know you wanted to update the input param, so i left it un-asserted for now
+  assert(
+    type(custom-keywords) == array,
+    message: "Expected custom-keywords to be an array, got " + str(type(custom-keywords))
+  )
+
+  assert(
+    custom-keywords.all(kw => {
+      type(kw) == content or type(kw) == str
+    }),
+    message: "Expected all custom-keywords to be content or str"
+  )
+
+  let user-in = false
+  let error = false
+  // pulled this out for maintainability
+  let first-word = input.split().at(0, default: "")
+
+  if first-word == ">" {
+    user-in = true
+    error = false
+  } else if first-word == "Exception" {
+    user-in = false
+    error = true
+  } else {
+    user-in = false
+    error = false
+  }
+
+  h(dsp)
+  for word in input.split() {
+    if error {
+      text(fill: rgb("#a83232"), word + " ")
+    }
+    // pulled this from the custom keywords instead of hard coded 118X specific terms
+    // I still left them as default params for compatibility
+    else if (user-in or custom-keywords.contains(word)) and word != ">" {
+      text(fill: rgb("#58ad37"), word + " ")
+    }
+    // also pulled these out into a special command bank
+    else if _CMD-KEYWORDS.contains(word){
+      text(fill: rgb("#ad7a37"), word + " ")
+    } else if (word == "\s") {
+      text("  ")
+    } else if (word == "\4s") {
+      text("    ")
+    } else {
+      text(word + " ")
+    }
+  }
+  v(-5pt)
+}
+
+
+
+/// command-block: Render content as terminal I/O to the page.
+/// Common commands will be highlighted a unique color.
+/// @param input content Body of terminal text
+/// @param dsp length = 0pt Horizontal indendation/displacement
+/// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
+#let command-block(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
+
+  assert(
+    type(input) == array or type(input) == str,
+    message: "Expected input to be an array, got " + str(type(input))
+  )
+
+  if type(input) == array {
+    assert(
+      input.all(i => {
+        type(i) == str
+      }),
+      message: "Expected all input to be str"
+    )
+  }
+
+  assert(
+    type(dsp) == length or type(dsp) == relative,
+    message: "Expected dsp to be length or relative (unit type), but received" + str(type(dsp))
+  )
 
   assert(
     type(custom-keywords) == array, 
@@ -109,100 +196,29 @@
   
 
 
-
-  let user-in = false
-  let error = false
   v(2pt)
-  set text(font: "Courier New", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
-  highlight(fill: rgb("#383838"), top-edge: 15pt, bottom-edge: -10pt, radius: 3pt, extent: 6pt)[
+  set text(font: "Courier", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
+
+  // tabs a single command line to the right
+  let left-tab = 0pt
+  if type(input) != array {
+    left-tab = -10pt
+  }
+
+  block(fill: rgb("#383838"), radius: 3pt, outset: (top: 10pt, bottom: 15pt, left: left-tab, right: 25pt), inset: (left: 10pt - left-tab))[
 
     #if type(input) == array {
-      let max-len = 0
       for line in input {
-        if line.len() > max-len {
-          max-len = line.len()
-        }
-      }
-
-      v(5pt)
-      for line in input {
-
-        let num-spaces = max-len - line.len()
-
-        if line != " " {
-          // pulled this out for maintainability
-          let first-word = line.split().at(0, default: "")
-          if first-word == ">" {
-            user-in = true
-            error = false
-          } else if first-word == "Exception" {
-            user-in = false
-            error = true
-          } else {
-            user-in = false
-            error = false
-          }
-
-          h(7pt + dsp)
-          for word in line.split() {
-            if error {
-              text(fill: rgb("#a83232"), word + " ")
-            }
-            // pulled this from the custom keywords instead of hard coded 118X specific terms
-            // I still left them as default params for compatibility
-            else if (user-in or custom-keywords.contains(word)) and word != ">" {
-              text(fill: rgb("#58ad37"), word + " ")
-            }
-            // also pulled these out into a special command bank
-            else if _CMD-KEYWORDS.contains(word){
-              text(fill: rgb("#ad7a37"), word + " ")
-            } else {
-              text(word + " ")
-            }
-          }
-        } else {
-          h(7pt + dsp)
-          text(" ")
-          text(" ")
-        }
-
-        for i in range(num-spaces) {
-          text(" ")
-        }
-        v(-1pt)
+        color-coding(line, dsp, custom-keywords)
       }
     } else {
-        let first-word = input.split().at(0, default: "")
-        if first-word == ">" {
-          user-in = true
-          error = false
-        } else if first-word == "Exception" {
-          user-in = false
-          error = true
-        } else {
-          user-in = false
-          error = false
-        }
-
-        h(12pt + dsp)
-        for word in input.split() {
-          if error {
-            text(fill: rgb("#a83232"), word + " ")
-          }
-          else if (user-in or custom-keywords.contains(word)) and word != ">" {
-            text(fill: rgb("#58ad37"), word + " ")
-          }
-          else if _CMD-KEYWORDS.contains(word){
-            text(fill: rgb("#ad7a37"), word + " ")
-          } else {
-            text(word + " ")
-          }
-        }
-        v(3pt)
+      color-coding(input, dsp, custom-keywords)
     }
+
   ]
   v(10pt)
 }
+
 
 #let uml(title, fields, methods) = {
 
@@ -362,7 +378,7 @@
 ]
 
 #let example(io, text) = [
-  // todo @Clarissa I know you wanted to update the input param to cmd-color, so i left it un-asserted for now
+  // todo @Clarissa I know you wanted to update the input param to command-block, so i left it un-asserted for now
 
   #assert(
     type(text) == content or type(text) == str,
@@ -373,10 +389,10 @@
   #v(15pt)
   *EXAMPLE: *
   #text
-  #cmd-color(io)
+  #command-block(io)
 ]
 
-#let lab-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
+#let labAB-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
 
   #assert(
     type(documentation) == content or type(documentation) == str,
@@ -535,20 +551,20 @@
     ]
   }
 
-  v(15pt)
+  v(25pt)
   text(weight: "semibold")[
     IMPORTANT NOTES:
-    #v(-5pt)
+    #v(-10pt)
     #line(length: 20%, stroke: 0.5pt)
     #if extra-notes != none {
-      v(0pt)
+      v(-10pt)
       set text(fill: rgb("#b52424"))
       for x in extra-notes {
         [- #x]
       }
       set text(fill: black)
     }
-    #v(0pt)
+    #v(-5pt)
   ]
 
 
@@ -557,4 +573,74 @@
       - #note
     ]
   }  
+}
+
+#let lab-rubric(
+  base-rubric: (
+    ([Reads input correctly], 1),
+    ([Output is correct], 1),
+    ([Handles error cases correctly], 1)
+  ),
+  style-rubric: (
+    ([The code is meaningfully commented], 1),
+  ),
+  bonus-rubric: none,
+  white-text-rubric: none,
+  notes: (
+    "Submissions that do not compile will receive a zero",
+    "Submissions with improperly cited AI will receive a zero and an academic integrity violation",
+    "Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation"),
+    extra-notes: none) = {
+
+  assert(
+    type(base-rubric) == array,
+    message: "Expected base-rubric to be an array, got " + str(type(base-rubric))
+  )
+
+  assert(
+    type(style-rubric) == array,
+    message: "Expected style-rubric to be an array, got " + str(type(style-rubric))
+  )
+
+  assert(
+    type(notes) == array,
+    message: "Expected notes to be an array, got " + str(type(notes))
+  )
+
+  assert(
+    notes.all(n => {
+      type(n) == content or type(n) == str
+    }),
+    message: "Expected all notes to be content or str"
+  )
+
+  if bonus-rubric != none {
+    assert(
+      type(bonus-rubric) == array,
+      message: "Expected bonus-rubric to be an array, got " + str(type(bonus-rubric))
+    )
+  }
+
+  if white-text-rubric != none {
+    assert(
+      type(white-text-rubric) == array,
+      message: "Expected white-text-rubric to be an array, got " + str(type(white-text-rubric))
+    )
+  }
+
+  if extra-notes != none {
+    assert(
+      type(extra-notes) == array,
+      message: "Expected extra-notes to be an array, got " + str(type(extra-notes))
+    )
+
+    assert(
+      extra-notes.all(n => {
+        type(n) == content or type(n) == str
+      }),
+      message: "Expected all extra-notes to be content or str"
+    )
+  }
+
+  rubric(base-rubric, style-rubric, white-text-rubric: white-text-rubric, bonus-rubric: bonus-rubric, extra-notes: extra-notes)
 }

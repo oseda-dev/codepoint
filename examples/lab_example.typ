@@ -88,10 +88,11 @@ In main:
   "Adams, Abby: -8 with 16 holes completed,",
   "Collins, Peter: -8 with 16 holes completed]",
 ))[]
-#labs.lab-rubric[]
-
+#labs.labAB-rubric[]
 
 #pagebreak()
+
+#labs.lab-rubric()
 
 #labs.uml(
   "Vehicle",
