@@ -22,8 +22,7 @@ keywords = [
     "computer science", 
     "worksheet", 
     "quiz",
-    "education",
-    "labs"
+    "education"
 ]
 disciplines = ["computer-science"]
 exclude = [
