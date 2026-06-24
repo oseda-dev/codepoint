@@ -3,8 +3,14 @@
 #let total-points = counter("points")
 
 
-/// init: Initialize an exam with a show rule
-/// eg: #show: exam.init
+/// Initialize an exam with a show rule.
+///
+/// Example:
+/// ```typst
+/// #show: exam.init
+/// ```
+///
+/// - body (content): The body content of the exam.
 #let init(body) = {
   set page(margin: 40pt)
   set text( 
@@ -43,7 +49,7 @@
 ///   #context e.title-state.get()
 /// ])
 /// #e.header()
-/// @param out-of int Maximum points the exam is taken out of
+/// - out-of (none, int): Maximum points the exam is taken out of
 #let header(out-of: none) = [
   #assert(
     type(out-of) == none or type(out-of) == int,
@@ -99,8 +105,8 @@
 
 
 /// question: Create a generic question
-/// @param body content Question Body
-/// @param points int Number of points the question is worth
+/// - body (content, str): Question Body
+/// - points (int): Number of points the question is worth
 #let question(body, points: 1) = context {
   assert(
     type(body) == content or type(body) == str,
@@ -135,8 +141,8 @@
 /// primarily used to make optional column passing to #multiple-choice easier
 /// input = 3 -> output = (1fr, 1fr, 1fr)
 /// input = 5 -> output = (1fr, 1fr, 1fr, 1fr, 1fr)
-/// @param num int number to map
-/// @return array Array of num fr units
+/// - num (int): number to map
+/// -> array Array of num fr units
 #let _num-to-fr-units(num) = {
   range(num).map(i => 1fr)
 }
@@ -144,9 +150,10 @@
 
 
 /// multiple-choice: Create a multiple choice question
-/// @param body content Body of question
-/// @param points int = 1 Points the question is worth
-/// @param cols [int | array ] = 1 Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
+/// - body (content, str): Body of question
+/// - points (int): = 1 Points the question is worth
+/// - cols (int, array): = 1 Number of columns to render the answer. Pass an array of units for specific spacing e.g. (1fr, 1fr, 12pt)
+/// - ..answers (arguments): The options
 #let multiple-choice(body, points: 1, cols: 1, ..answers) = {
 
   assert(
@@ -218,6 +225,9 @@
 
 /// https://xkcd.com/221/
 /// Not cryptographically secure
+/// - arr (array): The array
+/// - seed (int): The seed
+/// -> array
 #let _shuffle(arr, seed: 4) = {
 
   // doing assertions for private functions assuming no public version exists
@@ -297,10 +307,10 @@
 /// Cat      A. Canine
 /// Dog      B. Feline
 /// Fish     C. Aquatic Creature
-/// @param q-body content body of question to ask
-/// @param points int = none points the question is worth. Once wrapped, this will default to the length of pairs
-/// @param seed int = 4 Random seed used for shuffling each side
-/// @param pairs array An array containing pairs of answers/definitions 
+/// - q-body (content, str): body of question to ask
+/// - points (none, int): = none points the question is worth. Once wrapped, this will default to the length of pairs
+/// - seed (int): = 4 Random seed used for shuffling each side
+/// - pairs (array): An array containing pairs of answers/definitions
 #let matching(q-body, points: none, seed: 4, pairs) = {
   assert(
     type(q-body) == content or type(q-body) == str,
@@ -333,7 +343,6 @@
 
   _matching(q-body, real-points, seed: seed, pairs)
 }
-
 
 #let tf-block(q-body, points: 1, ..statements) = {
 
@@ -382,9 +391,9 @@
 }
 
 /// short-answer: Create a short answer question
-/// @param q-body content Question Body
-/// @param lines int = 1 lines of space to give the user, renders as actual lines
-/// @param points int = 1 points the question is worth
+/// - q-body (content, str): Question Body
+/// - lines (int): = 1 lines of space to give the user, renders as actual lines
+/// - points (int): = 1 points the question is worth
 #let short-answer(q-body, lines: 1, points: 1) = {
 
   assert(
@@ -421,9 +430,9 @@
 
 
 /// free-response: Create a free response question2
-/// @param q-body content Question Body
-/// @param lines int = 1 lines of space to give the user, renders as empty space
-/// @param points int = 1 points the question is worth
+/// - q-body (content, str): Question Body
+/// - lines (int): = 1 lines of space to give the user, renders as empty space
+/// - points (int): = 1 points the question is worth
 #let free-response(q-body, lines: 1, points: 1) = {
 
   assert(
@@ -449,8 +458,8 @@
 
 /// code-block: Create a code block formatted for exams
 /// Wraps in box to the edge of the code, can add white space if need it to be longer
-/// @param raw-code content(raw) raw code block, eg. ``````java public class...``````
-/// @param include-line-numbers boolean Boolean param for whether line numbers should be included in the output
+/// - include-line-numbers (boolean): Boolean param for whether line numbers should be included in the output
+/// - raw-code (content): raw code block, eg. \`\`\`\`\`\`java public class...\`\`\`\`\`\`
 #let code-block(include-line-numbers: true, raw-code) = {
   assert(
     type(raw-code) == content,

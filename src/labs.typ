@@ -1,6 +1,14 @@
 
 
 
+/// Initialize a lab with a show rule
+///
+/// 
+/// Example:
+/// ```typst
+/// #show: labs.init
+/// ```
+/// - body (content): body fo lab problem 
 #let init(body) = {
 
   assert(
@@ -25,7 +33,10 @@
   body
 }
 
-
+/// Render hidden text to the document
+///
+/// - body (content): Body of text to render 
+/// - dsp (length, relative): Offset to hide the text 
 #let white-text(body, dsp: -10pt) = {
 
   assert(
@@ -81,6 +92,11 @@
 
 
 
+/// Color codes a body to a smart terminal-like color defaults
+///
+/// - input (array): Array of strings for each line of terminal to render 
+/// - dsp (length, relative): Displacement offset to render the color-coded block 
+/// - custom-keywords (array): Array of custom key 
 #let color-coding(input, dsp, custom-keywords) = {
 
   assert(
@@ -158,9 +174,9 @@
 
 /// command-block: Render content as terminal I/O to the page.
 /// Common commands will be highlighted a unique color.
-/// @param input content Body of terminal text
-/// @param dsp length = 0pt Horizontal indendation/displacement
-/// @param custom-keywords array = ("Example.java","Example","ZipCrackerSingleThread") Array of unique values to highlight differently
+/// - input (array, str): Body of terminal text
+/// - dsp (length, relative): Horizontal indendation/displacement
+/// - custom-keywords (array): Array of unique values to highlight differently
 #let command-block(input, dsp: 0pt, custom-keywords: ("Example.java", "Example", "ZipCrackerSingleThread")) = {
 
   assert(
@@ -219,7 +235,10 @@
   v(10pt)
 }
 
-
+/// uml: Render a UML class diagram table layout
+/// - title (content, str): The title of the class
+/// - fields (array): Array of private fields to document
+/// - methods (array): Array of public methods to document
 #let uml(title, fields, methods) = {
 
   assert(
@@ -285,7 +304,10 @@
   )
 }
 
-
+/// header: Render the document section header block for lab problems
+/// - class (content, str): Class name
+/// - title (content, str): The title text for the specific lab problem
+/// - number (int, string, none): Lab problem number, if applicable
 #let header(class, title, number: none) = {
   assert(
     type(class) == content or type(class) == str,
@@ -309,6 +331,8 @@
   line(length: 100%, stroke: 0.5pt)
 }
 
+/// purpose: State the overall objective context
+/// - body (content, str): Body of purpose
 #let purpose(body) = [
   #assert(
     type(body) == content or type(body) == str,
@@ -320,6 +344,8 @@
   #body
 ]
 
+/// directions: Display instruction block
+/// - body (content, str): Directions block body
 #let directions(body) = [
 
   #assert(
@@ -333,6 +359,8 @@
   #body
 ]
 
+/// part-a: Instructions for the first part of a A-B lab problem
+/// - body (content, str): Body of part a
 #let part-a(body) = [
   #assert(
     type(body) == content or type(body) == str,
@@ -348,6 +376,8 @@
   #body
 ]
 
+/// part-b: Instructions for the second part of a A-B lab problem
+/// - body (content, str): Body of part b
 #let part-b(body) = [  
   #assert(
     type(body) == content or type(body) == str,
@@ -360,6 +390,9 @@
   #body
 ]
 
+/// Render an additional instructions for a lab problem
+/// - title (str, content): Title of extra section 
+/// - body (): Body of extra section
 #let extra(title: "Extra", body) = [
   #assert(
     type(title) == content or type(title) == str,
@@ -377,8 +410,10 @@
   #body
 ]
 
+/// Render a terminal-based I/O example  
+/// - io (array): array of string for each example line 
+/// - text (content, str): Text to render explaining example 
 #let example(io, text) = [
-  // todo @Clarissa I know you wanted to update the input param to command-block, so i left it un-asserted for now
 
   #assert(
     type(text) == content or type(text) == str,
@@ -392,6 +427,11 @@
   #command-block(io)
 ]
 
+/// Render a rubric section for an A-B lab problem
+/// - documentation (str, content): Documention point criteria 
+/// - part-a (str, content): Part-A point criteria 
+/// - part-b (str, content): Part-B point criteria 
+/// - notes (str, content): Any additional notes for point criteria  
 #let labAB-rubric(documentation: "Documentation", part-a: "Part A correct", part-b: "Part B correct", notes) = [
 
   #assert(
@@ -436,6 +476,13 @@
   rubric-data.map(item => item.at(1)).sum()
 }
 
+/// rubric: Render an arbitrary rubric, mapping criteria to points
+/// - base-rubric (array): Core specification requirements 
+/// - style-rubric (array): Code style and structure requirements
+/// - bonus-rubric (array, none): Optional bonus point requirements
+/// - white-text-rubric (array, none): Hidden rubric requirements (primarily for detection of LLMs)
+/// - notes (array): Array of notes regarding rubric, with smart defaults
+/// - extra-notes (array, none): supplementary notes 
 #let rubric(
   base-rubric, 
   style-rubric, 
@@ -575,6 +622,13 @@
   }  
 }
 
+/// lab-rubric: Render an lab rubric, mapping criteria to points
+/// - base-rubric (array): Core specification requirements, with smart defaults
+/// - style-rubric (array): Code style and structure requirements, with smart defaults
+/// - bonus-rubric (array, none): Optional bonus point requirements
+/// - white-text-rubric (array, none): Hidden rubric requirements (primarily for detection of LLMs)
+/// - notes (array): Array of notes regarding rubric, with smart defaults
+/// - extra-notes (array, none): supplementary notes 
 #let lab-rubric(
   base-rubric: (
     ([Reads input correctly], 1),
@@ -590,7 +644,7 @@
     "Submissions that do not compile will receive a zero",
     "Submissions with improperly cited AI will receive a zero and an academic integrity violation",
     "Submissions that are partially or fully copied from another submission will receive a zero and an academic integrity violation"),
-    extra-notes: none) = {
+  extra-notes: none) = {
 
   assert(
     type(base-rubric) == array,
