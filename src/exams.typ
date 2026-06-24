@@ -57,6 +57,7 @@
     type(out-of) == none or type(out-of) == int,
     message: "Expected out-of to be none or int, but received " + str(type(out-of))
   )
+  
   #context {
     let max-earnable = total-points.final().at(0)
     

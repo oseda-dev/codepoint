@@ -3,6 +3,67 @@
 # Codepoint
 A library for creating programming assignments and exams with automatic point tracking, terminal blocks, code line-numbering, and pre-formatted question types.
 
+## Exams
+The exams module manages constraints for student testing, providing native support for multiple question types and smart grading headers.
+
+- Common exam question types
+  - Multiple Choice
+  - Matching
+  - Short Answer
+  - Free Response
+  - T/F Blocks
+
+- Score Aggregation: Dynamic calculation of total possible points across all questions (`#exam.question`, `#exam.multiple-choice`, etc.) and prints inside the score at front of test.
+
+- Answer Shuffling (`#exam.matching`): Shuffle matching question choices, preventing answer-key ordering mistakes during exam creation phase
+
+- Numbered Code Snippets (`#exam.code-block`): Formats code containers into distinct line-numbered (optional) code blocks
+```typst
+
+#show: exams.init
+
+#set page(header: [
+  #context exams.title-state.get()
+])
+#exams.header(out-of: 5)
+
+#exams.question([What is the difference between a class and an object?], points: 2)
+
+#exams.short-answer([What is the purpose of a constructor?], lines: 3, points: 2)
+
+#exams.multiple-choice(
+  [Which of the following is a primitive type in Java?],
+  points: 1,
+  cols: 2, // Spreads choices across 2 columns
+  [String],
+  [int],
+  [ArrayList],
+  [Scanner]
+)
+
+#exams.code-block(
+  include-line-numbers: true,
+  ```java
+  public class Main {
+      public static void main(String[] args) {
+          System.out.println("Exam block");
+      }
+  }
+```)
+
+#exams.matching(
+  [Match the OOP concept to its definition.],
+  seed: 4, // shuffle both sides,
+  points: 2,
+  (
+    ("Encapsulation", "Data hiding via private fields."),
+    ("Inheritance", "Subclassing a parent type."),
+  )
+)
+```
+
+
+
 ## Labs
 The labs module configures layout, custom raw-code themes, and uniform section layouts for lab assignment handouts.
 
