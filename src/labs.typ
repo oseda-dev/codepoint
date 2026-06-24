@@ -25,7 +25,7 @@
     weight: "regular"
   )
   set raw(theme: "../themes/codepoint.tmTheme")  
-  show raw: set text(font: "Courier", weight: "bold", size: 10pt)
+  show raw: set text(font: ("Courier", "Courier Prime"), weight: "bold", size: 10pt)
 
   // defaults to 1.2, but on labs specifically, this is not enough spacing
   set par(spacing: 1.6em)

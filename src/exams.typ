@@ -20,7 +20,7 @@
     weight: "regular"
   )
   set raw(theme: "../themes/codepoint.tmTheme")  
-  show raw: set text(font: "Courier", weight: "bold", size: 10pt)
+  show raw: set text(font: ("Courier", "Courier Prime"), weight: "bold", size: 10pt)
 
   set par(spacing: 1.2em)
   
