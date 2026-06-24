@@ -1,7 +1,7 @@
 
 ![Codepoint logo](./img/logo.png)
 # Codepoint
-A library for creating programming assignments and exams with automatic point tracking, terminal blocks, code line-numbering, and pre-formatted question types.
+A library for creating programming assignments and exams with automatic point tracking, terminal blocks, code line-numbering, and pre-formatted question types, and LLM detection.
 
 ## Exams
 The exams module manages constraints for student testing, providing native support for multiple question types and smart grading headers.
