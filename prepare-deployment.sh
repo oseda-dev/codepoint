@@ -5,12 +5,22 @@
 # specifically if any new files are added that wil need deployed, 
 # they will also need added here
 
+echo "Please ensure your package fork is synced with the upstream before continuing"
+read -p "Is your package updated? (y/n): " reply
+if [[ "$reply" != "y" && "$reply" != "Y" ]]; then
+    echo "Exiting..."
+    exit 1
+fi
+
 
 PACKAGE_PATH="../typst-packages/packages/preview/codepoint"
 
 read -r -p "Enter new version: " semver
 
 echo "typed: $semver"
+
+
+mkdir -p "$PACKAGE_PATH/$semver"
 
 NEEDED_DIRECTORIES=(
     "src"
@@ -32,9 +42,9 @@ NEEDED_FILES=(
 )
 
 for dir in "${NEEDED_DIRECTORIES[@]}"; do
-    mkdir -p $file
+    mkdir -p "$PACKAGE_PATH/$semver/$dir" 
 done
 
 for file in "${NEEDED_FILES[@]}"; do
-    cp $file "$PACKAGE_PATH/$file"
+    cp $file "$PACKAGE_PATH/$semver/$file"
 done
