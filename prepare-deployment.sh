@@ -6,6 +6,7 @@
 # they will also need added here
 
 echo "Please ensure your package fork is synced with the upstream before continuing"
+echo "git reset --hard is recommended"
 read -p "Is your package updated? (y/n): " reply
 if [[ "$reply" != "y" && "$reply" != "Y" ]]; then
     echo "Exiting..."
@@ -17,7 +18,7 @@ PACKAGE_PATH="../typst-packages/packages/preview/codepoint"
 
 read -r -p "Enter new version: " semver
 
-echo "typed: $semver"
+echo "Creating codepoint:$semver"
 
 
 mkdir -p "$PACKAGE_PATH/$semver"
@@ -48,3 +49,6 @@ done
 for file in "${NEEDED_FILES[@]}"; do
     cp $file "$PACKAGE_PATH/$semver/$file"
 done
+
+echo "Successfully copied over necessary file"
+echo "Please verify no files were missed"
