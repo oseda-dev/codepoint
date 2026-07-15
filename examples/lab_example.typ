@@ -1,4 +1,4 @@
-#import "../lib.typ": labs
+#import "../lib.typ": labs, exams
 
 
 
@@ -118,3 +118,18 @@ In main:
 )
 
 
+#exams.code-block(
+  ```
+  test block
+  ```
+)
+
+
+
+#exams.code-block(
+  ```java
+  public class Main{
+    ...
+  }
+  ```
+)

@@ -488,7 +488,11 @@
     }
 
     // converting to raw like this loses the language context, so copy it to each line
-    table-values.push(raw(line, lang: raw-code.lang)) 
+
+    // you can't check if the property is none, because it just doesn't have the property
+    let target-lang = if raw-code.has("lang") { raw-code.lang } else { "bash" }
+
+    table-values.push(raw(line, lang: target-lang)) 
   }
 
   // wrap in a box to avoid having conditional stroke
