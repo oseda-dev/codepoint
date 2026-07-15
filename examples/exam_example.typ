@@ -8,7 +8,7 @@
 #set page(header: [
   #context e.title-state.get()
 ])
-#e.header(out-of: 60)
+#e.header()
 
 
 #e.multiple-choice([Which of the following is *NOT* true about `ActionListener`?], points: 2,

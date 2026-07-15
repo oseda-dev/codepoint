@@ -54,7 +54,7 @@
 /// - out-of (none, int): Maximum points the exam is taken out of
 #let header(out-of: none) = [
   #assert(
-    type(out-of) == none or type(out-of) == int,
+    out-of == none or type(out-of) == int,
     message: "Expected out-of to be none or int, but received " + str(type(out-of))
   )
   
