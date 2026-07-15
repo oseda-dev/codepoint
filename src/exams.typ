@@ -324,7 +324,7 @@
   )
 
   assert(
-    type(points) == int or type(points) == none,
+    type(points) == int or points == none,
     message: "Expected points to be int or none, but received" + str(type(points))
   )
 
