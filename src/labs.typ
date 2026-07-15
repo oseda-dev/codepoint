@@ -320,7 +320,7 @@
   )
 
   assert(
-    type(number) == int or type(number) == string or type(number) == none,
+    type(number) == int or type(number) == str or number == none,
     message: "Expected number to be int, string, or none, but received" + str(type(number))
   )
 
