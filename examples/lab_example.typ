@@ -1,4 +1,4 @@
-#import "../lib.typ": labs
+#import "../lib.typ": labs, exams
 
 
 
@@ -7,7 +7,7 @@
 // #let header(class, number: none, title) = {
 // #labs.header("CS-1181", "2", "Comparable Golfers")
 
-#labs.header("CS-1181", "Comparable Golfers", number: 3)
+#labs.header("CS-1181", "Comparable Golfers", number: 05)
 #labs.purpose[
   To review interfaces and ArrayList usage.
 ]
@@ -118,3 +118,18 @@ In main:
 )
 
 
+#exams.code-block(
+  ```
+  test block
+  ```
+)
+
+
+
+#exams.code-block(
+  ```java
+  public class Main{
+    ...
+  }
+  ```
+)

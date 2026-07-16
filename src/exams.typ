@@ -54,7 +54,7 @@
 /// - out-of (none, int): Maximum points the exam is taken out of
 #let header(out-of: none) = [
   #assert(
-    type(out-of) == none or type(out-of) == int,
+    out-of == none or type(out-of) == int,
     message: "Expected out-of to be none or int, but received " + str(type(out-of))
   )
   
@@ -324,7 +324,7 @@
   )
 
   assert(
-    type(points) == int or type(points) == none,
+    type(points) == int or points == none,
     message: "Expected points to be int or none, but received" + str(type(points))
   )
 
@@ -488,7 +488,11 @@
     }
 
     // converting to raw like this loses the language context, so copy it to each line
-    table-values.push(raw(line, lang: raw-code.lang)) 
+
+    // you can't check if the property is none, because it just doesn't have the property
+    let target-lang = if raw-code.has("lang") { raw-code.lang } else { "bash" }
+
+    table-values.push(raw(line, lang: target-lang)) 
   }
 
   // wrap in a box to avoid having conditional stroke
