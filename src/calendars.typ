@@ -160,7 +160,7 @@
             let all-pieces = text-str.split("-")
             // if there is only a number
             if all-pieces.len() == 1 {
-                table.cell()[#text-str]
+                table.cell()[#text(weight: "bold")[#text-str]]
             } else {
                 let fill-color = none
                 let num = all-pieces.at(0)
