@@ -74,6 +74,8 @@
     (12, 11, "FINAL"),
 )
 
+
+
 #calendars.header(
     (8, 12),
     (23, 12),
@@ -82,5 +84,3 @@
     shading: shading-encodings,
     due-dates: due-dates,
 )
-
-nsdd

@@ -164,7 +164,7 @@
     table(
         columns: (0fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr, 1fr),
         align: center,
-        rows: 60pt,
+        rows: 70pt,
         ..days.map(text-str => {
             let all-pieces = text-str.split("-")
             // if there is only a number
@@ -209,9 +209,7 @@
 
                 table.cell(fill: fill-color)[#content]
             }
-            //table.cell(fill: if text-str.contains("exam") { rgb("#a12310").lighten(40%) } else { none })[#text(fill: if text-str.contains("exam") { rgb("#a12310") } else { black })[#text-str]]
         })
-        //..days.flatten()
     )
 }
 
@@ -323,10 +321,6 @@
     start-day = days.at(2)
   	month = month + 1
   }
-
-    v(50pt)
-    days = ("week #1", "1-exam #1", "1-zyBooks #1-lab #1")
-    construct-month-table(days, color-codes, colors)
 }
 
 
