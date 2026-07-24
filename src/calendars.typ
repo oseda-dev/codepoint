@@ -305,11 +305,7 @@
     days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates)
     construct-month-table(days.at(0), color-codes, colors)
 
-    start-day = days.at(2)//int(days.at(0).last()) + 1
-    // prevents starting a month on 32 or another not real day
-    if start-day > 10 {
-        start-day = 1
-    }
+    start-day = days.at(2)
   	month = month + 1
   }
 
