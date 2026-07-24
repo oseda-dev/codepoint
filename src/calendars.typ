@@ -231,6 +231,10 @@
       v(5pt)
   }
 
+  if color-codes == none {
+    color-codes = ()
+  }
+
   let month = month-range.at(0) - 1
   let start-day = day-range.at(0)
   let days = (none, 1)

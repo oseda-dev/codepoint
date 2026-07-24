@@ -12,6 +12,13 @@
     ("final", rgb("#a11010"))
 )
 
-#calendars.header((8, 12), (23, 12), title: "CS-1181 FA26", color-codes: color-coding)
 
-nsddsssssddddddxdddjdsd
+
+#calendars.header(
+    (8, 12),
+    (23, 12),
+    title: "CS-1181 FA26",
+    color-codes: color-coding
+)
+
+nsddsssssddddddxdddjdss
