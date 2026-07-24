@@ -116,10 +116,15 @@
         let i = 0
         let day-text = str(day)
         while i < shading.len() {
-            let date = shading.at(i)
-            if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
-                day-text = str(day) + "-shade"
-                break
+            let j = 0
+            let dates = shading.at(i)
+            while j < dates.len() {
+                let date = dates.at(j)
+                if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
+                    day-text = str(day) + "-" + str(i)
+                    break
+                }
+                j = j + 1
             }
             i = i + 1
         }
@@ -135,10 +140,10 @@
             month-id = month-id + 1
         }
     }
-    return (day-nums, week-count)
+    return (day-nums, week-count, day)
 }
 
-#let construct-month-table(days, keywords, shading) = {
+#let construct-month-table(days, keywords, shading-colors) = {
     v(-18pt)
 
     show table.cell: it => {
@@ -163,9 +168,15 @@
                 let i = 1
                 while i < all-pieces.len() {
                     temp = all-pieces.at(i)
-                    if temp.contains("shade") {
-                        fill-color = shading
-                    } else {
+                    let shade-id = 0
+                    while shade-id < shading-colors.len() {
+                        if temp.contains(str(shade-id)) {
+                            fill-color = shading-colors.at(shade-id)
+                        }
+                        shade-id = shade-id + 1
+                    }
+
+                    if fill-color == none {
                         // check all keywords and perform color coding as needed
                         let j = 0
                         while j < keywords.len() {
@@ -261,6 +272,23 @@
       v(5pt)
   }
 
+  // construct arrays for dates to be shaded
+  // construct arrays for the color to shade
+  let dates = ()
+  let colors = ()
+  if type(shading.at(1)) == color {
+    dates.push(shading.at(0))
+    colors.push(shading.at(1))
+  } else {
+    let i = 0
+    while i < shading.len() {
+        let pair = shading.at(i)
+        dates.push(pair.at(0))
+        colors.push(pair.at(1))
+        i = i + 1
+    }
+  }
+
   let month = month-range.at(0) - 1
   let start-day = day-range.at(0)
   let days = (none, 1)
@@ -274,10 +302,10 @@
     }
 
   	month-header(month, is-mon-start: is-mon-start)
-    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: shading.at(0))
-    construct-month-table(days.at(0), color-codes, shading.at(1))
+    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates)
+    construct-month-table(days.at(0), color-codes, colors)
 
-    start-day = int(days.last()) + 1
+    start-day = days.at(2)//int(days.at(0).last()) + 1
     // prevents starting a month on 32 or another not real day
     if start-day > 10 {
         start-day = 1
@@ -288,7 +316,7 @@
     v(50pt)
     // [1#align(left)[#v(-10pt)Exam \#1]]
     days = ("week #1", "1-exam #1", "1-zyBooks #1-lab #1")
-    construct-month-table(days, color-codes, shading.at(1))
+    construct-month-table(days, color-codes, colors)
 }
 
 

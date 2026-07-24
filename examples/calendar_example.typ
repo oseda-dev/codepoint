@@ -20,14 +20,28 @@
     (11, 27)
 )
 
-#let shading-coding = (holidays, gray)
+#let finals-week = (
+    (12, 7),
+    (12, 8),
+    (12, 9),
+    (12, 10),
+    (12, 11)
+)
+
+#let holiday-encodings = (holidays, gray)
+#let finals-encodings = (finals-week, rgb("#f59998"))
+
+#let shading-encodings = (
+    holiday-encodings,
+    finals-encodings
+)
 
 #calendars.header(
     (8, 12),
     (23, 12),
     title: "CS-1181 FA26",
     color-codes: color-coding,
-    shading: shading-coding
+    shading: shading-encodings
 )
 
-nsddsssssddddddxdddjdsss
+nsddsssssddddddxdddjs
