@@ -158,6 +158,7 @@
         rows: 60pt,
         ..days.map(text-str => {
             let all-pieces = text-str.split("-")
+            // if there is only a number
             if all-pieces.len() == 1 {
                 table.cell()[#text-str]
             } else {
@@ -170,7 +171,7 @@
                     temp = all-pieces.at(i)
                     let shade-id = 0
                     while shade-id < shading-colors.len() {
-                        if temp.contains(str(shade-id)) {
+                        if temp == str(shade-id) {
                             fill-color = shading-colors.at(shade-id)
                         }
                         shade-id = shade-id + 1
