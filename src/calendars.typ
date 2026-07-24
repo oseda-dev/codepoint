@@ -289,17 +289,19 @@
   // construct arrays for the color to shade
   let dates = ()
   let colors = ()
-  if type(shading.at(1)) == color {
-    dates.push(shading.at(0))
-    colors.push(shading.at(1))
-  } else {
-    let i = 0
-    while i < shading.len() {
-        let pair = shading.at(i)
-        dates.push(pair.at(0))
-        colors.push(pair.at(1))
-        i = i + 1
-    }
+  if shading != () {
+      if type(shading.at(1)) == color {
+        dates.push(shading.at(0))
+        colors.push(shading.at(1))
+      } else {
+        let i = 0
+        while i < shading.len() {
+            let pair = shading.at(i)
+            dates.push(pair.at(0))
+            colors.push(pair.at(1))
+            i = i + 1
+        }
+      }
   }
 
   let month = month-range.at(0) - 1

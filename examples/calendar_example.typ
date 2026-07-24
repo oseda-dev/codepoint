@@ -76,11 +76,16 @@
 
 
 
+//#calendars.header(
+//    (8, 12),
+//    (23, 12),
+//    title: "CS-1181 FA26",
+//    color-codes: color-coding,
+//    shading: shading-encodings,
+//    due-dates: due-dates,
+//)
+
 #calendars.header(
-    (8, 12),
-    (23, 12),
-    title: "CS-1181 FA26",
-    color-codes: color-coding,
-    shading: shading-encodings,
-    due-dates: due-dates,
+    (6, 7),
+    (21, 18)
 )
