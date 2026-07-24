@@ -20,12 +20,14 @@
     (11, 27)
 )
 
+#let shading-coding = (holidays, gray)
+
 #calendars.header(
     (8, 12),
     (23, 12),
     title: "CS-1181 FA26",
     color-codes: color-coding,
-    holidays: holidays
+    shading: shading-coding
 )
 
 nsddsssssddddddxdddjdsss

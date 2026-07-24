@@ -85,7 +85,7 @@
   line(length: 100%, stroke: 1pt)
 }
 
-#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, holidays:()) = {
+#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:()) = {
     // number of days in the month
     let max-days = months.at(month-id).at(1)
 
@@ -115,10 +115,10 @@
 
         let i = 0
         let day-text = str(day)
-        while i < holidays.len() {
-            let date = holidays.at(i)
+        while i < shading.len() {
+            let date = shading.at(i)
             if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
-                day-text = str(day) + "-holiday"
+                day-text = str(day) + "-shade"
                 break
             }
             i = i + 1
@@ -138,7 +138,7 @@
     return (day-nums, week-count)
 }
 
-#let construct-month-table(days, keywords) = {
+#let construct-month-table(days, keywords, shading) = {
     v(-18pt)
 
     show table.cell: it => {
@@ -163,8 +163,8 @@
                 let i = 1
                 while i < all-pieces.len() {
                     temp = all-pieces.at(i)
-                    if temp.contains("holiday") {
-                        fill-color = gray
+                    if temp.contains("shade") {
+                        fill-color = shading
                     } else {
                         // check all keywords and perform color coding as needed
                         let j = 0
@@ -193,7 +193,7 @@
 /// - startMonth (content, str): Class name
 /// - title (content, str): The title text for the specific lab problem
 /// - number (int, string, none): Lab problem number, if applicable
-#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), holidays:()) = {
+#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), shading:()) = {
     assert(
         type(month-range) == array,
         message: "Expected month-range to be array, but received " + str(type(month-range))
@@ -274,8 +274,8 @@
     }
 
   	month-header(month, is-mon-start: is-mon-start)
-    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, holidays: holidays)
-    construct-month-table(days.at(0), color-codes)
+    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: shading.at(0))
+    construct-month-table(days.at(0), color-codes, shading.at(1))
 
     start-day = int(days.last()) + 1
     // prevents starting a month on 32 or another not real day
@@ -288,7 +288,7 @@
     v(50pt)
     // [1#align(left)[#v(-10pt)Exam \#1]]
     days = ("week #1", "1-exam #1", "1-zyBooks #1-lab #1")
-    construct-month-table(days, color-codes)
+    construct-month-table(days, color-codes, shading.at(1))
 }
 
 
