@@ -85,13 +85,16 @@
   line(length: 100%, stroke: 1pt)
 }
 
-#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false) = {
+#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, holidays:()) = {
+    // number of days in the month
     let max-days = months.at(month-id).at(1)
 
+    // override if different last day is provided
     if last-month-max != none {
         max-days = last-month-max
     }
 
+    // account for leap year
     if is-leap-year and month-id == 1 {
         max-days = max-days + 1;
     }
@@ -101,17 +104,35 @@
     let reach-max = false
     let week-count = last-week-num
 
+    // loops until the month max has been reached
+    // AND the week has been completed
     while calc.rem(day-nums.len(), 8) != 0 or not reach-max {
+        // inserts the week # tag at the beginning of each week
         if calc.rem(day-nums.len(), 8) == 0 {
             day-nums.push("week #" + str(week-count))
             week-count = week-count + 1
         }
-        day-nums.push(str(day))
+
+        let i = 0
+        let day-text = str(day)
+        while i < holidays.len() {
+            let date = holidays.at(i)
+            if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
+                day-text = str(day) + "-holiday"
+                break
+            }
+            i = i + 1
+        }
+
+        // inserts the day number
+        day-nums.push(day-text)
 
         day = day + 1
+        // resets day if the max is reached
         if day > max-days {
             day = 1
             reach-max = true
+            month-id = month-id + 1
         }
     }
     return (day-nums, week-count)
@@ -135,24 +156,32 @@
             if all-pieces.len() == 1 {
                 table.cell()[#text-str]
             } else {
+                let fill-color = none
                 let num = all-pieces.at(0)
                 let temp = []
                 let content = text(weight: "bold")[#num]
                 let i = 1
                 while i < all-pieces.len() {
                     temp = all-pieces.at(i)
-                    let j = 0
-                    while j < keywords.len() {
-                        if temp.contains(keywords.at(j).at(0)) {
-                            temp = text(fill: keywords.at(j).at(1))[#temp]
-                            break
+                    if temp.contains("holiday") {
+                        fill-color = gray
+                    } else {
+                        // check all keywords and perform color coding as needed
+                        let j = 0
+                        while j < keywords.len() {
+                            if temp.contains(keywords.at(j).at(0)) {
+                                temp = text(fill: keywords.at(j).at(1))[#temp]
+                                break
+                            }
+                            j = j + 1
                         }
-                        j = j + 1
+                        // append the text on a new line, left-justified
+                        content = content + align(left)[#v(-10pt)#temp]
                     }
-                    content = content + align(left)[#v(-10pt)#temp]
                     i = i + 1
                 }
-                table.cell()[#content]
+
+                table.cell(fill: fill-color)[#content]
             }
             //table.cell(fill: if text-str.contains("exam") { rgb("#a12310").lighten(40%) } else { none })[#text(fill: if text-str.contains("exam") { rgb("#a12310") } else { black })[#text-str]]
         })
@@ -164,7 +193,7 @@
 /// - startMonth (content, str): Class name
 /// - title (content, str): The title text for the specific lab problem
 /// - number (int, string, none): Lab problem number, if applicable
-#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:none) = {
+#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), holidays:()) = {
     assert(
         type(month-range) == array,
         message: "Expected month-range to be array, but received " + str(type(month-range))
@@ -225,14 +254,11 @@
         message: "Expected is-mon-start to be bool, or none, but received " + str(type(is-mon-start))
     )
 
+  // format title if provided
   if title != none {
       text[= #title]
       line(length: 100%, stroke: 2pt)
       v(5pt)
-  }
-
-  if color-codes == none {
-    color-codes = ()
   }
 
   let month = month-range.at(0) - 1
@@ -242,13 +268,13 @@
 
   while month < month-range.at(1) {
     // if we are at the last month,
-    // set the end-day the user requested
+    // set the end-day to what the user requested
     if month == month-range.at(1) - 1 {
         end-day = day-range.at(1)
     }
 
   	month-header(month, is-mon-start: is-mon-start)
-    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year)
+    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, holidays: holidays)
     construct-month-table(days.at(0), color-codes)
 
     start-day = int(days.last()) + 1

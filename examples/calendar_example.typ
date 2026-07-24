@@ -12,13 +12,20 @@
     ("final", rgb("#a11010"))
 )
 
-
+#let holidays = (
+    (9, 7),
+    (11, 11),
+    (11, 25),
+    (11, 26),
+    (11, 27)
+)
 
 #calendars.header(
     (8, 12),
     (23, 12),
     title: "CS-1181 FA26",
-    color-codes: color-coding
+    color-codes: color-coding,
+    holidays: holidays
 )
 
-nsddsssssddddddxdddjdss
+nsddsssssddddddxdddjdsss
