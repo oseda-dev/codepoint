@@ -85,7 +85,7 @@
   line(length: 100%, stroke: 1pt)
 }
 
-#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:()) = {
+#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:()) = {
     // number of days in the month
     let max-days = months.at(month-id).at(1)
 
@@ -121,10 +121,19 @@
             while j < dates.len() {
                 let date = dates.at(j)
                 if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
-                    day-text = str(day) + "-" + str(i)
+                    day-text = day-text + "-" + str(i)
                     break
                 }
                 j = j + 1
+            }
+            i = i + 1
+        }
+
+        i = 0
+        while i < assigns.len() {
+            let item = assigns.at(i)
+            if (item.at(0) == (month-id + 1)) and (item.at(1) == day) {
+                day-text = day-text + "-" + item.at(2)
             }
             i = i + 1
         }
@@ -166,23 +175,28 @@
                 let num = all-pieces.at(0)
                 let temp = []
                 let content = text(weight: "bold")[#num]
+                let skip = false
                 let i = 1
                 while i < all-pieces.len() {
+                    skip = false
                     temp = all-pieces.at(i)
+                    // checks if the cell should be shaded
                     let shade-id = 0
                     while shade-id < shading-colors.len() {
                         if temp == str(shade-id) {
                             fill-color = shading-colors.at(shade-id)
+                            skip = true
                         }
                         shade-id = shade-id + 1
                     }
 
-                    if fill-color == none {
+                    // only need to check for keywords if we determine it is not a shading key
+                    if skip == false {
                         // check all keywords and perform color coding as needed
                         let j = 0
                         while j < keywords.len() {
                             if temp.contains(keywords.at(j).at(0)) {
-                                temp = text(fill: keywords.at(j).at(1))[#temp]
+                                temp = text(weight: "bold", fill: keywords.at(j).at(1))[#temp]
                                 break
                             }
                             j = j + 1
@@ -205,7 +219,7 @@
 /// - startMonth (content, str): Class name
 /// - title (content, str): The title text for the specific lab problem
 /// - number (int, string, none): Lab problem number, if applicable
-#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), shading:()) = {
+#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), shading:(), due-dates:()) = {
     assert(
         type(month-range) == array,
         message: "Expected month-range to be array, but received " + str(type(month-range))
@@ -303,7 +317,7 @@
     }
 
   	month-header(month, is-mon-start: is-mon-start)
-    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates)
+    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: due-dates)
     construct-month-table(days.at(0), color-codes, colors)
 
     start-day = days.at(2)
@@ -311,7 +325,6 @@
   }
 
     v(50pt)
-    // [1#align(left)[#v(-10pt)Exam \#1]]
     days = ("week #1", "1-exam #1", "1-zyBooks #1-lab #1")
     construct-month-table(days, color-codes, colors)
 }
