@@ -3,6 +3,15 @@
 
 #show: calendars.init
 
-#calendars.header((8, 12), (23, 12), title: "CS-1181 FA26")
+#let color-coding = (
+    ("zyBooks", rgb("#10a178")),
+    ("lab", rgb("#104fa1")),
+    ("project", rgb("#a19e10")),
+    ("quiz", rgb("#a15d10")),
+    ("exam", rgb("#a11010")),
+    ("final", rgb("#a11010"))
+)
 
-nsddsssssddddddxdddjdsddd
+#calendars.header((8, 12), (23, 12), title: "CS-1181 FA26", color-codes: color-coding)
+
+nsddsssssddddddxdddjdsd
