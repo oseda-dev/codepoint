@@ -13,30 +13,6 @@
     ("MIDTERM", rgb("#a11010")),
 )
 
-#let holidays = (
-    (9, 7),
-    (11, 11),
-    (11, 25),
-    (11, 26),
-    (11, 27)
-)
-
-#let finals-week = (
-    (12, 7),
-    (12, 8),
-    (12, 9),
-    (12, 10),
-    (12, 11)
-)
-
-#let holiday-encodings = (holidays, gray)
-#let finals-encodings = (finals-week, rgb("#f59998"))
-
-#let shading-encodings = (
-    holiday-encodings,
-    finals-encodings
-)
-
 #let due-dates = (
     (8, 30, "zyBooks #1"),
     (9, 6, "zyBooks #2"),
@@ -74,13 +50,37 @@
     (12, 11, "FINAL"),
 )
 
+#let holidays = (
+    (9, 7),
+    ("nov", 11),
+    (11, 25),
+    (11, 26),
+    (11, 27)
+)
+
+#let finals-week = (
+    (12, 7),
+    (12, 8),
+    ("dec", 9),
+    (12, 10),
+    ("december", 11)
+)
+
+#let test = (("september", 23), blue)
+
+#let holiday-encodings = (holidays, gray)
+#let finals-encodings = (finals-week, rgb("#f59998"))
+
+#let shading-encodings = (
+    holiday-encodings,
+    finals-encodings,
+    test
+)
+
 #calendars.draw-calendar(
     ("aug", "dec"),
     (23, 12),
     title: "CS-1181 FA26",
     color-codes: color-coding,
-    shading: shading-encodings,
     due-dates: due-dates,
 )
-
-d

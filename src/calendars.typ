@@ -48,26 +48,25 @@
 /// - body (content): body fo lab problem
 #let init(body) = {
 
-  assert(
-    type(body) == content or type(body) == str,
-    message: "Expected body to be content or str, but received" + str(type(body))
-  )
+    assert(
+        type(body) == content or type(body) == str,
+        message: "Expected body to be content or str, but received" + str(type(body))
+    )
 
+    set page(margin: 20pt, width: 8.5in, height: auto)
+    set text(
+        font: ("Roboto"),
+        size: 11pt,
+        fill: black,
+        weight: "regular"
+    )
+    set raw(theme: "../themes/codepoint.tmTheme")
+    show raw: set text(font: ("Courier"), weight: "bold", size: 10pt)
 
-  set page(margin: 20pt, width: 8.5in, height: auto)
-  set text(
-    font: ("Roboto"),
-    size: 11pt,
-    fill: black,
-    weight: "regular"
-  )
-  set raw(theme: "../themes/codepoint.tmTheme")
-  show raw: set text(font: ("Courier", "Courier Prime"), weight: "bold", size: 10pt)
+    // defaults to 1.2, but on labs specifically, this is not enough spacing
+    set par(spacing: 1.6em)
 
-  // defaults to 1.2, but on labs specifically, this is not enough spacing
-  set par(spacing: 1.6em)
-
-  body
+    body
 }
 
 #let days-of-week(is-mon-start: false) = {
@@ -86,18 +85,18 @@
 }
 
 #let month-header(month-id, is-mon-start: false) = {
-  assert(
-    type(month-id) == int,
-    message: "Expected month-id to be int, but received" + str(type(month-id))
-  )
+    assert(
+        type(month-id) == int,
+        message: "Expected month-id to be int, but received" + str(type(month-id))
+    )
 
-  v(-10pt)
-  text[== #month-days.at(month-id).at(0)]
-  line(length: 100%, stroke: 1pt)
-  v(-15pt)
-  days-of-week(is-mon-start: is-mon-start)
-  v(-15pt)
-  line(length: 100%, stroke: 1pt)
+    v(-10pt)
+    text[== #month-days.at(month-id).at(0)]
+    line(length: 100%, stroke: 1pt)
+    v(-15pt)
+    days-of-week(is-mon-start: is-mon-start)
+    v(-15pt)
+    line(length: 100%, stroke: 1pt)
 }
 
 #let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:()) = {
@@ -239,43 +238,113 @@
         }
         index = index + 1
     }
+
+    assert(
+        numeric-month != -1,
+        message: "Expected valid month received " + str(input)
+    )
+
     return numeric-month
 }
 
+#let create-color-date-shading-arrays(encoding) = {
+    let dates = ()
+    let colors = ()
+
+    // checks for date/date array and color pair
+    assert(
+        type(encoding) == array,
+        message: "Expected encoding in format: (date/date array, color)"
+    )
+
+    // checks that the first element is an array
+    assert(
+        type(encoding.at(0)) == array,
+        message: "Position 0 must be a date or array of dates"
+    )
+
+    // check that the second element is a color
+    assert(
+        type(encoding.at(1)) == color,
+        message: "Position 1 must be a color"
+    )
+    colors.push(encoding.at(1))
+
+    // if the first element is an array of dates
+    if type(encoding.at(0).at(0)) == array {
+        // check if all the dates are in a valid format
+        assert(
+            encoding.at(0).all(s => {
+            (type(s.at(0)) == str or type(s.at(0)) == int) and type(s.at(1)) == int
+            }),
+            message: "Expected all shading dates to be in the format: (int or str, int)"
+        )
+        let i = 0
+        while i < encoding.at(0).len() {
+            if type(encoding.at(0).at(i).at(0)) == str {
+                encoding.at(0).at(i).at(0) = get-numeric-month(encoding.at(0).at(i).at(0))
+            }
+            i = i + 1
+        }
+
+        dates.push(encoding.at(0))
+    // if the first element is a single date
+    } else {
+        assert(
+            ((type(encoding.at(0).at(0)) == str or type(encoding.at(0).at(0)) == int) and type(encoding.at(0).at(1)) == int),
+            message: "Expected date to be in the format: (int or str, int) received (" + str(type(encoding.at(0).at(0))) + ", " + str(type(encoding.at(0).at(1))) + ")"
+        )
+        if type(encoding.at(0).at(0)) == str {
+            encoding.at(0).at(0) = get-numeric-month(encoding.at(0).at(0))
+        }
+
+        let all-dates = ()
+        all-dates.push(encoding.at(0))
+        dates.push(all-dates)
+    }
+
+    return (dates, colors)
+}
+
 /// draw-calendar: Render the calendar as specified
-/// - month-range (int, int) OR (str, str): Class name
-/// - title (content, str): The title text for the specific lab problem
-/// - number (int, string, none): Lab problem number, if applicable
-#let draw-calendar(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), shading:(), due-dates:()) = {
+/// - month-range (int, int) OR (str, str): the start and ending months of the range desired for the calendar
+/// - day-range (int, int): the starting and ending day values for the calendar
+/// - title str: adds the provided title to the calendar, defaults to no title
+/// - is-leap-year bool: indicates whether the year is a leap year (feb has 29 days), defaults to false
+/// - is-mon-start bool: toggles between sunday and monday starts for the week, defaults to sunday start
+/// - color-codes (str, color) OR ((str, color), (str, color), ...): indicates if certain words should be colored the specified color, defaults to empty array
+/// - shading:
+#let draw-calendar(month-range, day-range, title: "", is-leap-year: false, is-mon-start: false, color-codes: (), shading: (), due-dates: ()) = {
+    //////////////////
+    // MONTH CHECKS //
+    //////////////////
     assert(
         type(month-range) == array,
-        message: "Expected month-range to be array, but received " + str(type(month-range))
+        message: "Expected month-range to be array but received " + str(type(month-range))
+    )
+
+    assert(
+        month-range.len() == 2,
+        message: "Expected month-range to be an array of length 2 but received array of length " + str(month-range.len())
     )
 
     assert(
         type(month-range.at(0)) == int or type(month-range.at(0)) == str,
-        message: "Expected month-range to be array of int or string, but received " + str(type(month-range.at(0)))
+        message: "Expected month-range to be array of int or string but received " + str(type(month-range.at(0)))
     )
 
     assert(
         type(month-range.at(1)) == int or type(month-range.at(1)) == str,
-        message: "Expected month-range to be array of int or string, but received " + str(type(month-range.at(1)))
+        message: "Expected month-range to be array of int or string but received " + str(type(month-range.at(1)))
     )
 
-    if type(month-range.at(0)) == str {
-        month-range.at(0) = get-numeric-month(month-range.at(0))
-        assert(
-            month-range.at(0) != -1,
-            message: "First month-range value is an invalid string"
-        )
-    }
-
-    if type(month-range.at(1)) == str {
-        month-range.at(1) = get-numeric-month(month-range.at(1))
-        assert(
-            month-range.at(0) != -1,
-            message: "Second month-range value is an invalid string"
-        )
+    // if a str month is provided, check that it is valid and convert to numeric
+    let month-val = 0
+    while month-val < month-range.len() {
+        if type(month-range.at(month-val)) == str {
+            month-range.at(month-val) = get-numeric-month(month-range.at(month-val))
+        }
+        month-val = month-val + 1
     }
 
     assert(
@@ -288,86 +357,148 @@
         message: "First month-range value must be >0 and <" + str(month-range.at(1))
     )
 
-  assert(
-    type(day-range) == array,
-    message: "Expected day-range to be array, but received " + str(type(day-range))
-  )
 
-  assert(
-    type(day-range.at(0)) == int,
-    message: "Expected day-range to be array of int, but received " + str(type(day-range.at(0)))
-  )
-
-  assert(
-    type(day-range.at(1)) == int,
-    message: "Expected day-range to be array of int, but received " + str(type(day-range.at(1)))
-  )
-
-  assert(
-      day-range.at(0) > 0 and day-range.at(0) < 32 and day-range.at(1) > 0 and day-range.at(1) < 32,
-      message: "Day-range values must be >0 and <32"
-  )
-
-  assert(
-    type(title) == str or title == none,
-    message: "Expected title to be string, or none, but received " + str(type(title))
-  )
-
+    ////////////////
+    // DAY CHECKS //
+    ////////////////
     assert(
-        type(is-leap-year) == bool or is-leap-year == none,
-        message: "Expected is-leap-year to be bool, or none, but received " + str(type(is-leap-year))
+        type(day-range) == array,
+        message: "Expected day-range to be array but received " + str(type(day-range))
     )
 
     assert(
-        type(is-mon-start) == bool or is-mon-start == none,
-        message: "Expected is-mon-start to be bool, or none, but received " + str(type(is-mon-start))
+        month-range.len() == 2,
+        message: "Expected day-range to be an array of length 2 but received array of length " + str(month-range.len())
     )
 
-  // format title if provided
-  if title != none {
-      text[= #title]
-      line(length: 100%, stroke: 2pt)
-      v(5pt)
-  }
+    assert(
+        type(day-range.at(0)) == int,
+        message: "Expected day-range to be array of int but received " + str(type(day-range.at(0)))
+    )
 
-  // construct arrays for dates to be shaded
-  // construct arrays for the color to shade
-  let dates = ()
-  let colors = ()
-  if shading != () {
-      if type(shading.at(1)) == color {
-        dates.push(shading.at(0))
-        colors.push(shading.at(1))
-      } else {
-        let i = 0
-        while i < shading.len() {
-            let pair = shading.at(i)
-            dates.push(pair.at(0))
-            colors.push(pair.at(1))
-            i = i + 1
-        }
-      }
-  }
+    assert(
+        type(day-range.at(1)) == int,
+        message: "Expected day-range to be array of int but received " + str(type(day-range.at(1)))
+    )
 
-  let month = month-range.at(0) - 1
-  let start-day = day-range.at(0)
-  let days = (none, 1)
-  let end-day = none
+    assert(
+        day-range.at(0) > 0 and day-range.at(0) < 32 and day-range.at(1) > 0 and day-range.at(1) < 32,
+        message: "Day-range values must be >0 and <32"
+    )
 
-  while month < month-range.at(1) {
-    // if we are at the last month,
-    // set the end-day to what the user requested
-    if month == month-range.at(1) - 1 {
-        end-day = day-range.at(1)
+
+    /////////////////
+    // TITLE CHECK //
+    /////////////////
+    assert(
+        type(title) == str,
+        message: "Expected title to be string but received " + str(type(title))
+    )
+
+    // format title if provided
+    if title != "" {
+        text[= #title]
+        line(length: 100%, stroke: 2pt)
+        v(5pt)
     }
 
-  	month-header(month, is-mon-start: is-mon-start)
-    days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: due-dates)
-    construct-month-table(days.at(0), color-codes, colors)
 
-    start-day = days.at(2)
-  	month = month + 1
-  }
+    /////////////////////
+    // LEAP YEAR CHECK //
+    /////////////////////
+    assert(
+        type(is-leap-year) == bool,
+        message: "Expected is-leap-year to be bool but received " + str(type(is-leap-year))
+    )
+
+
+    ////////////////////////
+    // MONDAY START CHECK //
+    ////////////////////////
+    assert(
+        type(is-mon-start) == bool,
+        message: "Expected is-mon-start to be bool but received " + str(type(is-mon-start))
+    )
+
+
+    /////////////////////////
+    // COLOR CODING CHECKS //
+    /////////////////////////
+    assert(
+        type(color-codes) == array,
+        message: "Expected color-codes to be an array but received " + str(type(color-codes))
+    )
+
+    if color-codes != () {
+        // allows user to pass a singular keyword and color pair: (str, color)
+        // by converting to an array of pairs
+        if type(color-codes.at(0)) == str and type(color-codes.at(1)) == color {
+            let temp = color-codes
+            color-codes = ()
+            color-codes.push(temp)
+        }
+
+        // if single value is not in the correct format: (str, color)
+        assert(
+            type(color-codes.at(0)) == array,
+            message: "Expected color-codes in the format: (\"keyword\", color)"
+        )
+
+        // if an array of pairs is provided: ((str, color), (str, color), ...)
+        assert(
+            color-codes.all(c => {
+            type(c.at(0)) == str and type(c.at(1)) == color
+            }),
+            message: "Expected all color-code pairs to be in the format: (str, color)"
+        )
+    }
+
+
+    ////////////////////
+    // SHADING CHECKS //
+    ////////////////////
+    assert(
+        type(shading) == array,
+        message: "Expected shading to be an array but received " + str(type(shading))
+    )
+
+    let dates = ()
+    let colors = ()
+    if shading != () {
+        // handles case of one (or more) dates and one color: ((int or str, int), color) OR ( ((int or str, int), (int or str, int), ...), color )
+        if type(shading.at(1)) == color {
+            let out = create-color-date-shading-arrays(shading)
+            dates = out.at(0)
+            colors = out.at(1)
+        // handles case of multiple colors
+        } else {
+            for encoding in shading {
+                let out = create-color-date-shading-arrays(encoding)
+                dates.push(out.at(0).at(0))
+                colors.push(out.at(1).at(0))
+            }
+        }
+    }
+
+    let month = month-range.at(0) - 1
+    let start-day = day-range.at(0)
+    let days = (none, 1)
+    let end-day = none
+
+    while month < month-range.at(1) {
+        // if we are at the last month,
+        // set the end-day to what the user requested
+        if month == month-range.at(1) - 1 {
+            end-day = day-range.at(1)
+        }
+
+        month-header(month, is-mon-start: is-mon-start)
+        days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: due-dates)
+        construct-month-table(days.at(0), color-codes, colors)
+
+        start-day = days.at(2)
+        month = month + 1
+    }
 }
 
 
