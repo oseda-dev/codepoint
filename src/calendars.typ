@@ -1,4 +1,4 @@
-#let months = (
+#let month-days = (
     ("January", 31),
     ("February", 28),
     ("March", 31),
@@ -11,6 +11,21 @@
     ("October", 31),
     ("November", 30),
     ("December", 31)
+)
+
+#let month-inputs = (
+    ("january", "jan"),
+    ("february", "feb"),
+    ("march", "mar"),
+    ("april", "apr"),
+    ("may",),
+    ("june", "jun"),
+    ("july", "jul"),
+    ("august", "aug"),
+    ("september", "sep"),
+    ("october", "oct"),
+    ("november", "nov"),
+    ("december", "dec"),
 )
 
 #let day-arr = (
@@ -77,7 +92,7 @@
   )
 
   v(-10pt)
-  text[== #months.at(month-id).at(0)]
+  text[== #month-days.at(month-id).at(0)]
   line(length: 100%, stroke: 1pt)
   v(-15pt)
   days-of-week(is-mon-start: is-mon-start)
@@ -87,7 +102,7 @@
 
 #let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:()) = {
     // number of days in the month
-    let max-days = months.at(month-id).at(1)
+    let max-days = month-days.at(month-id).at(1)
 
     // override if different last day is provided
     if last-month-max != none {
@@ -213,25 +228,55 @@
     )
 }
 
-/// header: Render the document section header block for lab problems
-/// - startMonth (content, str): Class name
+#let get-numeric-month(input) = {
+    let index = 0
+    let numeric-month = -1
+    while index < month-inputs.len() {
+        for keyword in month-inputs.at(index) {
+            if keyword == lower(input) {
+                numeric-month = index + 1
+            }
+        }
+        index = index + 1
+    }
+    return numeric-month
+}
+
+/// draw-calendar: Render the calendar as specified
+/// - month-range (int, int) OR (str, str): Class name
 /// - title (content, str): The title text for the specific lab problem
 /// - number (int, string, none): Lab problem number, if applicable
-#let header(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), shading:(), due-dates:()) = {
+#let draw-calendar(month-range, day-range, title:none, is-leap-year:false, is-mon-start:false, color-codes:(), shading:(), due-dates:()) = {
     assert(
         type(month-range) == array,
         message: "Expected month-range to be array, but received " + str(type(month-range))
     )
 
     assert(
-        type(month-range.at(0)) == int,
-        message: "Expected month-range to be array of int, but received " + str(type(month-range.at(0)))
+        type(month-range.at(0)) == int or type(month-range.at(0)) == str,
+        message: "Expected month-range to be array of int or string, but received " + str(type(month-range.at(0)))
     )
 
     assert(
-        type(month-range.at(1)) == int,
-        message: "Expected month-range to be array of int, but received " + str(type(month-range.at(1)))
+        type(month-range.at(1)) == int or type(month-range.at(1)) == str,
+        message: "Expected month-range to be array of int or string, but received " + str(type(month-range.at(1)))
     )
+
+    if type(month-range.at(0)) == str {
+        month-range.at(0) = get-numeric-month(month-range.at(0))
+        assert(
+            month-range.at(0) != -1,
+            message: "First month-range value is an invalid string"
+        )
+    }
+
+    if type(month-range.at(1)) == str {
+        month-range.at(1) = get-numeric-month(month-range.at(1))
+        assert(
+            month-range.at(0) != -1,
+            message: "Second month-range value is an invalid string"
+        )
+    }
 
     assert(
         month-range.at(1) > 0 and month-range.at(1) < 13,

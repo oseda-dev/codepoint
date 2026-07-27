@@ -74,18 +74,13 @@
     (12, 11, "FINAL"),
 )
 
-
-
-//#calendars.header(
-//    (8, 12),
-//    (23, 12),
-//    title: "CS-1181 FA26",
-//    color-codes: color-coding,
-//    shading: shading-encodings,
-//    due-dates: due-dates,
-//)
-
-#calendars.header(
-    (6, 7),
-    (21, 18)
+#calendars.draw-calendar(
+    ("aug", "dec"),
+    (23, 12),
+    title: "CS-1181 FA26",
+    color-codes: color-coding,
+    shading: shading-encodings,
+    due-dates: due-dates,
 )
+
+d
