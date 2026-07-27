@@ -1,3 +1,4 @@
+// months with their corresponding default number of days
 #let month-days = (
     ("January", 31),
     ("February", 28),
@@ -13,6 +14,8 @@
     ("December", 31)
 )
 
+// acceptable string inputs for each month
+// case-insensitive
 #let month-inputs = (
     ("january", "jan"),
     ("february", "feb"),
@@ -28,6 +31,7 @@
     ("december", "dec"),
 )
 
+// array for days of the week
 #let day-arr = (
     "Sunday",
     "Monday",
@@ -69,8 +73,13 @@
     body
 }
 
+
+/// days-of-week: prints the days of the week to the document
+/// is-mon-start bool: flag to control whether to start on sunday or monday
 #let days-of-week(is-mon-start: false) = {
     let days = day-arr
+    // if monday start,
+    // removes sunday from the beginning and appends it to the end
     if is-mon-start {
         let old = days.remove(0)
         days.push("Sunday")
@@ -84,21 +93,31 @@
     )
 }
 
-#let month-header(month-id, is-mon-start: false) = {
-    assert(
-        type(month-id) == int,
-        message: "Expected month-id to be int, but received" + str(type(month-id))
-    )
 
+/// month-header: prints the month header and days of the week to the document
+/// - month-id int: id for the month to print
+/// - is-mon-start bool: flag to control whether to start on sunday or monday
+#let month-header(month-id, is-mon-start: false) = {
     v(-10pt)
+    // print month
     text[== #month-days.at(month-id).at(0)]
     line(length: 100%, stroke: 1pt)
     v(-15pt)
+    // print days of week
     days-of-week(is-mon-start: is-mon-start)
     v(-15pt)
     line(length: 100%, stroke: 1pt)
 }
 
+
+/// construct-day-arr: constructs an array with all the encodings for each day in a month as well as info to assist the creation of encodings for the next month
+/// - month-id int: the month to construct days for
+/// - start int: the day to start the month on
+/// - last-month-max int: allows the month to end sooner than the number of days in the month
+/// - last-week-num int: the most recently printed week number
+/// - is-leap-year bool: flag to control number of days in february
+/// - shading array: any shading info to encode
+/// - assigns array: any text to encode on the day
 #let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:()) = {
     // number of days in the month
     let max-days = month-days.at(month-id).at(1)
@@ -127,14 +146,21 @@
             week-count = week-count + 1
         }
 
-        let i = 0
+        // add day number to day text
         let day-text = str(day)
+        // iterate through any shadings provided
+        let i = 0
         while i < shading.len() {
             let j = 0
+            // grab the dates from the shading arrays
             let dates = shading.at(i)
+            // iterate through all provided dates
             while j < dates.len() {
+                // grab individual date
                 let date = dates.at(j)
+                // check if the date matches the current date
                 if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
+                    // if it is a match, encode the shading id #
                     day-text = day-text + "-" + str(i)
                     break
                 }
@@ -143,16 +169,20 @@
             i = i + 1
         }
 
+        // iterate through any assigns provided
         i = 0
         while i < assigns.len() {
+            // grab an assignment
             let item = assigns.at(i)
+            // check if the date matches the current date
             if (item.at(0) == (month-id + 1)) and (item.at(1) == day) {
+                // if it is a match, encode the assignment text
                 day-text = day-text + "-" + item.at(2)
             }
             i = i + 1
         }
 
-        // inserts the day number
+        // inserts the day number and associated encodings
         day-nums.push(day-text)
 
         day = day + 1
@@ -160,12 +190,18 @@
         if day > max-days {
             day = 1
             reach-max = true
+            // increment current month
             month-id = month-id + 1
         }
     }
     return (day-nums, week-count, day)
 }
 
+
+/// construct-month-table: creates and draws the table of days for a specific month
+/// - days ([DAY NUM ENCODING SEPARATED BY DASHES], [DAY NUM ENCODING SEPARATED BY DASHES], ...): contains all the day numbers and appropriate encodings for each day
+/// - keywords ((str, color), (str, color), ...): array of keywords and their corresponding colors
+/// - shading-colors (color, color, ...): array of colors to shade specified cells
 #let construct-month-table(days, keywords, shading-colors) = {
     v(-18pt)
 
@@ -180,25 +216,40 @@
         align: center,
         rows: 70pt,
         ..days.map(text-str => {
+            // split day date on dash
             let all-pieces = text-str.split("-")
             // if there is only a number
             if all-pieces.len() == 1 {
+                // print that number bolded centered in the cell
                 table.cell()[#text(weight: "bold")[#text-str]]
             } else {
-                let fill-color = none
+                // initialize content to include the number
                 let num = all-pieces.at(0)
-                let temp = []
                 let content = text(weight: "bold")[#num]
+
+                // init vars
+                let fill-color = none
+                let temp = []
                 let skip = false
+
+                // start grabbing encodings at 1 since we already grabbed the day num
                 let i = 1
+
+                // iterate through day encodings
                 while i < all-pieces.len() {
                     skip = false
+
+                    // grab current encoding piece
                     temp = all-pieces.at(i)
+
                     // checks if the cell should be shaded
                     let shade-id = 0
                     while shade-id < shading-colors.len() {
+                        // if encoding is the id matching a shading id
                         if temp == str(shade-id) {
+                            // update the fill color
                             fill-color = shading-colors.at(shade-id)
+                            // no need to check for keywords w/ this encoding
                             skip = true
                         }
                         shade-id = shade-id + 1
@@ -209,7 +260,9 @@
                         // check all keywords and perform color coding as needed
                         let j = 0
                         while j < keywords.len() {
+                            // if the encoding matches a keyword
                             if temp.contains(keywords.at(j).at(0)) {
+                                // format the text appropriately and exit
                                 temp = text(weight: "bold", fill: keywords.at(j).at(1))[#temp]
                                 break
                             }
@@ -220,13 +273,16 @@
                     }
                     i = i + 1
                 }
-
+                // print content to the cell
                 table.cell(fill: fill-color)[#content]
             }
         })
     )
 }
 
+
+/// get-numeric-month: takes a string and sees if it is a valid month; if it is, converts it to a numeric month
+/// - input str: string to check if it is a valid month
 #let get-numeric-month(input) = {
     let index = 0
     let numeric-month = -1
@@ -247,6 +303,9 @@
     return numeric-month
 }
 
+
+/// create-color-date-shading-arrays: Handles all possible types of shading encodings
+/// - encoding: the encoding to check if it is in the right format for shading param
 #let create-color-date-shading-arrays(encoding) = {
     let dates = ()
     let colors = ()
@@ -306,14 +365,16 @@
     return (dates, colors)
 }
 
+
 /// draw-calendar: Render the calendar as specified
-/// - month-range (int, int) OR (str, str): the start and ending months of the range desired for the calendar
+/// - month-range (int or str, int or str): the start and ending months of the range desired for the calendar
 /// - day-range (int, int): the starting and ending day values for the calendar
 /// - title str: adds the provided title to the calendar, defaults to no title
 /// - is-leap-year bool: indicates whether the year is a leap year (feb has 29 days), defaults to false
 /// - is-mon-start bool: toggles between sunday and monday starts for the week, defaults to sunday start
-/// - color-codes (str, color) OR ((str, color), (str, color), ...): indicates if certain words should be colored the specified color, defaults to empty array
-/// - shading:
+/// - color-codes (str, color) OR ((str, color), (str, color), ...): indicates if certain words should be colored the specified color, defaults to an empty array
+/// - shading ([DATE], color) OR ([DATE ARRAY], color) OR (([DATE], color), ([DATE ARRAY], color), ...) where [DATE] = (int or str, int): takes pairs of date(s) and colors to shade the date boxes accordingly, defaults to an empty array
+/// - due-dates: (int or str, int, str) OR ((int or str, int, str), (int or str, int, str), ...): indicates text that the user wants printed on a specific date, defaults to an empty array
 #let draw-calendar(month-range, day-range, title: "", is-leap-year: false, is-mon-start: false, color-codes: (), shading: (), due-dates: ()) = {
     //////////////////
     // MONTH CHECKS //
@@ -462,6 +523,7 @@
         message: "Expected shading to be an array but received " + str(type(shading))
     )
 
+    // constructs proper dates and colors arrays
     let dates = ()
     let colors = ()
     if shading != () {
@@ -480,6 +542,50 @@
         }
     }
 
+
+    /////////////////////
+    // DUE DATE CHECKS //
+    /////////////////////
+    assert(
+        type(due-dates) == array,
+        message: "Expected due-dates to be an array but received " + str(type(due-dates))
+    )
+
+    // constructs proper date text arrays
+    let date-text = ()
+    if due-dates != () {
+        // handles a single date text
+        if (type(due-dates.at(0)) == int or type(due-dates.at(0)) == str) and type(due-dates.at(1)) == int and type(due-dates.at(2)) == str {
+            if type(due-dates.at(0)) == str {
+                due-dates.at(0) = get-numeric-month(due-dates.at(0))
+            }
+            date-text.push(due-dates)
+        // handles multiple dates
+        } else {
+            assert(
+                due-dates.all(d => {
+                    type(d) == array and d.len() == 3 and (type(d.at(0)) == int or type(d.at(0)) == str) and type(d.at(1)) == int and type(d.at(2)) == str
+                    }),
+                    message: "Expected due-dates to be an array of arrays of form (int or str, int, str)"
+            )
+
+            let due-date-index = 0
+            while due-date-index < due-dates.len() {
+                if type(due-dates.at(due-date-index).at(0)) == str {
+                    due-dates.at(due-date-index).at(0) = get-numeric-month(due-dates.at(due-date-index).at(0))
+                }
+                date-text.push(due-dates.at(due-date-index))
+                due-date-index = due-date-index + 1
+            }
+        }
+    }
+
+
+    //////////////////////////////////
+    // ACTUAL CALENDAR CONSTRUCTION //
+    //////////////////////////////////
+
+    // adjust start month for zero-indexing
     let month = month-range.at(0) - 1
     let start-day = day-range.at(0)
     let days = (none, 1)
@@ -492,11 +598,16 @@
             end-day = day-range.at(1)
         }
 
+        // create header for the month
         month-header(month, is-mon-start: is-mon-start)
-        days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: due-dates)
+        // construct an array of the days and all their appropriate encodings for that month
+        days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: date-text)
+        // print table of days w/ appropriate info
         construct-month-table(days.at(0), color-codes, colors)
 
+        // get new start day from prior day array generation
         start-day = days.at(2)
+
         month = month + 1
     }
 }

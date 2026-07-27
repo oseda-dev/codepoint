@@ -19,7 +19,7 @@
     (9, 13, "zyBooks #3"),
     (9, 20, "zyBooks #4"),
     (9, 27, "zyBooks #5"),
-    (10, 4, "zyBooks #6"),
+    ("oct", 4, "zyBooks #6"),
     (10, 11, "zyBooks #7"),
     (10, 18, "zyBooks #8"),
     (10, 25, "zyBooks #9"),
@@ -41,7 +41,7 @@
 
     (9, 20, "project #1"),
     (10, 11, "project #2"),
-    (11, 1, "project #3"),
+    ("November", 1, "project #3"),
     (11, 22, "project #4"),
 
     (9, 18, "QUIZ #1"),
@@ -73,14 +73,16 @@
 
 #let shading-encodings = (
     holiday-encodings,
-    finals-encodings,
-    test
+    finals-encodings
 )
+
+#let test2 = ("nov", 5, "BLAH")
 
 #calendars.draw-calendar(
     ("aug", "dec"),
     (23, 12),
     title: "CS-1181 FA26",
     color-codes: color-coding,
-    due-dates: due-dates,
+    shading: shading-encodings,
+    due-dates: due-dates
 )
