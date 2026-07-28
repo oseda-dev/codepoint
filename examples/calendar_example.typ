@@ -47,10 +47,6 @@
     (10, 16, "MIDTERM"),
     (11, 13, "QUIZ #2"),
     (12, 11, "FINAL"),
-
-    (9,9, "project #1"),
-    (9,9, "QUIZ #1"),
-    (9,9, "lab #8"),
 )
 
 #let holidays = (

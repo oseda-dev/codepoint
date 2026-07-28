@@ -267,7 +267,7 @@
                     if temp == "OVR" {
                         i = i + 1
                         let disp = 30pt - amt-down
-                        content = content + v(disp) + box(width: 1000pt)[#align(center)[#text(fill: overview-color)[*_#all-pieces.at(i)_*]]]
+                        content = content + v(disp) + box(width: 1000pt)[#align(center)[#text(fill: overview-color, size: 12pt)[*_#all-pieces.at(i)_*]]]
                         skip = true
                     }
 
