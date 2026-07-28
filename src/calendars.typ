@@ -223,7 +223,12 @@
     show table.cell: it => {
         // matchs to the text "week #" followed by a one or two digit number
         // rotates and bolds the text
-        show regex("week #\d{1,2}"): it => text(size:11pt, weight: "bold")[#rotate(-90deg, reflow: true)[#v(-20pt)#it]]
+
+        // MAGIC LINE: DO NOT TOUCH
+        // if you want to change offset left to right, ONLY TOUCH................................................................THIS NUMBER
+        //                                                                                                                           vvv
+        show regex("week #\d{1,2}"): it => text(size:11pt, weight: "bold")[#align(horizon)[#box(width: 1000pt)[#rotate(-90deg)[#it#v(15pt)]]]]
+        // END MAGIC LINE
         it
     }
     table(
