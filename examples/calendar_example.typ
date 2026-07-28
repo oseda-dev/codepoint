@@ -102,3 +102,7 @@
     due-dates: due-dates,
     week-overviews: (overviews, rgb("#305e61")),
 )
+
+#let q = calendars.construct-recurring-dates(("aug", 30), 11, "zyBooks", dates-to-skip: ((10, 18),))
+#q
+

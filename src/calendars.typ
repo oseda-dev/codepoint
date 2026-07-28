@@ -119,17 +119,18 @@
 /// - shading array: any shading info to encode
 /// - assigns array: any text to encode on the day
 #let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:(), overviews:()) = {
+    // account for leap year
+    let mon-days = month-days
+    if is-leap-year {
+        mon-days.at(1).at(1) = 29
+    }
+
     // number of days in the month
-    let max-days = month-days.at(month-id).at(1)
+    let max-days = mon-days.at(month-id).at(1)
 
     // override if different last day is provided
     if last-month-max != none {
         max-days = last-month-max
-    }
-
-    // account for leap year
-    if is-leap-year and month-id == 1 {
-        max-days = max-days + 1;
     }
 
     let day-nums = ()
@@ -410,6 +411,21 @@
 /// - due-dates (int or str, int, str) OR ((int or str, int, str), (int or str, int, str), ...): indicates text that the user wants printed on a specific date, defaults to an empty array
 /// - week-overviews (int, str, color) OR (((int, str), (int, str), ...), color): indicates a week number and text to add as an overview to that week
 #let draw-calendar(month-range, day-range, title: "", is-leap-year: false, is-mon-start: false, color-codes: (), shading: (), due-dates: (), week-overviews: ()) = {
+    /////////////////////
+    // LEAP YEAR CHECK //
+    /////////////////////
+    assert(
+        type(is-leap-year) == bool,
+        message: "Expected is-leap-year to be bool but received " + str(type(is-leap-year))
+    )
+
+    // change feb to 29 days
+    let mon-days = month-days
+    if is-leap-year {
+        mon-days.at(1).at(1) = 29
+    }
+
+
     //////////////////
     // MONTH CHECKS //
     //////////////////
@@ -477,8 +493,13 @@
     )
 
     assert(
-        day-range.at(0) > 0 and day-range.at(0) < 32 and day-range.at(1) > 0 and day-range.at(1) < 32,
-        message: "Day-range values must be >0 and <32"
+        day-range.at(0) > 0 and day-range.at(0) <= mon-days.at(month-range.at(0) - 1).at(1),
+        message: "First day-range value must be >0 and <=" + str(mon-days.at(month-range.at(0) - 1).at(1))
+    )
+
+    assert(
+        day-range.at(1) > 0 and day-range.at(1) <= mon-days.at(month-range.at(1) - 1).at(1),
+        message: "Second day-range values must be >0 and <=" + str(mon-days.at(month-range.at(1) - 1).at(1))
     )
 
 
@@ -496,15 +517,6 @@
         line(length: 100%, stroke: 2pt)
         v(5pt)
     }
-
-
-    /////////////////////
-    // LEAP YEAR CHECK //
-    /////////////////////
-    assert(
-        type(is-leap-year) == bool,
-        message: "Expected is-leap-year to be bool but received " + str(type(is-leap-year))
-    )
 
 
     ////////////////////////
@@ -712,4 +724,83 @@
     }
 }
 
+
+#let construct-recurring-dates(start-date, total, title, dates-to-skip: (), is-leap-year: false) = {
+    /////////////////////
+    // LEAP YEAR CHECK //
+    /////////////////////
+    assert(
+        type(is-leap-year) == bool,
+        message: "Expected is-leap-year to be bool but received " + str(type(is-leap-year))
+    )
+
+    // change feb to 29 days
+    let mon-days = month-days
+    if is-leap-year {
+        mon-days.at(1).at(1) = 29
+    }
+
+
+    ///////////////////////
+    // START DATE CHECKS //
+    ///////////////////////
+    assert(
+        type(start-date) == array and start-date.len() == 2,
+        message: "Expected start-date to be an array of length 2 but received " + str(type(start-date))
+    )
+
+    assert(
+        (type(start-date.at(0)) == int or type(start-date.at(0)) == str) and type(start-date.at(1)) == int,
+        message: "Expected start-date to be an array of form: (int or str, int) but received: (" + str(type(start-date.at(0))) + ", " + str(type(start-date.at(1))) + ")"
+    )
+
+    // if a str month is provided, check that it is valid and convert to numeric
+    if type(start-date.at(0)) == str {
+        start-date.at(0) = get-numeric-month(start-date.at(0))
+    }
+
+    assert(
+        start-date.at(0) > 0 and start-date.at(0) < 13,
+        message: "Month of start-date must be >0 and <13"
+    )
+
+    assert(
+        start-date.at(1) > 0 and start-date.at(1) <= mon-days.at(start-date.at(0) - 1).at(1),
+        message: "Day of start-date must be >0 and <=" + str(mon-days.at(start-date.at(0) - 1).at(1))
+    )
+
+
+    let dates = ()
+
+    let curr-mon = start-date.at(0)
+    let curr-day = start-date.at(1)
+    let curr-name = title + " #1"
+    dates.push((curr-mon, curr-day, curr-name))
+
+    let i = 1
+    while i < total {
+        curr-day = curr-day + 7
+        if curr-day > mon-days.at(curr-mon - 1).at(1) {
+            curr-day = curr-day - mon-days.at(curr-mon - 1).at(1)
+            curr-mon = curr-mon + 1
+        }
+
+        let valid-day = true
+        let j = 0
+        while j < dates-to-skip.len() {
+            if curr-mon == dates-to-skip.at(j).at(0) and curr-day == dates-to-skip.at(j).at(1){
+                valid-day = false
+            }
+            j = j + 1
+        }
+
+        if valid-day {
+            i = i + 1
+            curr-name = title + " #" + str(i)
+            dates.push((curr-mon, curr-day, curr-name))
+        }
+    }
+
+    return dates
+}
 
