@@ -75,7 +75,7 @@
 
 
 /// days-of-week: prints the days of the week to the document
-/// is-mon-start bool: flag to control whether to start on sunday or monday
+/// is-mon-start (bool): flag to control whether to start on sunday or monday
 #let days-of-week(is-mon-start: false) = {
     let days = day-arr
     // if monday start,
@@ -95,8 +95,8 @@
 
 
 /// month-header: prints the month header and days of the week to the document
-/// - month-id int: id for the month to print
-/// - is-mon-start bool: flag to control whether to start on sunday or monday
+/// - month-id (int): id for the month to print
+/// - is-mon-start (bool): flag to control whether to start on sunday or monday
 #let month-header(month-id, is-mon-start: false) = {
     v(-10pt)
     // print month
@@ -111,13 +111,13 @@
 
 
 /// construct-day-arr: constructs an array with all the encodings for each day in a month as well as info to assist the creation of encodings for the next month
-/// - month-id int: the month to construct days for
-/// - start int: the day to start the month on
-/// - last-month-max int: allows the month to end sooner than the number of days in the month
-/// - last-week-num int: the most recently printed week number
-/// - is-leap-year bool: flag to control number of days in february
-/// - shading array: any shading info to encode
-/// - assigns array: any text to encode on the day
+/// - month-id (int): the month to construct days for
+/// - start (int): the day to start the month on
+/// - last-month-max (int): allows the month to end sooner than the number of days in the month
+/// - last-week-num (int): the most recently printed week number
+/// - is-leap-year (bool): flag to control number of days in february
+/// - shading (array): any shading info to encode
+/// - assigns (array): any text to encode on the day
 #let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:(), overviews:()) = {
     // account for leap year
     let mon-days = month-days
@@ -214,10 +214,10 @@
 
 
 /// construct-month-table: creates and draws the table of days for a specific month
-/// - days ([DAY NUM ENCODING SEPARATED BY DASHES], [DAY NUM ENCODING SEPARATED BY DASHES], ...): contains all the day numbers and appropriate encodings for each day
-/// - keywords ((str, color), (str, color), ...): array of keywords and their corresponding colors
-/// - shading-colors (color, color, ...): array of colors to shade specified cells
-/// - overview-color color: color for overview text
+/// - days (([DAY NUM ENCODING SEPARATED BY DASHES], [DAY NUM ENCODING SEPARATED BY DASHES], ...)): contains all the day numbers and appropriate encodings for each day
+/// - keywords (((str, color), (str, color), ...)): array of keywords and their corresponding colors
+/// - shading-colors ((color, color, ...)): array of colors to shade specified cells
+/// - overview-color (color): color for overview text
 #let construct-month-table(days, keywords, shading-colors, overview-color) = {
     v(-18pt)
 
@@ -316,7 +316,7 @@
 
 
 /// get-numeric-month: takes a string and sees if it is a valid month; if it is, converts it to a numeric month
-/// - input str: string to check if it is a valid month
+/// - input (str): string to check if it is a valid month
 #let get-numeric-month(input) = {
     let index = 0
     let numeric-month = -1
@@ -339,7 +339,7 @@
 
 
 /// create-color-date-shading-arrays: Handles all possible types of shading encodings
-/// - encoding: the encoding to check if it is in the right format for shading param
+/// - encoding (array): the encoding to check if it is in the right format for shading param
 #let create-color-date-shading-arrays(encoding) = {
     let dates = ()
     let colors = ()
@@ -401,15 +401,15 @@
 
 
 /// draw-calendar: Render the calendar as specified
-/// - month-range (int or str, int or str): the start and ending months of the range desired for the calendar
-/// - day-range (int, int): the starting and ending day values for the calendar
-/// - title str: adds the provided title to the calendar, defaults to no title
-/// - is-leap-year bool: indicates whether the year is a leap year (feb has 29 days), defaults to false
-/// - is-mon-start bool: toggles between sunday and monday starts for the week, defaults to sunday start
-/// - color-codes (str, color) OR ((str, color), (str, color), ...): indicates if certain words should be colored the specified color, defaults to an empty array
-/// - shading ([DATE], color) OR ([DATE ARRAY], color) OR (([DATE], color), ([DATE ARRAY], color), ...) where [DATE] = (int or str, int): takes pairs of date(s) and colors to shade the date boxes accordingly, defaults to an empty array
-/// - due-dates (int or str, int, str) OR ((int or str, int, str), (int or str, int, str), ...): indicates text that the user wants printed on a specific date, defaults to an empty array
-/// - week-overviews (int, str, color) OR (((int, str), (int, str), ...), color): indicates a week number and text to add as an overview to that week
+/// - month-range ((int or str, int or str)): the start and ending months of the range desired for the calendar
+/// - day-range ((int, int)): the starting and ending day values for the calendar
+/// - title (str): adds the provided title to the calendar, defaults to no title
+/// - is-leap-year (bool): indicates whether the year is a leap year (feb has 29 days), defaults to false
+/// - is-mon-start (bool): toggles between sunday and monday starts for the week, defaults to sunday start
+/// - color-codes ((str, color) OR ((str, color), (str, color), ...)): indicates if certain words should be colored the specified color, defaults to an empty array
+/// - shading (([DATE], color) OR ([DATE ARRAY], color) OR (([DATE], color), ([DATE ARRAY], color), ...)) where [DATE] = (int or str, int): takes pairs of date(s) and colors to shade the date boxes accordingly, defaults to an empty array
+/// - due-dates ((int or str, int, str) OR ((int or str, int, str), (int or str, int, str), ...)): indicates text that the user wants printed on a specific date, defaults to an empty array
+/// - week-overviews ((int, str, color) OR (((int, str), (int, str), ...), color)): indicates a week number and text to add as an overview to that week
 #let draw-calendar(month-range, day-range, title: "", is-leap-year: false, is-mon-start: false, color-codes: (), shading: (), due-dates: (), week-overviews: ()) = {
     /////////////////////
     // LEAP YEAR CHECK //
@@ -725,6 +725,13 @@
 }
 
 
+/// construct-recurring-dates: helps generate an array for assignments that recur weekly
+/// - start-date ((int or str, int)): date to have the first assignment
+/// - total (int): total number of assignments desired
+/// - title (str): name of the assignment
+/// - dates-to-skip ((int or str, int) OR ((int or str, int), (int or str, int), ...)): dates to exclude from recurring
+/// - is-leap-year (bool): whether or not the current year is a leap year
+/// -> array of dates for assignment
 #let construct-recurring-dates(start-date, total, title, dates-to-skip: (), is-leap-year: false) = {
     /////////////////////
     // LEAP YEAR CHECK //
@@ -770,16 +777,107 @@
     )
 
 
-    let dates = ()
+    /////////////////
+    // TOTAL CHECK //
+    /////////////////
+    assert(
+        type(total) == int and total > 0,
+        message: "Expected total to be an int >0 but received " + str(total)
+    )
 
+
+    /////////////////
+    // TITLE CHECK //
+    /////////////////
+    assert(
+        type(title) == str,
+        message: "Expected title to be str but received " + str(type(str))
+    )
+
+
+    ///////////////////////
+    // SKIP DATES CHECK //
+    //////////////////////
+    assert(
+        type(dates-to-skip) == array,
+        message: "Expected dates-to-skip to be an array but received " + str(type(dates-to-skip))
+    )
+
+    if dates-to-skip != () {
+        // allows user to pass a singular date: (int or str, int)
+        // by converting to an array of dates
+        if (type(dates-to-skip.at(0)) == int or type(dates-to-skip.at(0)) == str) and type(dates-to-skip.at(1)) == int {
+            // if a str month is provided, check that it is valid and convert to numeric
+            if type(dates-to-skip.at(0)) == str {
+                dates-to-skip.at(0) = get-numeric-month(dates-to-skip.at(0))
+            }
+
+            assert(
+                dates-to-skip.at(0) > 0 and dates-to-skip.at(0) < 13,
+                message: "Month of dates-to-skip must be >0 and <13"
+            )
+
+            assert(
+                dates-to-skip.at(1) > 0 and dates-to-skip.at(1) <= mon-days.at(dates-to-skip.at(0) - 1).at(1),
+                message: "Day of dates-to-skip must be >0 and <=" + str(mon-days.at(dates-to-skip.at(0) - 1).at(1))
+            )
+
+            let temp = dates-to-skip
+            dates-to-skip = ()
+            dates-to-skip.push(temp)
+        }
+
+        // if single value is not in the correct format: (int or str, int)
+        assert(
+            type(dates-to-skip.at(0)) == array,
+            message: "Expected dates-to-skip in the format: ((int or str, int), (int or str, int), ...)"
+        )
+
+        // if an array of dates is provided: ((int or str, int), (int or str, int), ...)
+        assert(
+            dates-to-skip.all(d => {
+            (type(d.at(0)) == int or type(d.at(0)) == str) and type(d.at(1)) == int
+            }),
+            message: "Expected all dates-to-skip dates to be in the format: (int or str, int)"
+        )
+
+        let index = 0
+        let temp = dates-to-skip
+        dates-to-skip = ()
+        while index < temp.len() {
+            // check each month and day is in range
+            if temp.at(index).at(0) == str {
+                temp.at(index).at(0) = get-numeric-month(temp.at(index).at(0))
+            }
+
+            assert(
+                temp.at(index).at(0) > 0 and temp.at(index).at(0) < 13,
+                message: "Month of dates-to-skip must be >0 and <13"
+            )
+
+            assert(
+                temp.at(index).at(1) > 0 and temp.at(index).at(1) <= mon-days.at(temp.at(index).at(0) - 1).at(1),
+                message: "Day of dates-to-skip must be >0 and <=" + str(mon-days.at(temp.at(index).at(0) - 1).at(1))
+            )
+            // add date
+            dates-to-skip.push(temp.at(index))
+            index = index + 1
+        }
+    }
+
+
+    // initialize first assignment date
+    let dates = ()
     let curr-mon = start-date.at(0)
     let curr-day = start-date.at(1)
     let curr-name = title + " #1"
     dates.push((curr-mon, curr-day, curr-name))
 
+    // iterate through remaining assignments required
     let i = 1
     while i < total {
         curr-day = curr-day + 7
+        // handles when the day exceeds the current month
         if curr-day > mon-days.at(curr-mon - 1).at(1) {
             curr-day = curr-day - mon-days.at(curr-mon - 1).at(1)
             curr-mon = curr-mon + 1
@@ -787,13 +885,16 @@
 
         let valid-day = true
         let j = 0
+        // iterates through all skip days
         while j < dates-to-skip.len() {
+            // if the current day is a day to skip, don't include it
             if curr-mon == dates-to-skip.at(j).at(0) and curr-day == dates-to-skip.at(j).at(1){
                 valid-day = false
             }
             j = j + 1
         }
 
+        // ensure day is not to be skipped
         if valid-day {
             i = i + 1
             curr-name = title + " #" + str(i)
