@@ -118,7 +118,7 @@
 /// - is-leap-year bool: flag to control number of days in february
 /// - shading array: any shading info to encode
 /// - assigns array: any text to encode on the day
-#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:()) = {
+#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:(), overviews:()) = {
     // number of days in the month
     let max-days = month-days.at(month-id).at(1)
 
@@ -148,6 +148,7 @@
 
         // add day number to day text
         let day-text = str(day)
+
         // iterate through any shadings provided
         let i = 0
         while i < shading.len() {
@@ -161,7 +162,7 @@
                 // check if the date matches the current date
                 if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
                     // if it is a match, encode the shading id #
-                    day-text = day-text + "-" + str(i)
+                    day-text = day-text + "𖦹" + str(i)
                     break
                 }
                 j = j + 1
@@ -177,9 +178,22 @@
             // check if the date matches the current date
             if (item.at(0) == (month-id + 1)) and (item.at(1) == day) {
                 // if it is a match, encode the assignment text
-                day-text = day-text + "-" + item.at(2)
+                day-text = day-text + "𖦹" + item.at(2)
             }
             i = i + 1
+        }
+
+        // if there is overview text, and we are on the middle day of the week,
+        if overviews != () and calc.rem(day-nums.len(), 8) == 4 {
+            // iterate through all overviews
+            let overview-index = 0
+            while overview-index < overviews.len() {
+                // if overview week num matches current week num, add overview text
+                if (week-count - 1) == overviews.at(overview-index).at(0) {
+                    day-text = day-text + "𖦹OVR𖦹" + overviews.at(overview-index).at(1)
+                }
+                overview-index = overview-index + 1
+            }
         }
 
         // inserts the day number and associated encodings
@@ -202,7 +216,8 @@
 /// - days ([DAY NUM ENCODING SEPARATED BY DASHES], [DAY NUM ENCODING SEPARATED BY DASHES], ...): contains all the day numbers and appropriate encodings for each day
 /// - keywords ((str, color), (str, color), ...): array of keywords and their corresponding colors
 /// - shading-colors (color, color, ...): array of colors to shade specified cells
-#let construct-month-table(days, keywords, shading-colors) = {
+/// - overview-color color: color for overview text
+#let construct-month-table(days, keywords, shading-colors, overview-color) = {
     v(-18pt)
 
     show table.cell: it => {
@@ -217,7 +232,7 @@
         rows: 70pt,
         ..days.map(text-str => {
             // split day date on dash
-            let all-pieces = text-str.split("-")
+            let all-pieces = text-str.split("𖦹")
             // if there is only a number
             if all-pieces.len() == 1 {
                 // print that number bolded centered in the cell
@@ -231,6 +246,7 @@
                 let fill-color = none
                 let temp = []
                 let skip = false
+                let amt-down = 0pt
 
                 // start grabbing encodings at 1 since we already grabbed the day num
                 let i = 1
@@ -242,17 +258,27 @@
                     // grab current encoding piece
                     temp = all-pieces.at(i)
 
-                    // checks if the cell should be shaded
-                    let shade-id = 0
-                    while shade-id < shading-colors.len() {
-                        // if encoding is the id matching a shading id
-                        if temp == str(shade-id) {
-                            // update the fill color
-                            fill-color = shading-colors.at(shade-id)
-                            // no need to check for keywords w/ this encoding
-                            skip = true
+                    // checks for overview flag and adds the overview text
+                    if temp == "OVR" {
+                        i = i + 1
+                        let disp = 30pt - amt-down
+                        content = content + v(disp) + box(width: 1000pt)[#align(center)[#text(fill: overview-color)[*_#all-pieces.at(i)_*]]]
+                        skip = true
+                    }
+
+                    if skip == false {
+                        // checks if the cell should be shaded
+                        let shade-id = 0
+                        while shade-id < shading-colors.len() {
+                            // if encoding is the id matching a shading id
+                            if temp == str(shade-id) {
+                                // update the fill color
+                                fill-color = shading-colors.at(shade-id)
+                                // no need to check for keywords w/ this encoding
+                                skip = true
+                            }
+                            shade-id = shade-id + 1
                         }
-                        shade-id = shade-id + 1
                     }
 
                     // only need to check for keywords if we determine it is not a shading key
@@ -269,7 +295,9 @@
                             j = j + 1
                         }
                         // append the text on a new line, left-justified
-                        content = content + align(left)[#v(-10pt)#temp]
+                        content = content + align(left)[#v(-13pt)#temp]
+                        // adjusts the displacement for overview text based on how many lines of text have been added
+                        amt-down = amt-down + 12.25pt
                     }
                     i = i + 1
                 }
@@ -374,8 +402,9 @@
 /// - is-mon-start bool: toggles between sunday and monday starts for the week, defaults to sunday start
 /// - color-codes (str, color) OR ((str, color), (str, color), ...): indicates if certain words should be colored the specified color, defaults to an empty array
 /// - shading ([DATE], color) OR ([DATE ARRAY], color) OR (([DATE], color), ([DATE ARRAY], color), ...) where [DATE] = (int or str, int): takes pairs of date(s) and colors to shade the date boxes accordingly, defaults to an empty array
-/// - due-dates: (int or str, int, str) OR ((int or str, int, str), (int or str, int, str), ...): indicates text that the user wants printed on a specific date, defaults to an empty array
-#let draw-calendar(month-range, day-range, title: "", is-leap-year: false, is-mon-start: false, color-codes: (), shading: (), due-dates: ()) = {
+/// - due-dates (int or str, int, str) OR ((int or str, int, str), (int or str, int, str), ...): indicates text that the user wants printed on a specific date, defaults to an empty array
+/// - week-overviews (int, str, color) OR (((int, str), (int, str), ...), color): indicates a week number and text to add as an overview to that week
+#let draw-calendar(month-range, day-range, title: "", is-leap-year: false, is-mon-start: false, color-codes: (), shading: (), due-dates: (), week-overviews: ()) = {
     //////////////////
     // MONTH CHECKS //
     //////////////////
@@ -581,6 +610,72 @@
     }
 
 
+    //////////////////////
+    // OVERVIEWS CHECKS //
+    //////////////////////
+    assert(
+        type(week-overviews) == array,
+        message: "Expected week-overviews to be an array but received " + str(type(week-overviews))
+    )
+
+    let overview-text = ()
+    let overview-color = black
+    if week-overviews != () {
+        // account for single week # and text pair
+        if type(week-overviews.at(0)) == int and type(week-overviews.at(1)) == str {
+            // accounts for optional color added
+            if week-overviews.len() > 2 {
+                assert(
+                    type(week-overviews.at(2)) == color,
+                    message: "Expected week-overviews to be an array of form (int, str, color) but received (" + str(type(week-overviews.at(0))) + ", " + str(type(week-overviews.at(1))) + ", " + str(type(week-overviews.at(2))) + ")"
+                )
+                overview-color = week-overviews.at(2)
+            }
+            assert(
+                week-overviews.at(0) > 0,
+                message: "Week-overviews week number must be greater than 0; received " + str(week-overviews.at(0))
+            )
+            overview-text.push((week-overviews.at(0), week-overviews.at(1)))
+        // account for array of week # and text pairs
+        } else {
+            assert(
+                type(week-overviews.at(0)) == array,
+                message: "Expected week-overviews to be an array of arrays but received " + str(type(week-overviews.at(0)))
+            )
+
+            let all-overviews = ()
+            // account for color provided
+            if week-overviews.len() > 1 and type(week-overviews.at(1)) == color {
+                overview-color = week-overviews.at(1)
+
+                assert(
+                    week-overviews.at(0).all(w => {
+                        type(w.at(0)) == int and w.at(0) > 0 and type(w.at(1)) == str
+                        }),
+                        message: "Expected week-overviews to be an array of arrays of form (((int > 0, str), (int > 0, str), ...), color)"
+                )
+                all-overviews = week-overviews.at(0)
+            // account for no color provided
+            } else {
+                assert(
+                    week-overviews.all(w => {
+                        type(w.at(0)) == int and w.at(0) > 0 and type(w.at(1)) == str
+                        }),
+                        message: "Expected week-overviews to be an array of arrays of form ((int > 0, str), (int > 0, str), ...)"
+                )
+                all-overviews = week-overviews
+            }
+
+            // add all pairs
+            let overview-index = 0
+            while overview-index < all-overviews.len() {
+                overview-text.push((all-overviews.at(overview-index).at(0), all-overviews.at(overview-index).at(1)))
+                overview-index = overview-index + 1
+            }
+        }
+    }
+
+
     //////////////////////////////////
     // ACTUAL CALENDAR CONSTRUCTION //
     //////////////////////////////////
@@ -601,9 +696,9 @@
         // create header for the month
         month-header(month, is-mon-start: is-mon-start)
         // construct an array of the days and all their appropriate encodings for that month
-        days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: date-text)
+        days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: date-text, overviews: overview-text)
         // print table of days w/ appropriate info
-        construct-month-table(days.at(0), color-codes, colors)
+        construct-month-table(days.at(0), color-codes, colors, overview-color)
 
         // get new start day from prior day array generation
         start-day = days.at(2)

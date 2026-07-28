@@ -1,4 +1,3 @@
-#import "@preview/codepoint:0.2.1":labs
 #import "../src/calendars.typ"
 
 #show: calendars.init
@@ -10,7 +9,7 @@
     ("QUIZ", rgb("#a15d10")),
     ("exam", rgb("#a11010")),
     ("FINAL", rgb("#a11010")),
-    ("MIDTERM", rgb("#a11010")),
+    ("MIDTERM", rgb("#a11010"))
 )
 
 #let due-dates = (
@@ -48,6 +47,10 @@
     (10, 16, "MIDTERM"),
     (11, 13, "QUIZ #2"),
     (12, 11, "FINAL"),
+
+    (9,9, "project #1"),
+    (9,9, "QUIZ #1"),
+    (9,9, "lab #8"),
 )
 
 #let holidays = (
@@ -78,11 +81,28 @@
 
 #let test2 = ("nov", 5, "BLAH")
 
+#let overviews = (
+    (1, "INTRO AND OOP REVIEW"),
+    (2, "CONTINUED REVIEW, ABSTRACT CLASSES, INTERFACES"),
+    (3, "DYNAMIC DISPATCH, INNER CLASSES, LAMBDAS"),
+    (4, "GENERICS"),
+    (5, "GENERICS, COLLECTIONS, LIST, ADT INTRO"),
+    (6, "ADTS, LISTS, STACKS, QUEUES, MAPS, SETS"),
+    (7, "GUI"),
+    (9, "GUI"),
+    (10, "RECURSION"),
+    (11, "RECURSION"),
+    (12, "SEARCHING, SORTING, THREADING"),
+    (13, "THREADING"),
+    (15, "CATCH-UP, INSTRUCTOR CHOSEN, REVIEW"),
+)
+
 #calendars.draw-calendar(
     ("aug", "dec"),
     (23, 12),
     title: "CS-1181 FA26",
     color-codes: color-coding,
     shading: shading-encodings,
-    due-dates: due-dates
+    due-dates: due-dates,
+    week-overviews: (overviews, rgb("#305e61")),
 )
