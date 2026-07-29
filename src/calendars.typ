@@ -1,3 +1,5 @@
+#let delimeter = "꩜"
+
 // months with their corresponding default number of days
 #let month-days = (
     ("January", 31),
@@ -74,9 +76,9 @@
 }
 
 
-/// days-of-week: prints the days of the week to the document
+/// _days-of-week: prints the days of the week to the document
 /// is-mon-start (bool): flag to control whether to start on sunday or monday
-#let days-of-week(is-mon-start: false) = {
+#let _days-of-week(is-mon-start: false) = {
     let days = day-arr
     // if monday start,
     // removes sunday from the beginning and appends it to the end
@@ -94,23 +96,23 @@
 }
 
 
-/// month-header: prints the month header and days of the week to the document
+/// _month-header: prints the month header and days of the week to the document
 /// - month-id (int): id for the month to print
 /// - is-mon-start (bool): flag to control whether to start on sunday or monday
-#let month-header(month-id, is-mon-start: false) = {
+#let _month-header(month-id, is-mon-start: false) = {
     v(-10pt)
     // print month
     text[== #month-days.at(month-id).at(0)]
     line(length: 100%, stroke: 1pt)
     v(-15pt)
     // print days of week
-    days-of-week(is-mon-start: is-mon-start)
+    _days-of-week(is-mon-start: is-mon-start)
     v(-15pt)
     line(length: 100%, stroke: 1pt)
 }
 
 
-/// construct-day-arr: constructs an array with all the encodings for each day in a month as well as info to assist the creation of encodings for the next month
+/// _construct-day-arr: constructs an array with all the encodings for each day in a month as well as info to assist the creation of encodings for the next month
 /// - month-id (int): the month to construct days for
 /// - start (int): the day to start the month on
 /// - last-month-max (int): allows the month to end sooner than the number of days in the month
@@ -118,7 +120,7 @@
 /// - is-leap-year (bool): flag to control number of days in february
 /// - shading (array): any shading info to encode
 /// - assigns (array): any text to encode on the day
-#let construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:(), overviews:()) = {
+#let _construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:(), overviews:()) = {
     // account for leap year
     let mon-days = month-days
     if is-leap-year {
@@ -163,7 +165,7 @@
                 // check if the date matches the current date
                 if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
                     // if it is a match, encode the shading id #
-                    day-text = day-text + "𖦹" + str(i)
+                    day-text = day-text + delimeter + str(i)
                     break
                 }
                 j = j + 1
@@ -179,7 +181,7 @@
             // check if the date matches the current date
             if (item.at(0) == (month-id + 1)) and (item.at(1) == day) {
                 // if it is a match, encode the assignment text
-                day-text = day-text + "𖦹" + item.at(2)
+                day-text = day-text + delimeter + item.at(2)
             }
             i = i + 1
         }
@@ -191,7 +193,7 @@
             while overview-index < overviews.len() {
                 // if overview week num matches current week num, add overview text
                 if (week-count - 1) == overviews.at(overview-index).at(0) {
-                    day-text = day-text + "𖦹OVR𖦹" + overviews.at(overview-index).at(1)
+                    day-text = day-text + delimeter + "OVR" + delimeter + overviews.at(overview-index).at(1)
                 }
                 overview-index = overview-index + 1
             }
@@ -213,12 +215,12 @@
 }
 
 
-/// construct-month-table: creates and draws the table of days for a specific month
+/// _construct-month-table: creates and draws the table of days for a specific month
 /// - days (([DAY NUM ENCODING SEPARATED BY DASHES], [DAY NUM ENCODING SEPARATED BY DASHES], ...)): contains all the day numbers and appropriate encodings for each day
 /// - keywords (((str, color), (str, color), ...)): array of keywords and their corresponding colors
 /// - shading-colors ((color, color, ...)): array of colors to shade specified cells
 /// - overview-color (color): color for overview text
-#let construct-month-table(days, keywords, shading-colors, overview-color) = {
+#let _construct-month-table(days, keywords, shading-colors, overview-color) = {
     v(-18pt)
 
     show table.cell: it => {
@@ -238,7 +240,7 @@
         rows: 70pt,
         ..days.map(text-str => {
             // split day date on dash
-            let all-pieces = text-str.split("𖦹")
+            let all-pieces = text-str.split(delimeter)
             // if there is only a number
             if all-pieces.len() == 1 {
                 // print that number bolded centered in the cell
@@ -315,9 +317,9 @@
 }
 
 
-/// get-numeric-month: takes a string and sees if it is a valid month; if it is, converts it to a numeric month
+/// _get-numeric-month: takes a string and sees if it is a valid month; if it is, converts it to a numeric month
 /// - input (str): string to check if it is a valid month
-#let get-numeric-month(input) = {
+#let _get-numeric-month(input) = {
     let index = 0
     let numeric-month = -1
     while index < month-inputs.len() {
@@ -338,9 +340,9 @@
 }
 
 
-/// create-color-date-shading-arrays: Handles all possible types of shading encodings
+/// _create-color-date-shading-arrays: Handles all possible types of shading encodings
 /// - encoding (array): the encoding to check if it is in the right format for shading param
-#let create-color-date-shading-arrays(encoding) = {
+#let _create-color-date-shading-arrays(encoding) = {
     let dates = ()
     let colors = ()
 
@@ -375,7 +377,7 @@
         let i = 0
         while i < encoding.at(0).len() {
             if type(encoding.at(0).at(i).at(0)) == str {
-                encoding.at(0).at(i).at(0) = get-numeric-month(encoding.at(0).at(i).at(0))
+                encoding.at(0).at(i).at(0) = _get-numeric-month(encoding.at(0).at(i).at(0))
             }
             i = i + 1
         }
@@ -388,7 +390,7 @@
             message: "Expected date to be in the format: (int or str, int) received (" + str(type(encoding.at(0).at(0))) + ", " + str(type(encoding.at(0).at(1))) + ")"
         )
         if type(encoding.at(0).at(0)) == str {
-            encoding.at(0).at(0) = get-numeric-month(encoding.at(0).at(0))
+            encoding.at(0).at(0) = _get-numeric-month(encoding.at(0).at(0))
         }
 
         let all-dates = ()
@@ -453,7 +455,7 @@
     let month-val = 0
     while month-val < month-range.len() {
         if type(month-range.at(month-val)) == str {
-            month-range.at(month-val) = get-numeric-month(month-range.at(month-val))
+            month-range.at(month-val) = _get-numeric-month(month-range.at(month-val))
         }
         month-val = month-val + 1
     }
@@ -575,13 +577,13 @@
     if shading != () {
         // handles case of one (or more) dates and one color: ((int or str, int), color) OR ( ((int or str, int), (int or str, int), ...), color )
         if type(shading.at(1)) == color {
-            let out = create-color-date-shading-arrays(shading)
+            let out = _create-color-date-shading-arrays(shading)
             dates = out.at(0)
             colors = out.at(1)
         // handles case of multiple colors
         } else {
             for encoding in shading {
-                let out = create-color-date-shading-arrays(encoding)
+                let out = _create-color-date-shading-arrays(encoding)
                 dates.push(out.at(0).at(0))
                 colors.push(out.at(1).at(0))
             }
@@ -603,7 +605,7 @@
         // handles a single date text
         if (type(due-dates.at(0)) == int or type(due-dates.at(0)) == str) and type(due-dates.at(1)) == int and type(due-dates.at(2)) == str {
             if type(due-dates.at(0)) == str {
-                due-dates.at(0) = get-numeric-month(due-dates.at(0))
+                due-dates.at(0) = _get-numeric-month(due-dates.at(0))
             }
             date-text.push(due-dates)
         // handles multiple dates
@@ -618,7 +620,7 @@
             let due-date-index = 0
             while due-date-index < due-dates.len() {
                 if type(due-dates.at(due-date-index).at(0)) == str {
-                    due-dates.at(due-date-index).at(0) = get-numeric-month(due-dates.at(due-date-index).at(0))
+                    due-dates.at(due-date-index).at(0) = _get-numeric-month(due-dates.at(due-date-index).at(0))
                 }
                 date-text.push(due-dates.at(due-date-index))
                 due-date-index = due-date-index + 1
@@ -711,11 +713,11 @@
         }
 
         // create header for the month
-        month-header(month, is-mon-start: is-mon-start)
+        _month-header(month, is-mon-start: is-mon-start)
         // construct an array of the days and all their appropriate encodings for that month
-        days = construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: date-text, overviews: overview-text)
+        days = _construct-day-arr(month, start-day, end-day, days.at(1), is-leap-year: is-leap-year, shading: dates, assigns: date-text, overviews: overview-text)
         // print table of days w/ appropriate info
-        construct-month-table(days.at(0), color-codes, colors, overview-color)
+        _construct-month-table(days.at(0), color-codes, colors, overview-color)
 
         // get new start day from prior day array generation
         start-day = days.at(2)
@@ -763,7 +765,7 @@
 
     // if a str month is provided, check that it is valid and convert to numeric
     if type(start-date.at(0)) == str {
-        start-date.at(0) = get-numeric-month(start-date.at(0))
+        start-date.at(0) = _get-numeric-month(start-date.at(0))
     }
 
     assert(
@@ -809,7 +811,7 @@
         if (type(dates-to-skip.at(0)) == int or type(dates-to-skip.at(0)) == str) and type(dates-to-skip.at(1)) == int {
             // if a str month is provided, check that it is valid and convert to numeric
             if type(dates-to-skip.at(0)) == str {
-                dates-to-skip.at(0) = get-numeric-month(dates-to-skip.at(0))
+                dates-to-skip.at(0) = _get-numeric-month(dates-to-skip.at(0))
             }
 
             assert(
@@ -847,7 +849,7 @@
         while index < temp.len() {
             // check each month and day is in range
             if temp.at(index).at(0) == str {
-                temp.at(index).at(0) = get-numeric-month(temp.at(index).at(0))
+                temp.at(index).at(0) = _get-numeric-month(temp.at(index).at(0))
             }
 
             assert(

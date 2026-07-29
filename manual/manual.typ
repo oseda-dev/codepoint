@@ -11,6 +11,10 @@
   read("/src/labs.typ"),
   label-prefix: "labs-" // avoid name collisions 
 )
+#let calendar-docs = tidy.parse-module(
+  read("/src/calendars.typ"),
+  label-prefix: "calendars-" // avoid name collisions
+)
 
 = Exams Module 
 #tidy.show-module(exam-docs, style: tidy.styles.default)
@@ -19,3 +23,8 @@
 
 = Labs Module
 #tidy.show-module(lab-docs, style: tidy.styles.default)
+
+#pagebreak()
+
+= Calendars Module
+#tidy.show-module(calendar-docs, style: tidy.styles.default)

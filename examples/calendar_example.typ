@@ -5,7 +5,7 @@
 #let color-coding = (
     ("zyBooks", rgb("#10a178")),
     ("lab", rgb("#104fa1")),
-    ("project", rgb("#a19e10")),
+    ("proj", rgb("#a19e10")),
     ("QUIZ", rgb("#a15d10")),
     ("exam", rgb("#a11010")),
     ("FINAL", rgb("#a11010")),
@@ -13,14 +13,18 @@
 )
 
 #let non-recurring = (
-    (9, 20, "project #1"),
-    (10, 11, "project #2"),
-    ("November", 1, "project #3"),
-    (11, 22, "project #4"),
+    (9, 2, "proj #1 opens"),
+    (9, 20, "proj #1 due"),
+    (9, 23, "proj #2 opens"),
+    (10, 18, "proj #2 due"),
+    (10, 21, "proj #3 opens"),
+    ("November", 8, "proj #3 due"),
+    (11, 11, "proj #4 opens"),
+    (11, 29, "proj #4 due"),
 
-    (9, 18, "QUIZ #1"),
-    (10, 16, "MIDTERM"),
-    (11, 13, "QUIZ #2"),
+    (9, 16, "QUIZ #1"),
+    (10, 9, "MIDTERM"),
+    (11, 4, "QUIZ #2"),
     (12, 11, "FINAL"),
 )
 
@@ -28,16 +32,16 @@
     ("aug", 30),
     11,
     "zyBooks",
-    dates-to-skip: (10, 18)
+    dates-to-skip: ((9, 6), (11, 15))
 )
 
 #let lab = calendars.construct-recurring-dates(
-    ("aug", 30),
+    ("sep", 6),
     12,
     "lab",
-    dates-to-skip: (10, 18)
+    dates-to-skip: ((10, 18), (11, 29))
 )
-#let due-dates = non-recurring + zy + lab
+#let due-dates = zy + lab + non-recurring
 
 #let holiday-encodings = ((
     (9, 7),
@@ -71,13 +75,16 @@
     (4, "GENERICS"),
     (5, "GENERICS, COLLECTIONS, LIST, ADT INTRO"),
     (6, "ADTS, LISTS, STACKS, QUEUES, MAPS, SETS"),
-    (7, "GUI"),
+    (7, "MIDTERM WEEK"),
+    (8, "GUI"),
     (9, "GUI"),
     (10, "RECURSION"),
     (11, "RECURSION"),
     (12, "SEARCHING, SORTING, THREADING"),
     (13, "THREADING"),
+    (14, "THANKSGIVING BREAK"),
     (15, "CATCH-UP, INSTRUCTOR CHOSEN, REVIEW"),
+    (16, "FINALS WEEK")
 )
 
 #calendars.draw-calendar(
@@ -89,6 +96,3 @@
     due-dates: due-dates,
     week-overviews: (overviews, rgb("#305e61")),
 )
-
-
-
