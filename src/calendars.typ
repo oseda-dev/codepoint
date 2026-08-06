@@ -1,4 +1,4 @@
-#let delimeter = "꩜"
+#let _delimeter = "꩜"
 
 // months with their corresponding default number of days
 #let month-days = (
@@ -165,7 +165,7 @@
                 // check if the date matches the current date
                 if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
                     // if it is a match, encode the shading id #
-                    day-text = day-text + delimeter + str(i)
+                    day-text = day-text + _delimeter + str(i)
                     break
                 }
                 j = j + 1
@@ -181,7 +181,7 @@
             // check if the date matches the current date
             if (item.at(0) == (month-id + 1)) and (item.at(1) == day) {
                 // if it is a match, encode the assignment text
-                day-text = day-text + delimeter + item.at(2)
+                day-text = day-text + _delimeter + item.at(2)
             }
             i = i + 1
         }
@@ -193,7 +193,7 @@
             while overview-index < overviews.len() {
                 // if overview week num matches current week num, add overview text
                 if (week-count - 1) == overviews.at(overview-index).at(0) {
-                    day-text = day-text + delimeter + "OVR" + delimeter + overviews.at(overview-index).at(1)
+                    day-text = day-text + _delimeter + "OVR" + _delimeter + overviews.at(overview-index).at(1)
                 }
                 overview-index = overview-index + 1
             }
@@ -240,7 +240,7 @@
         rows: 70pt,
         ..days.map(text-str => {
             // split day date on dash
-            let all-pieces = text-str.split(delimeter)
+            let all-pieces = text-str.split(_delimeter)
             // if there is only a number
             if all-pieces.len() == 1 {
                 // print that number bolded centered in the cell
