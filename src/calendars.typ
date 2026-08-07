@@ -1,5 +1,18 @@
 #let _delimeter = "꩜"
 
+#let JANUARY = 1;
+#let FEBRUARY = 2;
+#let MARCH = 3;
+#let APRIL = 4;
+#let MAY = 5;
+#let JUNE = 6;
+#let JULY = 7;
+#let AUGUST = 8;
+#let SEPTEMBER = 9;
+#let OCTOBER = 10;
+#let NOVEMBER = 11;
+#let NOVEMBER = 12;
+
 // months with their corresponding default number of days
 #let month-days = (
     ("January", 31),

@@ -1,6 +1,6 @@
-#import "../src/calendars.typ"
+#import "../src/calendars.typ" as cal
 
-#show: calendars.init
+#show: cal.init
 
 #let color-coding = (
     ("zyBooks", rgb("#10a178")),
@@ -28,14 +28,14 @@
     (12, 11, "FINAL"),
 )
 
-#let zy = calendars.construct-recurring-dates(
+#let zy = cal.construct-recurring-dates(
     ("aug", 30),
     11,
     "zyBooks",
     dates-to-skip: ((9, 6), (11, 15))
 )
 
-#let lab = calendars.construct-recurring-dates(
+#let lab = cal.construct-recurring-dates(
     ("sep", 6),
     12,
     "lab",
@@ -46,7 +46,7 @@
 #let holiday-encodings = ((
     (9, 7),
     ("nov", 11),
-    (11, 25),
+    (cal.NOVEMBER, 25),
     (11, 26),
     (11, 27)
     ),
@@ -87,7 +87,7 @@
     (16, "FINALS WEEK")
 )
 
-#calendars.draw-calendar(
+#cal.draw-calendar(
     ("aug", "dec"),
     (23, 12),
     title: "CS-1181 FA26",
