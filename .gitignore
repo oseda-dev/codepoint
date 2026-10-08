@@ -1,1 +1,6 @@
 dist
+
+# ignore compiled docs in example, 
+# but we still need this in some places
+# e.g. manual
+examples/*.pdf
