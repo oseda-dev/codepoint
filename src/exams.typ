@@ -370,10 +370,10 @@
     )
 
 
-
-
   let num = counter("I")
+  counter("I").update(0)
   num.step() 
+  
   block[
     #question(q-body, points: points)
     #v(-0.4em)
