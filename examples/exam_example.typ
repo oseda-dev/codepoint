@@ -418,3 +418,16 @@ Use the code block to answer the following questions:
 )
 
 
+
+Fill in some code below:
+#e.code-block(
+  ```lisp
+  (defun main
+  
+  
+  
+  
+  
+  
+  )
+  ```, width: 100%)

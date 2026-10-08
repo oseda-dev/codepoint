@@ -373,7 +373,7 @@
   let num = counter("I")
   counter("I").update(0)
   num.step() 
-  
+
   block[
     #question(q-body, points: points)
     #v(-0.4em)
@@ -465,8 +465,9 @@
 /// code-block: Create a code block formatted for exams
 /// Wraps in box to the edge of the code, can add white space if need it to be longer
 /// - include-line-numbers (boolean): Boolean param for whether line numbers should be included in the output
+/// - width (unit) width of code-block
 /// - raw-code (content): raw code block
-#let code-block(include-line-numbers: true, raw-code) = {
+#let code-block(include-line-numbers: true, width: auto, raw-code) = {
   assert(
     type(raw-code) == content,
     message: "Expected raw-code to be content, but received " + str(type(raw-code))
@@ -505,6 +506,7 @@
   block(
     stroke: rgb("#d9d9d9"),
     inset: 2pt, // need some extra internal padding
+    width: width,
     table(
       columns: desired-columns,
       stroke: none,
