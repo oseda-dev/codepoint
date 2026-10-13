@@ -7,6 +7,7 @@
   read("/src/exams.typ"), 
   label-prefix: "exams-" // avoid name collisions
 )
+
 #let lab-docs = tidy.parse-module(
   read("/src/labs.typ"),
   label-prefix: "labs-" // avoid name collisions 
