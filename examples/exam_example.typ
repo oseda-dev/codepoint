@@ -408,3 +408,26 @@ Use the code block to answer the following questions:
   [```java ArrayList``` and ```java LinkedList``` implement the same ADT], // T
   [```java ArrayList```s are faster than ```java LinkedList```s at retrieval operations], // T
 )
+
+#e.tf-block([Mark the following statements as either True (T) of False (F):], points: 5,
+  [```java LinkedList``` utilizes nodes and next pointers to store information], // T
+  [```java ArrayList``` is always faster than ```java LinkedList```], // F
+  [```java ArrayList``` has more flexible memory usage than ```java LinkedList```], // F
+  [```java ArrayList``` and ```java LinkedList``` implement the same ADT], // T
+  [```java ArrayList```s are faster than ```java LinkedList```s at retrieval operations], // T
+)
+
+
+
+Fill in some code below:
+#e.code-block(
+  ```lisp
+  (defun main
+  
+  
+  
+  
+  
+  
+  )
+  ```, width: 100%)

@@ -25,7 +25,7 @@
     weight: "regular"
   )
   set raw(theme: "../themes/codepoint.tmTheme")  
-  show raw: set text(font: ("Courier", "Courier Prime"), weight: "bold", size: 10pt)
+  show raw: set text(font: ("Courier Prime", "Courier"), weight: "bold", size: 10pt)
 
   // defaults to 1.2, but on labs specifically, this is not enough spacing
   set par(spacing: 1.6em)
@@ -57,7 +57,7 @@
 
 
 
-/// CMD-KEYWORDS: Set of common command keywords, used for syntax highlighting in cmd_color
+/// CMD-KEYWORDS: Set of common command keywords, used for syntax highlighting in code-block
 #let _CMD-KEYWORDS = (
   // java lab specifics
   "java", 
@@ -213,7 +213,7 @@
 
 
   v(2pt)
-  set text(font: "Courier", weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
+  set text(font: ("Courier Prime", "Courier"), weight: "bold", size: 10pt, fill: rgb("#d1d1d1"))
 
   // tabs a single command line to the right
   let left-tab = 0pt
