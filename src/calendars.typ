@@ -1,20 +1,47 @@
-#let _delimeter = "꩜"
+/// used to separate portions of calendar data
+/// -> str
+#let _DELIMETER = "꩜"
 
+/// January
+/// -> int
 #let JANUARY = 1;
+/// February
+/// -> int
 #let FEBRUARY = 2;
+/// March
+/// -> int
 #let MARCH = 3;
+/// April
+/// -> int
 #let APRIL = 4;
+/// May
+/// -> int
 #let MAY = 5;
+/// June
+/// -> int
 #let JUNE = 6;
+/// July
+/// -> int
 #let JULY = 7;
+/// August
+/// -> int
 #let AUGUST = 8;
+/// September
+/// -> int
 #let SEPTEMBER = 9;
+/// October
+/// -> int
 #let OCTOBER = 10;
+/// November
+/// -> int
 #let NOVEMBER = 11;
-#let NOVEMBER = 12;
+/// December
+/// -> int
+#let DECEMBER = 12;
 
-// months with their corresponding default number of days
-#let month-days = (
+/// months with their corresponding default number of days
+/// -> array
+#let MONTH-DAYS = (
     ("January", 31),
     ("February", 28),
     ("March", 31),
@@ -29,9 +56,9 @@
     ("December", 31)
 )
 
-// acceptable string inputs for each month
-// case-insensitive
-#let month-inputs = (
+/// acceptable string inputs for each month, case-insensitive
+/// -> array
+#let MONTH-INPUTS = (
     ("january", "jan"),
     ("february", "feb"),
     ("march", "mar"),
@@ -46,8 +73,9 @@
     ("december", "dec"),
 )
 
-// array for days of the week
-#let day-arr = (
+/// array for days of the week
+/// -> array
+#let DAY-ARR = (
     "Sunday",
     "Monday",
     "Tuesday",
@@ -57,14 +85,14 @@
     "Saturday",
 )
 
-/// Initialize a lab with a show rule
+/// Initialize a calendar with a show rule
 ///
 ///
 /// Example:
 /// ```typst
-/// #show: labs.init
+/// #show: cal.init
 /// ```
-/// - body (content): body fo lab problem
+/// - body (content): body for calendar
 #let init(body) = {
 
     assert(
@@ -89,10 +117,10 @@
 }
 
 
-/// _days-of-week: prints the days of the week to the document
-/// is-mon-start (bool): flag to control whether to start on sunday or monday
+/// Prints the days of the week to the document
+/// - is-mon-start (bool): flag to control whether to start on sunday or monday
 #let _days-of-week(is-mon-start: false) = {
-    let days = day-arr
+    let days = DAY-ARR
     // if monday start,
     // removes sunday from the beginning and appends it to the end
     if is-mon-start {
@@ -109,13 +137,13 @@
 }
 
 
-/// _month-header: prints the month header and days of the week to the document
+/// Prints the month header and days of the week to the document
 /// - month-id (int): id for the month to print
 /// - is-mon-start (bool): flag to control whether to start on sunday or monday
 #let _month-header(month-id, is-mon-start: false) = {
     v(-10pt)
     // print month
-    text[== #month-days.at(month-id).at(0)]
+    text[== #MONTH-DAYS.at(month-id).at(0)]
     line(length: 100%, stroke: 1pt)
     v(-15pt)
     // print days of week
@@ -125,7 +153,10 @@
 }
 
 
-/// _construct-day-arr: constructs an array with all the encodings for each day in a month as well as info to assist the creation of encodings for the next month
+/// Constructs an array with all the encodings for each day in a month as well as info to assist the creation of encodings for the next month
+/// ```example
+/// #calendars._construct-day-arr(11, 15, 30, 1)
+/// ```
 /// - month-id (int): the month to construct days for
 /// - start (int): the day to start the month on
 /// - last-month-max (int): allows the month to end sooner than the number of days in the month
@@ -133,9 +164,10 @@
 /// - is-leap-year (bool): flag to control number of days in february
 /// - shading (array): any shading info to encode
 /// - assigns (array): any text to encode on the day
+/// -> array
 #let _construct-day-arr(month-id, start, last-month-max, last-week-num, is-leap-year: false, shading:(), assigns:(), overviews:()) = {
     // account for leap year
-    let mon-days = month-days
+    let mon-days = MONTH-DAYS
     if is-leap-year {
         mon-days.at(1).at(1) = 29
     }
@@ -178,7 +210,7 @@
                 // check if the date matches the current date
                 if (date.at(0) == (month-id + 1)) and (date.at(1) == day) {
                     // if it is a match, encode the shading id #
-                    day-text = day-text + _delimeter + str(i)
+                    day-text = day-text + _DELIMETER + str(i)
                     break
                 }
                 j = j + 1
@@ -194,7 +226,7 @@
             // check if the date matches the current date
             if (item.at(0) == (month-id + 1)) and (item.at(1) == day) {
                 // if it is a match, encode the assignment text
-                day-text = day-text + _delimeter + item.at(2)
+                day-text = day-text + _DELIMETER + item.at(2)
             }
             i = i + 1
         }
@@ -206,7 +238,7 @@
             while overview-index < overviews.len() {
                 // if overview week num matches current week num, add overview text
                 if (week-count - 1) == overviews.at(overview-index).at(0) {
-                    day-text = day-text + _delimeter + "OVR" + _delimeter + overviews.at(overview-index).at(1)
+                    day-text = day-text + _DELIMETER + "OVR" + _DELIMETER + overviews.at(overview-index).at(1)
                 }
                 overview-index = overview-index + 1
             }
@@ -228,7 +260,7 @@
 }
 
 
-/// _construct-month-table: creates and draws the table of days for a specific month
+/// Creates and draws the table of days for a specific month
 /// - days (([DAY NUM ENCODING SEPARATED BY DASHES], [DAY NUM ENCODING SEPARATED BY DASHES], ...)): contains all the day numbers and appropriate encodings for each day
 /// - keywords (((str, color), (str, color), ...)): array of keywords and their corresponding colors
 /// - shading-colors ((color, color, ...)): array of colors to shade specified cells
@@ -253,7 +285,7 @@
         rows: 70pt,
         ..days.map(text-str => {
             // split day date on dash
-            let all-pieces = text-str.split(_delimeter)
+            let all-pieces = text-str.split(_DELIMETER)
             // if there is only a number
             if all-pieces.len() == 1 {
                 // print that number bolded centered in the cell
@@ -330,13 +362,18 @@
 }
 
 
-/// _get-numeric-month: takes a string and sees if it is a valid month; if it is, converts it to a numeric month
+/// get-numeric-month: takes a string and sees if it is a valid month; if it is, converts it to a numeric month
+/// ```example
+/// #calendars._get-numeric-month("aug")
+/// #calendars._get-numeric-month("February")
+/// ```
 /// - input (str): string to check if it is a valid month
+/// -> int
 #let _get-numeric-month(input) = {
     let index = 0
     let numeric-month = -1
-    while index < month-inputs.len() {
-        for keyword in month-inputs.at(index) {
+    while index < MONTH-INPUTS.len() {
+        for keyword in MONTH-INPUTS.at(index) {
             if keyword == lower(input) {
                 numeric-month = index + 1
             }
@@ -353,8 +390,13 @@
 }
 
 
-/// _create-color-date-shading-arrays: Handles all possible types of shading encodings
+/// Handles all possible types of shading encodings
+/// ```example
+/// #let holiday-encodings = (((9, 7), ("nov", 11)), gray)
+/// #calendars._create-color-date-shading-arrays(holiday-encodings)
+/// ```
 /// - encoding (array): the encoding to check if it is in the right format for shading param
+/// -> array
 #let _create-color-date-shading-arrays(encoding) = {
     let dates = ()
     let colors = ()
@@ -415,7 +457,8 @@
 }
 
 
-/// draw-calendar: Render the calendar as specified
+/// Render the calendar as specified
+///
 /// - month-range ((int or str, int or str)): the start and ending months of the range desired for the calendar
 /// - day-range ((int, int)): the starting and ending day values for the calendar
 /// - title (str): adds the provided title to the calendar, defaults to no title
@@ -435,7 +478,7 @@
     )
 
     // change feb to 29 days
-    let mon-days = month-days
+    let mon-days = MONTH-DAYS
     if is-leap-year {
         mon-days.at(1).at(1) = 29
     }
@@ -740,7 +783,12 @@
 }
 
 
-/// construct-recurring-dates: helps generate an array for assignments that recur weekly
+/// Helps generate an array for assignments that recur weekly
+///
+/// ```example
+/// #calendars.construct-recurring-dates(("sep", 6), 12, "lab", dates-to-skip: ((10, 18), (11, 29)))
+/// ```
+///
 /// - start-date ((int or str, int)): date to have the first assignment
 /// - total (int): total number of assignments desired
 /// - title (str): name of the assignment
@@ -757,7 +805,7 @@
     )
 
     // change feb to 29 days
-    let mon-days = month-days
+    let mon-days = MONTH-DAYS
     if is-leap-year {
         mon-days.at(1).at(1) = 29
     }

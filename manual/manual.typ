@@ -2,6 +2,7 @@
 // `typst compile --root . manual/manual.typ`
 
 #import "@preview/tidy:0.4.3"
+#import "/src/calendars.typ"
 
 #let exam-docs = tidy.parse-module(
   read("/src/exams.typ"), 
@@ -14,7 +15,8 @@
 )
 #let calendar-docs = tidy.parse-module(
   read("/src/calendars.typ"),
-  label-prefix: "calendars-" // avoid name collisions
+  label-prefix: "calendars-", // avoid name collisions
+  scope: ("calendars": calendars)
 )
 
 = Exams Module 
@@ -29,3 +31,5 @@
 
 = Calendars Module
 #tidy.show-module(calendar-docs, style: tidy.styles.default)
+
+
