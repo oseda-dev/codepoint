@@ -118,4 +118,67 @@ The labs module configures layout, custom raw-code themes, and uniform section l
 ![Lab Example](./img/lab.png)
 
 
+## Calendars
+
+The calendars module creates customizable calendars for class scheduling purposes.
+
+- Custom header titles (`#calendars.draw-calendar(title: )`)
+- Customizable start and end months (`#calendars.draw-calendar(month-range: , day-range: )`)
+- Automatic numbering and labeling for months, days, and week numbers
+- Handles leap year and Sunday vs. Monday week starts
+- Provides functionality for setting up recurring assignments (`#calendars.construct-recurring-dates()`)
+- Handles text linked to dates (`#calendars.draw-calendar(due-dates: )`)
+- Supports custom color coding (`#calendars.draw-calendar(color-codes: )`)
+- Supports shading of dates (`#calendars.draw-calendar(shading: )`)
+- Supports ability to add a topic overview per week (`#calendars.draw-calendar(week-overviews: )`)
+
+```typst
+#import "../src/calendars.typ" as cal
+
+#show: cal.init
+
+#let color-coding = (
+    ("lab", rgb("#104fa1")),
+    ("quiz", rgb("#a15d10")),
+    ("hmwk", red)
+)
+
+#let non-recurring = (
+    (9, 5, "lab #1 due"),
+    (8, 26, "quiz #1"),
+)
+
+#let hmwk = cal.construct-recurring-dates(
+    ("aug", 24),
+    2,
+    "hmwk",
+    dates-to-skip: ((8, 31))
+)
+
+#let due-dates = hmwk + non-recurring
+
+#let shading-encodings = (
+    (9, 7),
+    gray
+)
+
+#let overviews = (
+    (1, "TOPIC #1"),
+    (2, "TOPIC #2"),
+    (3, "TOPIC #3"),
+)
+
+#cal.draw-calendar(
+    ("aug", "sep"),
+    (23, 12),
+    title: "My Class",
+    color-codes: color-coding,
+    shading: shading-encodings,
+    due-dates: due-dates,
+    week-overviews: (overviews, rgb("#305e61")),
+)
+```
+
+![Calendar Example](./img/cal.png)
+
 For exact function details and guidelines, check out [the manual](https://github.com/oseda-dev/codepoint/blob/d5228a2d6425b2828916f3beaf20bff4b8f471c0/manual/manual.pdf)
