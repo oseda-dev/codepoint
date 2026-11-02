@@ -400,7 +400,7 @@
 /// - q-body (content, str): Question Body
 /// - lines (int): = 1 lines of space to give the user, renders as actual lines
 /// - points (int): = 1 points the question is worth
-#let short-answer(q-body, lines: 1, points: 1) = {
+#let short-answer(q-body, lines: 1, points: 1, is-line-adjacent: false) = {
 
   assert(
     type(q-body) == content or type(q-body) == str,
@@ -417,21 +417,38 @@
     message: "Expected points to be int, but received" + str(type(points))
   )
 
+  assert(
+    type(is-line-adjacent) == bool,
+    message: "Expected is-line-adjacent to be bool, but received " + str(type(is-line-adjacent))
+  )
 
 
 
 
-  question(q-body, points: points)
-  
-  // you don't need the full spacing from the question before the first line
-  v(-10pt)
-  block(width: 100%, inset: (left: 20pt))[
-    #for _ in range(lines) {
-      // line spacing
-      v(25pt) 
-      line(length: 90%, stroke: 0.5pt)
-    }
-  ]
+
+  if is-line-adjacent {
+    grid(columns: (1.5fr, .5fr), gutter: 10pt,
+        [#question(q-body, points: points)],
+        [#for _ in range(lines) {
+           // line spacing
+           v(10pt)
+           line(length: 90%, stroke: 0.5pt)
+           }
+        ]
+    )
+  } else {
+      question(q-body, points: points)
+
+      // you don't need the full spacing from the question before the first line
+      v(-10pt)
+      block(width: 100%, inset: (left: 20pt))[
+        #for _ in range(lines) {
+          // line spacing
+          v(25pt)
+          line(length: 90%, stroke: 0.5pt)
+        }
+      ]
+  }
 }
 
 

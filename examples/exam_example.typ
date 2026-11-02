@@ -84,6 +84,8 @@ public static void doThing() {
 #e.short-answer([Write the output of the `doThing()` method when it is called], lines: 3, points: 1)
 #e.spacer()
 #e.spacer()
+#e.short-answer([Write the output of the `doThing()` method when it is called], lines: 3, points: 1, is-line-adjacent: true)
+
 
 // #e.matching(
 //   [Match the following to their definitions], points: 7,
