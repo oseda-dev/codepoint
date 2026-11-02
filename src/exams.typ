@@ -400,6 +400,7 @@
 /// - q-body (content, str): Question Body
 /// - lines (int): = 1 lines of space to give the user, renders as actual lines
 /// - points (int): = 1 points the question is worth
+/// - is-line-adjacent (bool): = false whether or not to display the lines next to the question
 #let short-answer(q-body, lines: 1, points: 1, is-line-adjacent: false) = {
 
   assert(
