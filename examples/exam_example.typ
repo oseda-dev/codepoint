@@ -108,7 +108,7 @@ public static void doThing() {
 // )
 
 
-#e.matching([Match the following to their definitions], points: 7, seed: 3,
+#e.matching([Match the following to their definitions], points: 7, seed: 3, numbering: "A",
   (
     (`implements`, "Denotes that a class is using an interface"),
     (`extends`, "Denotes that a class inherits from another"),

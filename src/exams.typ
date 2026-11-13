@@ -258,7 +258,7 @@
 
 
 
-#let _matching(q-body, points, seed: 4, pairs) = {
+#let _matching(q-body, points, seed: 4, numbering: "A", pairs) = {
   // condense each pair down into just each side => then shuffle
   let left-opts = _shuffle(
     pairs.map(pair => pair.at(0)),
@@ -291,7 +291,7 @@
         #for right-item in right-opts {
           block[
             #letter_counter.step()
-            #context letter_counter.display("A"). #right-item
+            #context letter_counter.display(numbering). #right-item
             #spacer()
           ]
         }
@@ -318,7 +318,7 @@
 /// - points (none, int): = none points the question is worth. Once wrapped, this will default to the length of pairs
 /// - seed (int): = 4 Random seed used for shuffling each side
 /// - pairs (array): An array containing pairs of answers/definitions
-#let matching(q-body, points: none, seed: 4, pairs) = {
+#let matching(q-body, points: none, seed: 4, numbering: "A", pairs) = {
   assert(
     type(q-body) == content or type(q-body) == str,
     message: "Expected q-body to be content or str, but received" + str(type(q-body))
@@ -340,6 +340,8 @@
   
   _validate-pairs(pairs)
 
+  // _validate-numbering(numbering)
+
   let real-points = -1
 
   if(points == none){
@@ -348,7 +350,7 @@
     real-points = points
   }
 
-  _matching(q-body, real-points, seed: seed, pairs)
+  _matching(q-body, real-points, seed: seed,numbering: numbering, pairs)
 }
 
 #let tf-block(q-body, points: 1, ..statements) = {
