@@ -273,13 +273,10 @@
   
   let answer_counter = counter("letter_counter")
 
-  // needs to be aligned to a grid
-  // mimicing how code-block works with line numbers:
+  // align items to a grid (see code-block implemenation)
   // fold to flat array of cells, 
-  // ("", word, description, "", word, description, etc
-  // then spread to table values later 
-  // but we also need to have some empty cells for the spacer 
-  // 
+  // ("", word, description, "", word, description, etc)
+  // then spread to grid values later 
 
   let cells = ()
   let spacer_string = ""
