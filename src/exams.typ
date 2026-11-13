@@ -272,6 +272,13 @@
   
   let answer_counter = counter("letter_counter")
 
+  // needs to be aligned to a grid
+  // mimicing how code-block works with line numbers:
+  // fold to flat array of cells, 
+  // (word, description, word, description, etc
+  // then spread to table values later 
+  // but we also need to have some empty cells for the spacer 
+
   block[
     #answer_counter.update(0)
     #question(q-body, points: points)
