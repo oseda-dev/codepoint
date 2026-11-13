@@ -281,7 +281,6 @@
   let cells = ()
   let spacer_string = ""
 
-  // i am assuming these lengths will always be equal, TODO check me
   for idx in range(left-opts.len()) {
 
     cells.push(spacer_string);
