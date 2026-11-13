@@ -345,10 +345,10 @@
 
   let real-points = -1
 
-  if(points == none){
-    real-points = pairs.len()
+  real-points = if (points == none){
+    pairs.len()
   } else {
-    real-points = points
+    points
   }
 
   _matching(q-body, real-points, seed: seed,numbering: numbering, pairs)

@@ -127,6 +127,18 @@ public static void doThing() {
   )
 )
 
+#e.matching(
+  [Match each of the following ADTs to its *_most appropriate_* use case:],
+  (
+    ([List], [A video game wants each player to have an inventory where items can be stored and accessed at will]),
+    ([Stack], [A browser wants to keep track of browsing history by showing the most recently visited site first]),
+    ([Queue], [A customer service center wants their system to handle calls in the order in which they come in]),
+    ([PriorityQueue], [An emergency room wants to handle patients according to the severity of their ailment]),
+    ([Set], [A card collector wants to ensure they only add cards they don't own yet to their collection]),
+    ([Map], [A college wants to keep track of each student and their corresponding license plate number]),
+  )
+)
+
 #pagebreak()
 
 Use the diagram to answer the following question:
