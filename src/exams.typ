@@ -275,7 +275,7 @@
   // needs to be aligned to a grid
   // mimicing how code-block works with line numbers:
   // fold to flat array of cells, 
-  // (word, description, word, description, etc
+  // ("", word, description, "", word, description, etc
   // then spread to table values later 
   // but we also need to have some empty cells for the spacer 
 
