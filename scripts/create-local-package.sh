@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# DEPRECATED SCRIPT, use code in examples directory instead
+
 # for package testing purposes
 # Just "deploys" a local copy of the package instead of to typst universe
 
