@@ -343,9 +343,8 @@
 
   // if the numbering is invalid, Typst will not compile anyway, so no need to validate
 
-  let real-points = -1
 
-  real-points = if (points == none){
+  let real-points = if (points == none){
     pairs.len()
   } else {
     points
