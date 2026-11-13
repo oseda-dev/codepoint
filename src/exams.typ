@@ -269,6 +269,7 @@
     pairs.map(pair => pair.at(1)),
     seed: seed + 1,
   )
+
   
   let answer_counter = counter("letter_counter")
 
@@ -278,6 +279,17 @@
   // ("", word, description, "", word, description, etc
   // then spread to table values later 
   // but we also need to have some empty cells for the spacer 
+  // 
+
+  let cells = ()
+  let spacer_string = ""
+
+  // i am assuming these lengths will always be equal, TODO check me
+  for idx in range(left-opts.len()) {
+    cells.push(spacer_string);
+    cells.push(left-opts.at(idx))
+    cells.push(right-opts.at(idx))
+  }
 
   block[
     #answer_counter.update(0)
@@ -285,26 +297,39 @@
     #spacer()
     #grid(
       columns: (1fr, 4fr, 7fr),
-      "",
-      align(left)[
-        #for left-item in left-opts {
-          block[
-            #box(width: 40pt, move(dy: 2pt, line(length: 85%, stroke: 0.5pt))) #left-item
-            #spacer()
-          ]
-        }
-      ],
-      align(left)[
-        #for right-item in right-opts {
-          block[
-            #answer_counter.step()
-            #context answer_counter.display(numbering). #right-item
-            #spacer()
-          ]
-        }
-      ]
+      ..cells
     )
+
+
   ]
+
+
+  // block[
+  //   #answer_counter.update(0)
+  //   #question(q-body, points: points)
+  //   #spacer()
+  //   #grid(
+  //     columns: (1fr, 4fr, 7fr),
+  //     "",
+  //     align(left)[
+  //       #for left-item in left-opts {
+  //         block[
+  //           #box(width: 40pt, move(dy: 2pt, line(length: 85%, stroke: 0.5pt))) #left-item
+  //           #spacer()
+  //         ]
+  //       }
+  //     ],
+  //     align(left)[
+  //       #for right-item in right-opts {
+  //         block[
+  //           #answer_counter.step()
+  //           #context answer_counter.display(numbering). #right-item
+  //           #spacer()
+  //         ]
+  //       }
+  //     ]
+  //   )
+  // ]
 }
 
 #let _validate-pairs(pairs) = {
