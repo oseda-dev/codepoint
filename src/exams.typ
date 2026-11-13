@@ -288,20 +288,23 @@
   for idx in range(left-opts.len()) {
 
     cells.push(spacer_string);
+
     cells.push(block[
-            #box(
-              width: 40pt, 
-              move(dy: 2pt, 
-              line(length: 85%, stroke: 0.5pt))
-            ) 
-            #left-opts.at(idx)
-            #spacer()
+      #box(
+        width: 40pt, 
+        move(dy: 2pt, 
+        line(length: 85%, stroke: 0.5pt))
+      ) 
+      #left-opts.at(idx)
+      #spacer()
     ])
-    cells.push( block[
-            #answer_counter.step()
-            #context answer_counter.display(numbering). #right-opts.at(idx)
-            #spacer()
-          ])
+
+    cells.push(block[
+      #answer_counter.step()
+      #context answer_counter.display(numbering). 
+      #right-opts.at(idx)
+      #spacer()
+    ])
   }
 
   block[
@@ -310,6 +313,7 @@
     #spacer()
     #grid(
       columns: (1fr, 4fr, 7fr),
+      
       ..cells
     )
 
