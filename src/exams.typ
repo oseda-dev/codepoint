@@ -270,10 +270,10 @@
     seed: seed + 1,
   )
   
-  let letter_counter = counter("letter_counter")
+  let answer_counter = counter("letter_counter")
 
   block[
-    #letter_counter.update(0)
+    #answer_counter.update(0)
     #question(q-body, points: points)
     #spacer()
     #grid(
@@ -290,8 +290,8 @@
       align(left)[
         #for right-item in right-opts {
           block[
-            #letter_counter.step()
-            #context letter_counter.display(numbering). #right-item
+            #answer_counter.step()
+            #context answer_counter.display(numbering). #right-item
             #spacer()
           ]
         }
