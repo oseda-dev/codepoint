@@ -5,6 +5,15 @@
 # specifically if any new files are added that wil need deployed, 
 # they will also need added here
 
+
+WD=$(basename $(pwd))
+
+if [[ $WD != "codepoint"]]; then
+
+    echo "Error"
+    echo "Please ensure you are running this script from project root
+fi
+
 echo "Please ensure your package fork is synced with the upstream before continuing"
 echo "git reset --hard is recommended"
 read -p "Is your package updated? (y/n): " reply
