@@ -317,6 +317,7 @@
 /// - q-body (content, str): body of question to ask
 /// - points (none, int): = none points the question is worth. Once wrapped, this will default to the length of pairs
 /// - seed (int): = 4 Random seed used for shuffling each side
+/// - numbering (numbering) = "A" numbering for the right-hand answers
 /// - pairs (array): An array containing pairs of answers/definitions
 #let matching(q-body, points: none, seed: 4, numbering: "A", pairs) = {
   assert(
@@ -340,7 +341,7 @@
   
   _validate-pairs(pairs)
 
-  // _validate-numbering(numbering)
+  // if the numbering is invalid, Typst will not compile anyway, so no need to validate
 
   let real-points = -1
 
