@@ -288,9 +288,20 @@
   for idx in range(left-opts.len()) {
 
     cells.push(spacer_string);
-    cells.push(left-opts.at(idx))
-    cells.push(right-opts.at(idx))
-
+    cells.push(block[
+            #box(
+              width: 40pt, 
+              move(dy: 2pt, 
+              line(length: 85%, stroke: 0.5pt))
+            ) 
+            #left-opts.at(idx)
+            #spacer()
+    ])
+    cells.push( block[
+            #answer_counter.step()
+            #context answer_counter.display(numbering). #right-opts.at(idx)
+            #spacer()
+          ])
   }
 
   block[
@@ -299,13 +310,7 @@
     #spacer()
     #grid(
       columns: (1fr, 4fr, 7fr),
-      ..rows.map(r => {
-        // let space = r.at(0)
-        // let word = r.at(1)
-        // let desc = r.at(2)
-
-        
-      })
+      ..cells
     )
 
 
