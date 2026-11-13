@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # a script to prepare all necessary files for deployment
 # this is mostly so i stop forgetting things or rename them incorrectly
 
@@ -8,10 +10,11 @@
 
 WD=$(basename $(pwd))
 
-if [[ $WD != "codepoint"]]; then
+if [[ $WD != "codepoint" ]]; then
 
     echo "Error"
-    echo "Please ensure you are running this script from project root
+    echo "Please ensure you are running this script from codepoint root"
+    exit 1
 fi
 
 echo "Please ensure your package fork is synced with the upstream before continuing"
