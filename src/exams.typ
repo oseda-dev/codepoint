@@ -286,9 +286,11 @@
 
   // i am assuming these lengths will always be equal, TODO check me
   for idx in range(left-opts.len()) {
+
     cells.push(spacer_string);
     cells.push(left-opts.at(idx))
     cells.push(right-opts.at(idx))
+
   }
 
   block[
@@ -297,7 +299,13 @@
     #spacer()
     #grid(
       columns: (1fr, 4fr, 7fr),
-      ..cells
+      ..rows.map(r => {
+        // let space = r.at(0)
+        // let word = r.at(1)
+        // let desc = r.at(2)
+
+        
+      })
     )
 
 
