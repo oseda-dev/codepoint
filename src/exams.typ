@@ -317,34 +317,6 @@
       ..cells
     )
   ]
-
-
-  // block[
-  //   #answer_counter.update(0)
-  //   #question(q-body, points: points)
-  //   #spacer()
-  //   #grid(
-  //     columns: (1fr, 4fr, 7fr),
-  //     "",
-  //     align(left)[
-  //       #for left-item in left-opts {
-  //         block[
-  //           #box(width: 40pt, move(dy: 2pt, line(length: 85%, stroke: 0.5pt))) #left-item
-  //           #spacer()
-  //         ]
-  //       }
-  //     ],
-  //     align(left)[
-  //       #for right-item in right-opts {
-  //         block[
-  //           #answer_counter.step()
-  //           #context answer_counter.display(numbering). #right-item
-  //           #spacer()
-  //         ]
-  //       }
-  //     ]
-  //   )
-  // ]
 }
 
 #let _validate-pairs(pairs) = {
