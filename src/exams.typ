@@ -258,7 +258,7 @@
 
 
 
-#let _matching(q-body, points, seed: 4, pairs) = {
+#let _matching(q-body, points, seed: 4, numbering: "A", pairs) = {
   // condense each pair down into just each side => then shuffle
   let left-opts = _shuffle(
     pairs.map(pair => pair.at(0)),
@@ -269,32 +269,48 @@
     pairs.map(pair => pair.at(1)),
     seed: seed + 1,
   )
+
   
+  let answer_counter = counter("letter_counter")
+
+  // align items to a grid (see code-block implemenation)
+  // fold to flat array of cells, 
+  // ("", word, description, "", word, description, etc)
+  // then spread to grid values later 
+
+  let cells = ()
+  let spacer_string = ""
+
+  for idx in range(left-opts.len()) {
+
+    cells.push(spacer_string);
+
+    cells.push(block[
+      #box(
+        width: 40pt, 
+        move(dy: 2pt, 
+        line(length: 85%, stroke: 0.5pt))
+      ) 
+      #left-opts.at(idx)
+      #spacer()
+    ])
+
+    cells.push(block[
+      #answer_counter.step()
+      #context answer_counter.display(numbering). 
+      #right-opts.at(idx)
+      #spacer()
+    ])
+  }
 
   block[
-    #c.update(0)
+    #answer_counter.update(0)
     #question(q-body, points: points)
-    #spacer()
+    #v(3pt)
     #grid(
       columns: (1fr, 4fr, 7fr),
-      "",
-      align(left)[
-        #for left-item in left-opts {
-          block[
-            #box(width: 40pt, move(dy: 2pt, line(length: 85%, stroke: 0.5pt))) #left-item
-            #spacer()
-          ]
-        }
-      ],
-      align(left)[
-        #for right-item in right-opts {
-          block[
-            #c.step()
-            #context c.display("a"). #right-item
-            #spacer()
-          ]
-        }
-      ]
+      row-gutter: (1.0em),
+      ..cells
     )
   ]
 }
@@ -316,8 +332,9 @@
 /// - q-body (content, str): body of question to ask
 /// - points (none, int): = none points the question is worth. Once wrapped, this will default to the length of pairs
 /// - seed (int): = 4 Random seed used for shuffling each side
+/// - numbering (numbering) = "A" numbering for the right-hand answers
 /// - pairs (array): An array containing pairs of answers/definitions
-#let matching(q-body, points: none, seed: 4, pairs) = {
+#let matching(q-body, points: none, seed: 4, numbering: "A", pairs) = {
   assert(
     type(q-body) == content or type(q-body) == str,
     message: "Expected q-body to be content or str, but received" + str(type(q-body))
@@ -339,15 +356,16 @@
   
   _validate-pairs(pairs)
 
-  let real-points = -1
+  // if the numbering is invalid, Typst will not compile anyway, so no need to validate
 
-  if(points == none){
-    real-points = pairs.len()
+
+  let real-points = if (points == none){
+    pairs.len()
   } else {
-    real-points = points
+    points
   }
 
-  _matching(q-body, real-points, seed: seed, pairs)
+  _matching(q-body, real-points, seed: seed,numbering: numbering, pairs)
 }
 
 #let tf-block(q-body, points: 1, ..statements) = {
