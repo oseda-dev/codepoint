@@ -307,7 +307,6 @@
   block[
     #answer_counter.update(0)
     #question(q-body, points: points)
-    #spacer()
     #grid(
       columns: (1fr, 4fr, 7fr),
       row-gutter: (1.0em),
