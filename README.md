@@ -17,9 +17,9 @@ The exams module manages constraints for student testing, providing native suppo
 
 - Answer Shuffling (`#exam.matching`): Shuffle matching question choices, preventing answer-key ordering mistakes during exam creation phase
 
-- Numbered Code Snippets (`#exam.code-block`): Formats code containers into distinct line-numbered (optional) code blocks
+- Numbered Code Snippets (`#code-block`): Formats code containers into distinct line-numbered (optional) code blocks
 ```typst
-#import "@preview/codepoint:0.2.2": exams
+#import "@preview/codepoint:0.2.2": exams, code-block
 
 #show: exams.init
 
@@ -31,7 +31,7 @@ The exams module manages constraints for student testing, providing native suppo
 
 #exams.free-response([What is the difference between a class and an object?], points: 5, lines: 3)
 
-#exams.code-block(
+#code-block(
   include-line-numbers: true,
   ```java
   public class Main {
