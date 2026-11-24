@@ -181,4 +181,4 @@ The calendars module creates customizable calendars for class scheduling purpose
 
 ![Calendar Example](./img/cal.png)
 
-For exact function details and guidelines, check out [the manual](https://github.com/oseda-dev/codepoint/blob/d5228a2d6425b2828916f3beaf20bff4b8f471c0/manual/manual.pdf)
+For exact function details and guidelines, check out [the manual](https://github.com/oseda-dev/codepoint/blob/56381cc00747139694655da04c9d54c4d05ab0a8/manual/manual.pdf)
