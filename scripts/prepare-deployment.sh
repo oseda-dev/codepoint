@@ -46,6 +46,7 @@ NEEDED_FILES=(
     "typst.toml"
     "src/labs.typ"
     "src/exams.typ"
+    "src/calendar.typ"
     "README.md"
     "themes/codepoint.tmTheme"
     "LICENSE"
