@@ -1,4 +1,4 @@
-#import "../lib.typ": exams as e
+#import "../lib.typ": code-block, exams as e,
 
 
 #show: e.init
@@ -58,7 +58,7 @@
 #e.spacer()
 
  Use the code block to answer the following question:
- #e.code-block(
+#code-block(
 ```java
 public static void doThing() {
     boolean b = true;
@@ -196,7 +196,7 @@ Use the diagram to answer the following question:
 #pagebreak()
 Use the `Student` class to answer the following questions:
 
-#e.code-block(
+#code-block(
 ```java
 class Student {
     private String name;
@@ -215,7 +215,7 @@ class Student {
 ```
 )
 
-#e.code-block(```java
+#code-block(```java
 public static void main(String[] args) {
     Student s1 = new Student("Alice");
     Student s2 = s1;
@@ -273,7 +273,7 @@ public static void main(String[] args) {
 
 
 Use the code block to answer the following question:
-#e.code-block(
+#code-block(
 ```java
 public class CustomFrame extends JFrame {
 
@@ -317,7 +317,7 @@ public class CustomFrame extends JFrame {
 
 
 Use the code block to answer the following questions:
-#e.code-block(
+#code-block(
 
   ```java
   public abstract class Worker {
@@ -443,7 +443,7 @@ Use the code block to answer the following questions:
 
 
 Fill in some code below:
-#e.code-block(
+#code-block(
   ```lisp
   (defun main
   

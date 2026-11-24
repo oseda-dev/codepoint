@@ -1,4 +1,4 @@
-#import "../lib.typ": labs, exams
+#import "../lib.typ": code-block, labs, exams
 
 
 
@@ -118,7 +118,7 @@ In main:
 )
 
 
-#exams.code-block(
+#code-block(
   ```
   test block
   ```
@@ -126,7 +126,7 @@ In main:
 
 
 
-#exams.code-block(
+#code-block(
   ```java
   public class Main{
     ...

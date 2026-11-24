@@ -1,4 +1,4 @@
-#import "../lib.typ": exams 
+#import "../lib.typ": exams, code-block
 
 #show: exams.init
 
@@ -10,7 +10,7 @@
 
 #exams.free-response([What is the difference between a class and an object?], points: 5, lines: 3)
 
-#exams.code-block(
+#code-block(
   include-line-numbers: true,
   ```java
   public class Main {
