@@ -17,4 +17,4 @@ jobs:
         uses: typst-community/setup-typst@v3
 
       - name: Validate Typst files from Quill
-        uses: ReeseHatfield/quill@v1
+        uses: ReeseHatfield/quill@v1.0.1
