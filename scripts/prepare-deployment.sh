@@ -59,6 +59,7 @@ NEEDED_FILES=(
     "LICENSE"
     "img/logo.png"
     "img/lab.png"
+    "img/cal.png"
     "img/exam.png"
 )
 
