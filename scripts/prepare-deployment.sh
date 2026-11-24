@@ -25,6 +25,13 @@ if [[ "$reply" != "y" && "$reply" != "Y" ]]; then
     exit 1
 fi
 
+echo "Please ensure all semver in the README"
+read -p "Have they all been updated? (y/n): " reply
+if [[ "$reply" != "y" && "$reply" != "Y" ]]; then
+    echo "Exiting..."
+    exit 1
+fi
+
 
 PACKAGE_PATH="../typst-packages/packages/preview/codepoint"
 
@@ -65,3 +72,4 @@ done
 
 echo "Successfully copied over necessary file"
 echo "Please verify no files were missed"
+echo "Go into the packages repo and push all that before making a PR"
